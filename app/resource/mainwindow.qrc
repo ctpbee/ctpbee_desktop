@@ -1,0 +1,21 @@
+<RCC>
+  <qresource prefix="menu">
+    <file>icon/下单.png</file>
+    <file>icon/业务介绍-一键下单.png</file>
+    <file>icon/添加.png</file>
+    <file>icon/关于我们.png</file>
+    <file>icon/上传.png</file>
+    <file>icon/生成支付单.png</file>
+    <file>icon/脚本控制台.svg</file>
+    <file>icon/16-登出.png</file>
+    <file>icon/trending-3 行情.png</file>
+    <file>icon/策略.png</file>
+    <file>icon/历史记录.png</file>
+    <file>icon/配置.png</file>
+    <file>icon/下单中心.png</file>
+    <file>icon/账户安全.png</file>
+    <file>icon/账户资料.png</file>
+    <file>icon/account.png</file>
+    <file>icon/contorl.png</file>
+  </qresource>
+</RCC>

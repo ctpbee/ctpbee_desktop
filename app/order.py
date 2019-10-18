@@ -203,16 +203,20 @@ class OrderWidget(QWidget, Ui_Order):
         local_symbol = symbol + '.' + exchange
         print(local_symbol)
         tick = TickData(symbol=symbol, exchange=exchange_map[exchange])
-        price = self.bee_ext.app.recorder.get_tick(local_symbol).last_price
         try:
-            if direction == "long":
-                self.bee_ext.app.action.cover(price=float(price), volume=float(volume), origin=tick)
-            if direction == "short":
-                self.bee_ext.app.action.sell(price=float(price), volume=float(volume), origin=tick)
-            QMessageBox().information(self, "提示", "平仓请求发送成功", QMessageBox.Ok, QMessageBox.Ok)
-        except Exception as e:
-            print(e)
-            QMessageBox().warning(self, "提示", "平仓请求发送失败", QMessageBox.Ok, QMessageBox.Ok)
+            price = self.bee_ext.app.recorder.get_tick(local_symbol).last_price
+        except AttributeError:
+            QMessageBox().warning(self, "提示", "未订阅此合约行情", QMessageBox.Ok, QMessageBox.Ok)
+        else:
+            try:
+                if direction == "long":
+                    self.bee_ext.app.action.cover(price=float(price), volume=float(volume), origin=tick)
+                if direction == "short":
+                    self.bee_ext.app.action.sell(price=float(price), volume=float(volume), origin=tick)
+                QMessageBox().information(self, "提示", "平仓请求发送成功", QMessageBox.Ok, QMessageBox.Ok)
+            except Exception as e:
+                print(e)
+                QMessageBox().warning(self, "提示", "平仓请求发送失败", QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     def open_order(self, direction):

@@ -20,8 +20,7 @@ pyinstaller ctpbee_desktop.py #生成 ctpbee_desktop.spec  build  dist
 # ctpbee_desktop.spec
 
  datas=[("app/static","static"),
-        ("venv/lib/python3.7/site-packages/ctpbee-0.31.3-py3.7-linux-x86_64.egg/ctpbee",'ctpbee'),
-        ("venv/lib/python3.7/site-packages/PyQt5","PyQt5"),("venv/lib/python3.7/site-packages/PySide2","PySide2")],
+        ("venv/lib/python3.7/site-packages/ctpbee-0.31.3-py3.7-linux-x86_64.egg/ctpbee",'ctpbee'),("venv/lib/python3.7/site-packages/PySide2","PySide2")],
  # datas=[("文件或文件夹路径：自行查找","dist下的名称")]
  
  hiddenimports=['PySide2.QtPrintSupport'],

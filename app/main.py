@@ -82,7 +82,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.addPermanentWidget(self.progressbar, stretch=1)
         self.statusbar.addPermanentWidget(self.status_msg, stretch=5)
         self.statusbar.addPermanentWidget(self.market_msg, stretch=5)
+        self.show_sigin()
 
+    def show_sigin(self):
         # sign in
         self.widget = SignInWidget(self)
         self.menubar.setEnabled(False)
@@ -122,7 +124,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.config_handle()
         if action == "下单":
             self.order_handle()
-        if action == "退出账户":
+        if action == "注销":
             self.logout_handle()
         if action == '关于':
             self.about_us_handle()
@@ -155,7 +157,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         about.exec_()
 
     def logout_handle(self):
-        self.close()
+        try:
+            current_app.release()
+        except:
+            pass
+        self.show_sigin()
 
     def on_account(self, ext, account: AccountData) -> None:
         account = account._to_dict()
@@ -188,17 +194,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_order(self, ext, order: OrderData) -> None:
         active_orders = []
-        for order1 in self.bee_ext.app.recorder.get_all_active_orders(order.local_symbol):
+        for order1 in self.bee_ext.app.recorder.get_all_active_orders():
             o1 = order1._to_dict()
             active_orders.append(o1)
-            G.order_activate[o1['symbol']] = o1
+            G.order_activate[o1['local_order_id']] = o1
         self.job.order_activate_signal.emit(active_orders)
 
         orders = []
         for order2 in self.bee_ext.app.recorder.get_all_orders():
             o2 = order2._to_dict()
             orders.append(o2)
-            G.order_order[o2['symbol']] = o2
+            G.order_order[o2['local_order_id']] = o2
         self.job.order_order_signal.emit(orders)
 
     def on_realtime(*args):
@@ -206,7 +212,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self = args[0]
         all_positions = self.bee_ext.app.recorder.get_all_positions()
         for p in all_positions:
-            G.order_position[p['symbol']] = p
+            mark = p["local_symbol"] + p["direction"]
+            G.order_position[mark] = p
         self.job.order_position_signal.emit(all_positions)
 
     def on_position(self, ext, position: PositionData) -> None:
@@ -229,7 +236,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for trade in self.bee_ext.app.recorder.get_all_trades():
             t = trade._to_dict()
             trades.append(t)
-            G.order_trade[t['symbol']] = t
+            G.order_trade[t['local_trade_id']] = t
         self.job.order_trade_signal.emit(trades)
 
     def on_init(self, ext, init):

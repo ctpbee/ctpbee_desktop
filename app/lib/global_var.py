@@ -9,7 +9,6 @@ class G(dict):
     account = {}
     account_row_map = {}
     # order
-    order_signal_switch = "position"  # 默认渲染持仓数据
     choice_local_symbol = None
     order_tick_row_map = {}  # with tick ={}
     ## position

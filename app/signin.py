@@ -1,8 +1,8 @@
 import json
 from copy import deepcopy
 from time import sleep
-from PySide2.QtCore import QRegExp, Slot, QTimer
-from PySide2.QtGui import QRegExpValidator
+from PySide2.QtCore import QRegExp, Slot, QTimer, Qt
+from PySide2.QtGui import QRegExpValidator, QMovie
 from PySide2.QtWidgets import QWidget, QMessageBox
 
 from app.lib.global_var import G
@@ -27,7 +27,11 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.progressbar = mainwindow.progressbar
         self.status_msg = mainwindow.status_msg
         self.setupUi(self)
-        self.setWindowTitle("Ctpbee客户端")
+        self.setWindowTitle("ctpbee客户端")
+        # loading
+        self.loading = LoadingDialog()
+        self.loading.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏整个头部
+        #
         self.load_remember()
         # 设置验证
         reg = QRegExp("PB[0~9]{8}")
@@ -90,7 +94,7 @@ class SignInWidget(QWidget, Ui_SignIn):
             self.interface_2.setCurrentText(info.get('interface'))
 
     def close_load(self):
-        self.load.close()
+        self.loading.close()
         self.timer.stop()
 
     def sign_in(self, info):
@@ -107,12 +111,9 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.progressbar.setValue(20)
         self.status_msg.setText("正在连接服务器...")
         self.progressbar.setValue(60)
-        self.load = LoadingDialog()
         self.timer.start(2000)  # ms
-        self.load.msg.setText("正在连接服务器...")
-        self.load.progressBar.setValue(60)
-
-        self.load.exec_()
+        self.loading.msg.setText("正在连接服务器...")
+        self.loading.exec_()
         self.progressbar.setValue(100)
         if bee_app and \
                 bee_app.trader and \

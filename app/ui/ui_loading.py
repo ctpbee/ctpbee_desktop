@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'loading.ui',
 # licensing of 'loading.ui' applies.
 #
-# Created: Sun Nov 10 12:54:22 2019
+# Created: Sun Nov 10 13:47:57 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,20 +13,24 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_Loading(object):
     def setupUi(self, Loading):
         Loading.setObjectName("Loading")
-        Loading.resize(441, 301)
+        Loading.resize(426, 155)
+        Loading.setMinimumSize(QtCore.QSize(426, 155))
+        Loading.setMaximumSize(QtCore.QSize(426, 155))
+        Loading.setStyleSheet("")
+        self.verticalLayout = QtWidgets.QVBoxLayout(Loading)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.formLayout = QtWidgets.QFormLayout()
+        self.formLayout.setObjectName("formLayout")
         self.msg = QtWidgets.QLabel(Loading)
-        self.msg.setGeometry(QtCore.QRect(120, 80, 181, 81))
         self.msg.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.msg.setStyleSheet("font: 75 14pt \"Arial\";")
+        self.msg.setStyleSheet("font: 75 14pt \"Arial\";\n"
+"color: rgb(0, 170, 0);")
         self.msg.setAlignment(QtCore.Qt.AlignCenter)
         self.msg.setObjectName("msg")
-        self.progressBar = QtWidgets.QProgressBar(Loading)
-        self.progressBar.setGeometry(QtCore.QRect(120, 190, 221, 21))
-        self.progressBar.setMinimum(0)
-        self.progressBar.setMaximum(100)
-        self.progressBar.setProperty("value", 20)
-        self.progressBar.setFormat("")
-        self.progressBar.setObjectName("progressBar")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.msg)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.formLayout.setItem(1, QtWidgets.QFormLayout.FieldRole, spacerItem)
+        self.verticalLayout.addLayout(self.formLayout)
 
         self.retranslateUi(Loading)
         QtCore.QMetaObject.connectSlotsByName(Loading)

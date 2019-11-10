@@ -1,20 +1,21 @@
 import json
 from copy import deepcopy
 from time import sleep
-from PySide2.QtCore import QRegExp, Slot
+from PySide2.QtCore import QRegExp, Slot, QTimer
 from PySide2.QtGui import QRegExpValidator
 from PySide2.QtWidgets import QWidget, QMessageBox
 
 from app.lib.global_var import G
 from app.ui.ui_signin import Ui_SignIn
-from ctpbee import CtpBee, current_app as bee_current_app, VLogger
+from ctpbee import CtpBee, VLogger
 from app.lib.get_path import user_account_path
+from app.loading import LoadingDialog
 
 
 class Vlog(VLogger):
     def handler_record(self, record):
         msg = f"{record['created'].split(' ')[1]}   {record['name']} " \
-            f"  {record['levelname']}   {record['owner']}   {record['message']}"
+              f"  {record['levelname']}   {record['owner']}   {record['message']}"
         G.mainwindow.job.order_log_signal.emit(msg)
 
 
@@ -55,6 +56,9 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.md_address_2.textChanged[str].connect(self.check_disable)
         self.appid_2.textChanged[str].connect(self.check_disable)
         self.brokerid_2.textChanged[str].connect(self.check_disable)
+        # timer
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.close_load)
 
     @Slot()
     def check_disable(self):
@@ -85,6 +89,10 @@ class SignInWidget(QWidget, Ui_SignIn):
             self.md_address_2.setText(info.get('md_address'))
             self.interface_2.setCurrentText(info.get('interface'))
 
+    def close_load(self):
+        self.load.close()
+        self.timer.stop()
+
     def sign_in(self, info):
         self.progressbar.setRange(0, 100)
         bee_app = CtpBee(name=info.get("username"), import_name=__name__, refresh=True, logger_class=Vlog)
@@ -99,14 +107,20 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.progressbar.setValue(20)
         self.status_msg.setText("正在连接服务器...")
         self.progressbar.setValue(60)
-        sleep(1)
+        self.load = LoadingDialog()
+        self.timer.start(2000)  # ms
+        self.load.msg.setText("正在连接服务器...")
+        self.load.progressBar.setValue(60)
+
+        self.load.exec_()
         self.progressbar.setValue(100)
-        if bee_current_app and \
-                bee_current_app.trader and \
-                bee_current_app.td_login_status:
+        if bee_app and \
+                bee_app.trader and \
+                bee_app.td_login_status:
             self.status_msg.setText("登录成功！")
             self.mainwindow.sign_in_success(bee_app)
         else:
+            # bee_app.release()
             self.status_msg.setText("请重试")
             QMessageBox.warning(self, "提示", "登录出现错误", QMessageBox.Ok, QMessageBox.Ok)
 

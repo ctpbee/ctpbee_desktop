@@ -21,8 +21,6 @@ class MarketWidget(QWidget, Ui_Market):
         # ctpbee
         for local_symbol in sorted(G.all_contracts):
             self.symbol_list.addItem(local_symbol)  # 添加下拉框
-            # self.bee_ext.app.subscribe(local_symbol)  # 订阅 可去除  ，下同
-            # G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})  # 更新订阅列表
         self.progressBar.setMaximum(len(G.subscribes))
         #
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
@@ -48,6 +46,7 @@ class MarketWidget(QWidget, Ui_Market):
             self.bee_ext.app.subscribe(local_symbol)  # 订阅 可去除  ，下同
             G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})  # 更新订阅列表
         self.mainwindow.market_handle()
+
     @Slot()
     def go_order(self):
         row = self.tableWidget.currentRow()

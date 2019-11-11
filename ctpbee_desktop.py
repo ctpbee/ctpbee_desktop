@@ -1,8 +1,6 @@
 import os
 import sys
 import platform
-
-from PySide2.QtGui import QIcon, QPixmap
 from PySide2.QtWidgets import QApplication
 
 from app.lib.get_path import init_file

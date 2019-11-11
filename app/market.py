@@ -5,6 +5,7 @@ from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBo
     QHeaderView
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
+from app.loading import LoadingDialog
 
 
 class MarketWidget(QWidget, Ui_Market):
@@ -12,7 +13,7 @@ class MarketWidget(QWidget, Ui_Market):
         super(MarketWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("行情")
-
+        self.loading = LoadingDialog()
         self.item_row = 0
         self.bee_ext = mainwindow.bee_ext
         self.mainwindow = mainwindow
@@ -28,6 +29,8 @@ class MarketWidget(QWidget, Ui_Market):
         self.fill_table()
         self.load_time = time.time()
         self.tableWidget.setEnabled(False)
+        self.loading.msg.setText('正在加载合约列表...')
+        self.loading.show()
         # 渲染table
         self.obj = self.mainwindow.job
         self.obj.market_signal.connect(self.set_item_slot)
@@ -68,6 +71,7 @@ class MarketWidget(QWidget, Ui_Market):
     def timer_slot(self):
         if time.time() - self.load_time > 0.5:
             self.tableWidget.setEnabled(True)
+            self.loading.close()
             self.timer.stop()
             self.progressBar.setValue(len(G.subscribes))
             self.load_status.setText("订阅合约列表加载完成")

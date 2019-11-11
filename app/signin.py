@@ -10,27 +10,23 @@ from app.ui.ui_signin import Ui_SignIn
 from ctpbee import CtpBee, VLogger
 from app.lib.get_path import user_account_path
 from app.loading import LoadingDialog
-
+from app.main import MainWindow
 
 class Vlog(VLogger):
     def handler_record(self, record):
         msg = f"{record['created'].split(' ')[1]}   {record['name']} " \
               f"  {record['levelname']}   {record['owner']}   {record['message']}"
-        G.mainwindow.job.order_log_signal.emit(msg)
+        if G.mainwindow:G.mainwindow.job.order_log_signal.emit(msg)
 
 
 class SignInWidget(QWidget, Ui_SignIn):
 
-    def __init__(self, mainwindow):
+    def __init__(self):
         super(SignInWidget, self).__init__()
-        self.mainwindow = mainwindow
-        self.progressbar = mainwindow.progressbar
-        self.status_msg = mainwindow.status_msg
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
         # loading
         self.loading = LoadingDialog()
-        self.loading.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏整个头部
         #
         self.load_remember()
         # 设置验证
@@ -98,7 +94,6 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.timer.stop()
 
     def sign_in(self, info):
-        self.progressbar.setRange(0, 100)
         bee_app = CtpBee(name=info.get("username"), import_name=__name__, refresh=True, logger_class=Vlog)
         login_info = {
             "CONNECT_INFO": info,
@@ -108,21 +103,18 @@ class SignInWidget(QWidget, Ui_SignIn):
         }
         bee_app.config.from_mapping(login_info)
         bee_app.start()
-        self.progressbar.setValue(20)
-        self.status_msg.setText("正在连接服务器...")
-        self.progressbar.setValue(60)
         self.timer.start(2000)  # ms
         self.loading.msg.setText("正在连接服务器...")
         self.loading.exec_()
-        self.progressbar.setValue(100)
         if bee_app and \
                 bee_app.trader and \
                 bee_app.td_login_status:
-            self.status_msg.setText("登录成功！")
-            self.mainwindow.sign_in_success(bee_app)
+            mainwindow = MainWindow()
+            mainwindow.sign_in_success(bee_app=bee_app)
+            mainwindow.show()
+            self.close()
         else:
             # bee_app.release()
-            self.status_msg.setText("请重试")
             QMessageBox.warning(self, "提示", "登录出现错误", QMessageBox.Ok, QMessageBox.Ok)
 
     def sign_in_check(self):

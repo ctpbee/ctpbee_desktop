@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QWidget, QMessageBox
+from PySide2.QtWidgets import QMessageBox, QDialog
 from PySide2.QtCore import Qt, Slot
 from app.ui.ui_config import Ui_Config
 from ctpbee import current_app as bee_current_app
@@ -14,9 +14,9 @@ keys = [
     "SHARED_FUNC"]
 
 
-class ConfigWidget(QWidget, Ui_Config):
+class ConfigDialog(QDialog, Ui_Config):
     def __init__(self, mainwindow):
-        super(ConfigWidget, self).__init__()
+        super(ConfigDialog, self).__init__()
         self.setupUi(self)
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))
         self.SLIPPAGE_SHORT.setValue(float(bee_current_app.config['SLIPPAGE_SHORT']))

@@ -3,8 +3,8 @@
 # Form implementation generated from reading ui file 'signin.ui',
 # licensing of 'signin.ui' applies.
 #
-# Created: Mon Sep 30 13:58:24 2019
-#      by: pyside2-uic  running on PySide2 5.13.1
+# Created: Mon Nov 11 14:06:33 2019
+#      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -14,8 +14,9 @@ class Ui_SignIn(object):
     def setupUi(self, SignIn):
         SignIn.setObjectName("SignIn")
         SignIn.setEnabled(True)
-        SignIn.resize(1055, 819)
-        SignIn.setMinimumSize(QtCore.QSize(1055, 819))
+        SignIn.resize(536, 526)
+        SignIn.setMinimumSize(QtCore.QSize(536, 526))
+        SignIn.setMaximumSize(QtCore.QSize(536, 526))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/bee/images/bee_temp_grey.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         SignIn.setWindowIcon(icon)
@@ -50,21 +51,20 @@ class Ui_SignIn(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         self.login_tab.setFont(font)
-        self.login_tab.setStyleSheet("image: url(:/bee/images/bee_temp_grey.png);")
+        self.login_tab.setStyleSheet("")
         self.login_tab.setObjectName("login_tab")
         self.login1 = QtWidgets.QWidget()
         self.login1.setObjectName("login1")
         self.gridLayout = QtWidgets.QGridLayout(self.login1)
         self.gridLayout.setObjectName("gridLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem1, 1, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem2, 0, 2, 1, 1)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.label = QtWidgets.QLabel(self.login1)
+        self.label.setStyleSheet("image: url(:/bee/images/bee_temp_grey.png);")
+        self.label.setText("")
+        self.label.setObjectName("label")
+        self.verticalLayout.addWidget(self.label)
         self.userid_1 = QtWidgets.QLineEdit(self.login1)
         self.userid_1.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
@@ -116,9 +116,11 @@ class Ui_SignIn(object):
         self.sign_in_btn_1.setFlat(False)
         self.sign_in_btn_1.setObjectName("sign_in_btn_1")
         self.verticalLayout.addWidget(self.sign_in_btn_1)
-        self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem3, 0, 3, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout, 0, 1, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem, 0, 0, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem1, 0, 2, 1, 1)
         self.login_tab.addTab(self.login1, "")
         self.login2 = QtWidgets.QWidget()
         self.login2.setObjectName("login2")
@@ -209,15 +211,13 @@ class Ui_SignIn(object):
         self.rember_me.setChecked(True)
         self.rember_me.setObjectName("rember_me")
         self.verticalLayout_2.addWidget(self.rember_me)
-        self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_2.addItem(spacerItem4, 1, 0, 1, 1)
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem5, 0, 2, 1, 1)
-        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem6, 0, 1, 1, 1)
-        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem7, 0, 3, 1, 1)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacerItem2)
+        self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 1, 1, 1)
+        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_2.addItem(spacerItem3, 0, 0, 1, 1)
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_2.addItem(spacerItem4, 0, 2, 1, 1)
         self.login_tab.addTab(self.login2, "")
         self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.login_tab)
 
@@ -227,7 +227,7 @@ class Ui_SignIn(object):
 
     def retranslateUi(self, SignIn):
         SignIn.setWindowTitle(QtWidgets.QApplication.translate("SignIn", "Form", None, -1))
-        self.title.setText(QtWidgets.QApplication.translate("SignIn", "欢迎使用Ctpbee桌面客户端", None, -1))
+        self.title.setText(QtWidgets.QApplication.translate("SignIn", "欢迎使用ctpbee桌面客户端", None, -1))
         self.userid_1.setPlaceholderText(QtWidgets.QApplication.translate("SignIn", "用户名/USERNAME", None, -1))
         self.password_1.setPlaceholderText(QtWidgets.QApplication.translate("SignIn", "密码/PASSWORD", None, -1))
         self.interface_1.setItemText(0, QtWidgets.QApplication.translate("SignIn", "ctp", None, -1))

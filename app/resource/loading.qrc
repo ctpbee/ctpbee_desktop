@@ -1,5 +1,0 @@
-<RCC>
-  <qresource prefix="load_gif">
-    <file>images/timg.gif</file>
-  </qresource>
-</RCC>

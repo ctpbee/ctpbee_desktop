@@ -3,8 +3,8 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Sun Sep 29 21:39:46 2019
-#      by: pyside2-uic  running on PySide2 5.13.1
+# Created: Mon Nov 11 13:35:19 2019
+#      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,10 +13,13 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_Config(object):
     def setupUi(self, Config):
         Config.setObjectName("Config")
-        Config.resize(1151, 782)
+        Config.resize(758, 428)
         font = QtGui.QFont()
         font.setPointSize(13)
         Config.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/menu/images/bee_temp_grey.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Config.setWindowIcon(icon)
         self.formLayout_2 = QtWidgets.QFormLayout(Config)
         self.formLayout_2.setObjectName("formLayout_2")
         self.label_9 = QtWidgets.QLabel(Config)
@@ -53,9 +56,10 @@ class Ui_Config(object):
         self.formLayout.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.label_8)
         self.pushButton = QtWidgets.QPushButton(Config)
         self.pushButton.setMaximumSize(QtCore.QSize(200, 16777215))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/menu/icon/上传.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton.setIcon(icon)
+        self.pushButton.setStyleSheet("background-color: rgb(0, 170, 0);")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/menu/icon/上传.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton.setIcon(icon1)
         self.pushButton.setObjectName("pushButton")
         self.formLayout.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.pushButton)
         self.INSTRUMENT_INDEPEND = QtWidgets.QCheckBox(Config)
@@ -72,6 +76,8 @@ class Ui_Config(object):
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.SLIPPAGE_BUY)
         self.SLIPPAGE_COVER = QtWidgets.QSpinBox(Config)
         self.SLIPPAGE_COVER.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.SLIPPAGE_COVER.setMinimum(-9999)
+        self.SLIPPAGE_COVER.setMaximum(99999)
         self.SLIPPAGE_COVER.setObjectName("SLIPPAGE_COVER")
         self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.SLIPPAGE_COVER)
         self.SLIPPAGE_SELL = QtWidgets.QSpinBox(Config)
@@ -98,16 +104,16 @@ class Ui_Config(object):
         QtCore.QMetaObject.connectSlotsByName(Config)
 
     def retranslateUi(self, Config):
-        Config.setWindowTitle(QtWidgets.QApplication.translate("Config", "Form", None, -1))
+        Config.setWindowTitle(QtWidgets.QApplication.translate("Config", "配置", None, -1))
         self.label_9.setText(QtWidgets.QApplication.translate("Config", "配置", None, -1))
-        self.label.setText(QtWidgets.QApplication.translate("Config", "REFRESH_INTERVAL", None, -1))
-        self.label_2.setText(QtWidgets.QApplication.translate("Config", "INSTRUMENT_INDEPEND", None, -1))
-        self.label_3.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_SHORT", None, -1))
-        self.label_4.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_BUY", None, -1))
-        self.label_5.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_COVER", None, -1))
-        self.label_6.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_SELL", None, -1))
-        self.label_7.setText(QtWidgets.QApplication.translate("Config", "CLOSE_PATTERN", None, -1))
-        self.label_8.setText(QtWidgets.QApplication.translate("Config", "SHARED_FUNC", None, -1))
+        self.label.setText(QtWidgets.QApplication.translate("Config", "REFRESH_INTERVAL/定时刷新秒数", None, -1))
+        self.label_2.setText(QtWidgets.QApplication.translate("Config", "INSTRUMENT_INDEPEND/是否开启独立行情", None, -1))
+        self.label_3.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_SHORT/卖空滑点", None, -1))
+        self.label_4.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_BUY/买多滑点", None, -1))
+        self.label_5.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_COVER/平多头滑点", None, -1))
+        self.label_6.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_SELL/平空头滑点", None, -1))
+        self.label_7.setText(QtWidgets.QApplication.translate("Config", "CLOSE_PATTERN/指定优先平今或者平昨", None, -1))
+        self.label_8.setText(QtWidgets.QApplication.translate("Config", "SHARED_FUNC/分时图数据", None, -1))
         self.pushButton.setText(QtWidgets.QApplication.translate("Config", "提交更改", None, -1))
         self.CLOSE_PATTERN.setItemText(0, QtWidgets.QApplication.translate("Config", "today", None, -1))
         self.CLOSE_PATTERN.setItemText(1, QtWidgets.QApplication.translate("Config", "yesterday", None, -1))

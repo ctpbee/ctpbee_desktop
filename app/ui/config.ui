@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1151</width>
-    <height>782</height>
+    <width>758</width>
+    <height>428</height>
    </rect>
   </property>
   <property name="font">
@@ -16,7 +16,11 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>配置</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resource/mainwindow.qrc">
+    <normaloff>:/menu/images/bee_temp_grey.png</normaloff>:/menu/images/bee_temp_grey.png</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout_2">
    <item row="1" column="1">
@@ -36,56 +40,56 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>REFRESH_INTERVAL</string>
+        <string>REFRESH_INTERVAL/定时刷新秒数</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>INSTRUMENT_INDEPEND</string>
+        <string>INSTRUMENT_INDEPEND/是否开启独立行情</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>SLIPPAGE_SHORT</string>
+        <string>SLIPPAGE_SHORT/卖空滑点</string>
        </property>
       </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>SLIPPAGE_BUY</string>
+        <string>SLIPPAGE_BUY/买多滑点</string>
        </property>
       </widget>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>SLIPPAGE_COVER</string>
+        <string>SLIPPAGE_COVER/平多头滑点</string>
        </property>
       </widget>
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>SLIPPAGE_SELL</string>
+        <string>SLIPPAGE_SELL/平空头滑点</string>
        </property>
       </widget>
      </item>
      <item row="6" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>CLOSE_PATTERN</string>
+        <string>CLOSE_PATTERN/指定优先平今或者平昨</string>
        </property>
       </widget>
      </item>
      <item row="7" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>SHARED_FUNC</string>
+        <string>SHARED_FUNC/分时图数据</string>
        </property>
       </widget>
      </item>
@@ -96,6 +100,9 @@
          <width>200</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 170, 0);</string>
        </property>
        <property name="text">
         <string>提交更改</string>
@@ -140,6 +147,12 @@
          <width>200</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="minimum">
+        <number>-9999</number>
+       </property>
+       <property name="maximum">
+        <number>99999</number>
        </property>
       </widget>
      </item>

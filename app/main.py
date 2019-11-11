@@ -3,18 +3,17 @@ import os
 import sys
 
 from PySide2.QtCore import Signal, QObject, Slot
-from PySide2.QtGui import QCloseEvent
+from PySide2.QtGui import QCloseEvent, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, QMessageBox, QLabel, QMenu
 
 from app.lib.global_var import G
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
-from app.signin import SignInWidget
 from app.account import AccountWidget
 from app.market import MarketWidget
 from app.order import OrderWidget
 from app.strategy import StrategyWidget
-from app.config import ConfigWidget
+from app.config import ConfigDialog
 from app.about_us import AboutUsDialog
 from ctpbee.constant import *
 from ctpbee.event_engine.engine import EVENT_TIMER
@@ -62,6 +61,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
         G.mainwindow = self
+        icon = QIcon()
+        icon.addPixmap(QPixmap("app/resource/images/bee_temp_grey.png"), QIcon.Normal, QIcon.Off)
+        self.setWindowIcon(icon)
         self.job = Job()
         self.kline_job = KInterfaceObject()
         self.bee_ext = None
@@ -82,16 +84,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.addPermanentWidget(self.progressbar, stretch=1)
         self.statusbar.addPermanentWidget(self.status_msg, stretch=5)
         self.statusbar.addPermanentWidget(self.market_msg, stretch=5)
-        self.show_sigin()
-
-    def show_sigin(self):
-        # sign in
-        self.widget = SignInWidget(self)
-        self.menubar.setEnabled(False)
-        self.setCentralWidget(self.widget)
 
     def sign_in_success(self, bee_app):
-        self.menubar.setEnabled(True)
         self.bee_ext = CtpbeeApi('default_setting', bee_app)
         self.bee_ext.map[EVENT_ACCOUNT] = self.on_account
         self.bee_ext.map[EVENT_CONTRACT] = self.on_contract
@@ -142,8 +136,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setCentralWidget(self.widget)
 
     def config_handle(self):
-        self.widget = ConfigWidget(self)
-        self.setCentralWidget(self.widget)
+        self.cfg_dialog = ConfigDialog(self)
+        self.cfg_dialog.show()
 
     def order_handle(self):
         if not G.choice_local_symbol:

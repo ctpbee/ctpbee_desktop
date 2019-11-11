@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Mon Nov 11 13:35:19 2019
+# Created: Mon Nov 11 15:10:05 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,9 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_Config(object):
     def setupUi(self, Config):
         Config.setObjectName("Config")
-        Config.resize(758, 428)
+        Config.resize(563, 374)
+        Config.setMinimumSize(QtCore.QSize(563, 374))
+        Config.setMaximumSize(QtCore.QSize(563, 374))
         font = QtGui.QFont()
         font.setPointSize(13)
         Config.setFont(font)
@@ -54,34 +56,32 @@ class Ui_Config(object):
         self.label_8 = QtWidgets.QLabel(Config)
         self.label_8.setObjectName("label_8")
         self.formLayout.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.label_8)
-        self.pushButton = QtWidgets.QPushButton(Config)
-        self.pushButton.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.pushButton.setStyleSheet("background-color: rgb(0, 170, 0);")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/menu/icon/上传.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton.setIcon(icon1)
-        self.pushButton.setObjectName("pushButton")
-        self.formLayout.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.pushButton)
         self.INSTRUMENT_INDEPEND = QtWidgets.QCheckBox(Config)
         self.INSTRUMENT_INDEPEND.setText("")
         self.INSTRUMENT_INDEPEND.setObjectName("INSTRUMENT_INDEPEND")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.INSTRUMENT_INDEPEND)
         self.SLIPPAGE_SHORT = QtWidgets.QSpinBox(Config)
         self.SLIPPAGE_SHORT.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.SLIPPAGE_SHORT.setMinimum(-999)
+        self.SLIPPAGE_SHORT.setMaximum(999)
         self.SLIPPAGE_SHORT.setObjectName("SLIPPAGE_SHORT")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.SLIPPAGE_SHORT)
         self.SLIPPAGE_BUY = QtWidgets.QSpinBox(Config)
         self.SLIPPAGE_BUY.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.SLIPPAGE_BUY.setMinimum(-999)
+        self.SLIPPAGE_BUY.setMaximum(999)
         self.SLIPPAGE_BUY.setObjectName("SLIPPAGE_BUY")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.SLIPPAGE_BUY)
         self.SLIPPAGE_COVER = QtWidgets.QSpinBox(Config)
         self.SLIPPAGE_COVER.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.SLIPPAGE_COVER.setMinimum(-9999)
-        self.SLIPPAGE_COVER.setMaximum(99999)
+        self.SLIPPAGE_COVER.setMinimum(-999)
+        self.SLIPPAGE_COVER.setMaximum(999)
         self.SLIPPAGE_COVER.setObjectName("SLIPPAGE_COVER")
         self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.SLIPPAGE_COVER)
         self.SLIPPAGE_SELL = QtWidgets.QSpinBox(Config)
         self.SLIPPAGE_SELL.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.SLIPPAGE_SELL.setMinimum(-999)
+        self.SLIPPAGE_SELL.setMaximum(999)
         self.SLIPPAGE_SELL.setObjectName("SLIPPAGE_SELL")
         self.formLayout.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.SLIPPAGE_SELL)
         self.CLOSE_PATTERN = QtWidgets.QComboBox(Config)
@@ -99,6 +99,12 @@ class Ui_Config(object):
         self.REFRESH_INTERVAL.setObjectName("REFRESH_INTERVAL")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.REFRESH_INTERVAL)
         self.formLayout_2.setLayout(2, QtWidgets.QFormLayout.FieldRole, self.formLayout)
+        self.pushButton = QtWidgets.QPushButton(Config)
+        self.pushButton.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.pushButton.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.pushButton.setStyleSheet("background-color: rgb(0, 170, 0);")
+        self.pushButton.setObjectName("pushButton")
+        self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.pushButton)
 
         self.retranslateUi(Config)
         QtCore.QMetaObject.connectSlotsByName(Config)
@@ -114,8 +120,8 @@ class Ui_Config(object):
         self.label_6.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_SELL/平空头滑点", None, -1))
         self.label_7.setText(QtWidgets.QApplication.translate("Config", "CLOSE_PATTERN/指定优先平今或者平昨", None, -1))
         self.label_8.setText(QtWidgets.QApplication.translate("Config", "SHARED_FUNC/分时图数据", None, -1))
-        self.pushButton.setText(QtWidgets.QApplication.translate("Config", "提交更改", None, -1))
         self.CLOSE_PATTERN.setItemText(0, QtWidgets.QApplication.translate("Config", "today", None, -1))
         self.CLOSE_PATTERN.setItemText(1, QtWidgets.QApplication.translate("Config", "yesterday", None, -1))
+        self.pushButton.setText(QtWidgets.QApplication.translate("Config", "提交更改", None, -1))
 
 import app.resource.mainwindow_rc

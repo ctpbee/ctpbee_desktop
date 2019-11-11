@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1377</width>
+    <width>1748</width>
     <height>899</height>
    </rect>
   </property>
@@ -90,7 +90,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="minimumSize">
@@ -104,6 +104,15 @@
          <width>1000</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="tabPosition">
+        <enum>QTabWidget::North</enum>
+       </property>
+       <property name="tabShape">
+        <enum>QTabWidget::Triangular</enum>
        </property>
        <property name="currentIndex">
         <number>0</number>
@@ -138,7 +147,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>951</width>
+           <width>1000</width>
            <height>331</height>
           </rect>
          </property>
@@ -205,7 +214,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>951</width>
+           <width>1000</width>
            <height>331</height>
           </rect>
          </property>
@@ -282,7 +291,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>951</width>
+           <width>1000</width>
            <height>331</height>
           </rect>
          </property>
@@ -349,8 +358,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>951</width>
-           <height>331</height>
+           <width>1000</width>
+           <height>321</height>
           </rect>
          </property>
          <property name="maximumSize">
@@ -398,13 +407,6 @@
        </widget>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item row="0" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <layout class="QVBoxLayout" name="kline_layout"/>
-     </item>
      <item>
       <widget class="QWidget" name="widget" native="true">
        <property name="maximumSize">
@@ -423,6 +425,10 @@
         </item>
         <item row="2" column="1">
          <widget class="QLabel" name="local_symbol_zn">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 170, 0);
+font: 75 11pt &quot;Arial&quot;;</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -554,6 +560,13 @@
         </item>
        </layout>
       </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <layout class="QVBoxLayout" name="kline_layout"/>
      </item>
     </layout>
    </item>

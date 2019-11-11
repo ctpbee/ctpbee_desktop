@@ -12,11 +12,12 @@ from app.lib.get_path import user_account_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
 
+
 class Vlog(VLogger):
     def handler_record(self, record):
         msg = f"{record['created'].split(' ')[1]}   {record['name']} " \
               f"  {record['levelname']}   {record['owner']}   {record['message']}"
-        if G.mainwindow:G.mainwindow.job.order_log_signal.emit(msg)
+        if G.mainwindow: G.mainwindow.job.order_log_signal.emit(msg)
 
 
 class SignInWidget(QWidget, Ui_SignIn):
@@ -80,7 +81,12 @@ class SignInWidget(QWidget, Ui_SignIn):
         with open(user_account_path, 'r')as f:
             info = f.read()
         if info:
-            info = json.dumps(info)
+            try:
+                info = json.loads(info)
+                if not isinstance(info, dict):
+                    raise Exception
+            except Exception:
+                info = {}
             self.userid_2.setText(info.get('userid'))
             self.brokerid_2.setText(info.get('brokerid'))
             self.auth_code_2.setText(info.get('auth_code'))
@@ -109,10 +115,10 @@ class SignInWidget(QWidget, Ui_SignIn):
         if bee_app and \
                 bee_app.trader and \
                 bee_app.td_login_status:
+            self.close()
             mainwindow = MainWindow()
             mainwindow.sign_in_success(bee_app=bee_app)
             mainwindow.show()
-            self.close()
         else:
             # bee_app.release()
             QMessageBox.warning(self, "提示", "登录出现错误", QMessageBox.Ok, QMessageBox.Ok)

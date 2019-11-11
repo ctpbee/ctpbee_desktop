@@ -3,8 +3,8 @@
 # Form implementation generated from reading ui file 'order.ui',
 # licensing of 'order.ui' applies.
 #
-# Created: Fri Oct 18 20:31:24 2019
-#      by: pyside2-uic  running on PySide2 5.13.1
+# Created: Mon Nov 11 14:44:15 2019
+#      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,7 +13,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_Order(object):
     def setupUi(self, Order):
         Order.setObjectName("Order")
-        Order.resize(1377, 899)
+        Order.resize(1748, 899)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(255)
         sizePolicy.setVerticalStretch(255)
@@ -59,6 +59,9 @@ class Ui_Order(object):
         self.tabWidget = QtWidgets.QTabWidget(Order)
         self.tabWidget.setMinimumSize(QtCore.QSize(0, 0))
         self.tabWidget.setMaximumSize(QtCore.QSize(1000, 16777215))
+        self.tabWidget.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.tabWidget.setTabPosition(QtWidgets.QTabWidget.North)
+        self.tabWidget.setTabShape(QtWidgets.QTabWidget.Triangular)
         self.tabWidget.setUsesScrollButtons(True)
         self.tabWidget.setDocumentMode(True)
         self.tabWidget.setTabsClosable(False)
@@ -69,7 +72,7 @@ class Ui_Order(object):
         self.position_tab.setMaximumSize(QtCore.QSize(1000, 16777215))
         self.position_tab.setObjectName("position_tab")
         self.position_table = QtWidgets.QTableWidget(self.position_tab)
-        self.position_table.setGeometry(QtCore.QRect(0, 0, 951, 331))
+        self.position_table.setGeometry(QtCore.QRect(0, 0, 1000, 331))
         self.position_table.setMaximumSize(QtCore.QSize(1000, 16777215))
         self.position_table.setObjectName("position_table")
         self.position_table.setColumnCount(8)
@@ -95,7 +98,7 @@ class Ui_Order(object):
         self.active_order_tab.setMaximumSize(QtCore.QSize(1000, 16777215))
         self.active_order_tab.setObjectName("active_order_tab")
         self.activate_order_table = QtWidgets.QTableWidget(self.active_order_tab)
-        self.activate_order_table.setGeometry(QtCore.QRect(0, 0, 951, 331))
+        self.activate_order_table.setGeometry(QtCore.QRect(0, 0, 1000, 331))
         self.activate_order_table.setMaximumSize(QtCore.QSize(1000, 16777215))
         self.activate_order_table.setObjectName("activate_order_table")
         self.activate_order_table.setColumnCount(10)
@@ -125,7 +128,7 @@ class Ui_Order(object):
         self.order_tab.setMaximumSize(QtCore.QSize(1000, 16777215))
         self.order_tab.setObjectName("order_tab")
         self.order_table = QtWidgets.QTableWidget(self.order_tab)
-        self.order_table.setGeometry(QtCore.QRect(0, 0, 951, 331))
+        self.order_table.setGeometry(QtCore.QRect(0, 0, 1000, 331))
         self.order_table.setMaximumSize(QtCore.QSize(1000, 16777215))
         self.order_table.setObjectName("order_table")
         self.order_table.setColumnCount(8)
@@ -151,7 +154,7 @@ class Ui_Order(object):
         self.trade_tab.setMaximumSize(QtCore.QSize(1000, 16777215))
         self.trade_tab.setObjectName("trade_tab")
         self.trade_table = QtWidgets.QTableWidget(self.trade_tab)
-        self.trade_table.setGeometry(QtCore.QRect(0, 0, 951, 331))
+        self.trade_table.setGeometry(QtCore.QRect(0, 0, 1000, 321))
         self.trade_table.setMaximumSize(QtCore.QSize(1000, 16777215))
         self.trade_table.setObjectName("trade_table")
         self.trade_table.setColumnCount(7)
@@ -172,12 +175,6 @@ class Ui_Order(object):
         self.trade_table.setHorizontalHeaderItem(6, item)
         self.tabWidget.addTab(self.trade_tab, "")
         self.horizontalLayout_2.addWidget(self.tabWidget)
-        self.formLayout_2.setLayout(1, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_2)
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.kline_layout = QtWidgets.QVBoxLayout()
-        self.kline_layout.setObjectName("kline_layout")
-        self.horizontalLayout_4.addLayout(self.kline_layout)
         self.widget = QtWidgets.QWidget(Order)
         self.widget.setMaximumSize(QtCore.QSize(300, 16777215))
         self.widget.setObjectName("widget")
@@ -188,6 +185,8 @@ class Ui_Order(object):
         self.label_5.setObjectName("label_5")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_5)
         self.local_symbol_zn = QtWidgets.QLabel(self.widget)
+        self.local_symbol_zn.setStyleSheet("color: rgb(255, 170, 0);\n"
+"font: 75 11pt \"Arial\";")
         self.local_symbol_zn.setText("")
         self.local_symbol_zn.setObjectName("local_symbol_zn")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.local_symbol_zn)
@@ -244,7 +243,13 @@ class Ui_Order(object):
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.label_6)
-        self.horizontalLayout_4.addWidget(self.widget)
+        self.horizontalLayout_2.addWidget(self.widget)
+        self.formLayout_2.setLayout(1, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_2)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.kline_layout = QtWidgets.QVBoxLayout()
+        self.kline_layout.setObjectName("kline_layout")
+        self.horizontalLayout_4.addLayout(self.kline_layout)
         self.formLayout_2.setLayout(0, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_4)
 
         self.retranslateUi(Order)
@@ -268,12 +273,12 @@ class Ui_Order(object):
         self.activate_order_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Order", "id", None, -1))
         self.activate_order_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Order", "报单合约", None, -1))
         self.activate_order_table.horizontalHeaderItem(2).setText(QtWidgets.QApplication.translate("Order", "报单方向", None, -1))
+
         self.activate_order_table.horizontalHeaderItem(3).setText(QtWidgets.QApplication.translate("Order", "交易所", None, -1))
         self.activate_order_table.horizontalHeaderItem(4).setText(QtWidgets.QApplication.translate("Order", "报单手数", None, -1))
         self.activate_order_table.horizontalHeaderItem(5).setText(QtWidgets.QApplication.translate("Order", "报单价格", None, -1))
         self.activate_order_table.horizontalHeaderItem(6).setText(QtWidgets.QApplication.translate("Order", "状态", None, -1))
         self.activate_order_table.horizontalHeaderItem(7).setText(QtWidgets.QApplication.translate("Order", "报单时间", None, -1))
-
         self.activate_order_table.horizontalHeaderItem(8).setText(QtWidgets.QApplication.translate("Order", "报单类型", None, -1))
         self.activate_order_table.horizontalHeaderItem(9).setText(QtWidgets.QApplication.translate("Order", "操作", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.active_order_tab), QtWidgets.QApplication.translate("Order", "待成交数据", None, -1))

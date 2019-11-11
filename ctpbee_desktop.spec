@@ -4,8 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['ctpbee_desktop.py'],
-             pathex=['D:\\GIT\\ctpbee_desktop\\venv\\Lib\\site-packages\\shiboken2',
-             'D:\\GIT\\ctpbee_desktop'],
+             pathex=['D:\\GIT\\ctpbee_desktop\\venv\\Lib\\site-packages\\shiboken2'],
              binaries=[],
              datas=[("app/static","static"),
              ('venv/Lib/site-packages/ctpbee','ctpbee'),
@@ -29,7 +28,7 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=True )
+          console=False )
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,

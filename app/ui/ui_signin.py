@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'signin.ui',
 # licensing of 'signin.ui' applies.
 #
-# Created: Mon Nov 11 14:06:33 2019
+# Created: Mon Nov 11 16:21:55 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_SignIn(object):
         SignIn.setMinimumSize(QtCore.QSize(536, 526))
         SignIn.setMaximumSize(QtCore.QSize(536, 526))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/bee/images/bee_temp_grey.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/menu/images/bee_temp_grey.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         SignIn.setWindowIcon(icon)
         SignIn.setAutoFillBackground(False)
         self.formLayout_3 = QtWidgets.QFormLayout(SignIn)
@@ -61,7 +61,7 @@ class Ui_SignIn(object):
         self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(self.login1)
-        self.label.setStyleSheet("image: url(:/bee/images/bee_temp_grey.png);")
+        self.label.setStyleSheet("image: url(:/menu/images/bee_temp_grey.png);")
         self.label.setText("")
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
@@ -249,4 +249,4 @@ class Ui_SignIn(object):
         self.rember_me.setText(QtWidgets.QApplication.translate("SignIn", "记住我", None, -1))
         self.login_tab.setTabText(self.login_tab.indexOf(self.login2), QtWidgets.QApplication.translate("SignIn", "详细登录", None, -1))
 
-import app.resource.signin_rc
+import app.resource.mainwindow_rc

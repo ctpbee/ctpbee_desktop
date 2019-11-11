@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Mon Nov 11 15:10:05 2019
+# Created: Mon Nov 11 15:22:24 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,12 +24,6 @@ class Ui_Config(object):
         Config.setWindowIcon(icon)
         self.formLayout_2 = QtWidgets.QFormLayout(Config)
         self.formLayout_2.setObjectName("formLayout_2")
-        self.label_9 = QtWidgets.QLabel(Config)
-        font = QtGui.QFont()
-        font.setPointSize(17)
-        self.label_9.setFont(font)
-        self.label_9.setObjectName("label_9")
-        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.label_9)
         self.formLayout = QtWidgets.QFormLayout()
         self.formLayout.setObjectName("formLayout")
         self.label = QtWidgets.QLabel(Config)
@@ -98,20 +92,19 @@ class Ui_Config(object):
         self.REFRESH_INTERVAL.setMaximumSize(QtCore.QSize(200, 16777215))
         self.REFRESH_INTERVAL.setObjectName("REFRESH_INTERVAL")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.REFRESH_INTERVAL)
-        self.formLayout_2.setLayout(2, QtWidgets.QFormLayout.FieldRole, self.formLayout)
+        self.formLayout_2.setLayout(1, QtWidgets.QFormLayout.FieldRole, self.formLayout)
         self.pushButton = QtWidgets.QPushButton(Config)
         self.pushButton.setMaximumSize(QtCore.QSize(200, 16777215))
         self.pushButton.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.pushButton.setStyleSheet("background-color: rgb(0, 170, 0);")
         self.pushButton.setObjectName("pushButton")
-        self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.pushButton)
+        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.pushButton)
 
         self.retranslateUi(Config)
         QtCore.QMetaObject.connectSlotsByName(Config)
 
     def retranslateUi(self, Config):
         Config.setWindowTitle(QtWidgets.QApplication.translate("Config", "配置", None, -1))
-        self.label_9.setText(QtWidgets.QApplication.translate("Config", "配置", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("Config", "REFRESH_INTERVAL/定时刷新秒数", None, -1))
         self.label_2.setText(QtWidgets.QApplication.translate("Config", "INSTRUMENT_INDEPEND/是否开启独立行情", None, -1))
         self.label_3.setText(QtWidgets.QApplication.translate("Config", "SLIPPAGE_SHORT/卖空滑点", None, -1))

@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'order.ui',
 # licensing of 'order.ui' applies.
 #
-# Created: Mon Nov 11 14:44:15 2019
+# Created: Mon Nov 11 15:33:37 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,6 +41,12 @@ class Ui_Order(object):
         self.tick_table.setHorizontalHeaderItem(1, item)
         self.tick_table.verticalHeader().setSortIndicatorShown(True)
         self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.tick_table)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.kline_layout = QtWidgets.QVBoxLayout()
+        self.kline_layout.setObjectName("kline_layout")
+        self.horizontalLayout_4.addLayout(self.kline_layout)
+        self.formLayout_2.setLayout(0, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_4)
         self.verticalWidget = QtWidgets.QWidget(Order)
         self.verticalWidget.setMinimumSize(QtCore.QSize(400, 0))
         self.verticalWidget.setObjectName("verticalWidget")
@@ -185,8 +191,8 @@ class Ui_Order(object):
         self.label_5.setObjectName("label_5")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_5)
         self.local_symbol_zn = QtWidgets.QLabel(self.widget)
-        self.local_symbol_zn.setStyleSheet("color: rgb(255, 170, 0);\n"
-"font: 75 11pt \"Arial\";")
+        self.local_symbol_zn.setStyleSheet("color: rgb(0, 85, 255);\n"
+"font: 75 24pt \"Arial\";")
         self.local_symbol_zn.setText("")
         self.local_symbol_zn.setObjectName("local_symbol_zn")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.local_symbol_zn)
@@ -245,12 +251,6 @@ class Ui_Order(object):
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.label_6)
         self.horizontalLayout_2.addWidget(self.widget)
         self.formLayout_2.setLayout(1, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_2)
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.kline_layout = QtWidgets.QVBoxLayout()
-        self.kline_layout.setObjectName("kline_layout")
-        self.horizontalLayout_4.addLayout(self.kline_layout)
-        self.formLayout_2.setLayout(0, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_4)
 
         self.retranslateUi(Order)
         self.tabWidget.setCurrentIndex(0)
@@ -273,7 +273,6 @@ class Ui_Order(object):
         self.activate_order_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Order", "id", None, -1))
         self.activate_order_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Order", "报单合约", None, -1))
         self.activate_order_table.horizontalHeaderItem(2).setText(QtWidgets.QApplication.translate("Order", "报单方向", None, -1))
-
         self.activate_order_table.horizontalHeaderItem(3).setText(QtWidgets.QApplication.translate("Order", "交易所", None, -1))
         self.activate_order_table.horizontalHeaderItem(4).setText(QtWidgets.QApplication.translate("Order", "报单手数", None, -1))
         self.activate_order_table.horizontalHeaderItem(5).setText(QtWidgets.QApplication.translate("Order", "报单价格", None, -1))

@@ -1,9 +1,0 @@
-<RCC>
-  <qresource prefix="bee">
-    <file>images/bee_temp_grey.png</file>
-  </qresource>
-  <qresource prefix="form">
-    <file>images/hai.jpeg</file>
-    <file>images/h.jpg</file>
-  </qresource>
-</RCC>

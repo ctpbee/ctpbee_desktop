@@ -3,8 +3,8 @@
 # Form implementation generated from reading ui file 'mainwindow.ui',
 # licensing of 'mainwindow.ui' applies.
 #
-# Created: Thu Oct  3 13:51:36 2019
-#      by: pyside2-uic  running on PySide2 5.13.1
+# Created: Mon Nov 11 16:24:57 2019
+#      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -21,14 +21,14 @@ class Ui_MainWindow(object):
         font.setPointSize(13)
         MainWindow.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/bee/images/bee_temp_grey.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/menu/images/bee_temp_grey.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setIconSize(QtCore.QSize(28, 28))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1192, 30))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1192, 36))
         self.menubar.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
         font.setPointSize(13)
@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
         self.menubar.setNativeMenuBar(True)
         self.menubar.setObjectName("menubar")
         self.control_menu = QtWidgets.QMenu(self.menubar)
-        self.control_menu.setGeometry(QtCore.QRect(217, 158, 162, 104))
+        self.control_menu.setGeometry(QtCore.QRect(270, 163, 159, 96))
         self.control_menu.setMinimumSize(QtCore.QSize(0, 0))
         self.control_menu.setSizeIncrement(QtCore.QSize(0, 0))
         font = QtGui.QFont()
@@ -131,7 +131,6 @@ class Ui_MainWindow(object):
         font.setPointSize(13)
         self.action.setFont(font)
         self.action.setObjectName("action")
-        self.control_menu.addAction(self.logout_action_2)
         self.control_menu.addAction(self.action)
         self.menubar.addAction(self.control_menu.menuAction())
 
@@ -152,5 +151,4 @@ class Ui_MainWindow(object):
         self.logout_action_2.setText(QtWidgets.QApplication.translate("MainWindow", "注销", None, -1))
         self.action.setText(QtWidgets.QApplication.translate("MainWindow", "关于", None, -1))
 
-import app.resource.signin_rc
 import app.resource.mainwindow_rc

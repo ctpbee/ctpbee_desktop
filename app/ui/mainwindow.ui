@@ -37,8 +37,8 @@
    <string>MainWindow</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resource/signin.qrc">
-    <normaloff>:/bee/images/bee_temp_grey.png</normaloff>:/bee/images/bee_temp_grey.png</iconset>
+   <iconset resource="../resource/mainwindow.qrc">
+    <normaloff>:/menu/images/bee_temp_grey.png</normaloff>:/menu/images/bee_temp_grey.png</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -53,7 +53,7 @@
      <x>0</x>
      <y>0</y>
      <width>1192</width>
-     <height>30</height>
+     <height>36</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -73,10 +73,10 @@
    <widget class="QMenu" name="control_menu">
     <property name="geometry">
      <rect>
-      <x>217</x>
-      <y>158</y>
-      <width>162</width>
-      <height>104</height>
+      <x>270</x>
+      <y>163</y>
+      <width>159</width>
+      <height>96</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -118,8 +118,8 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="../resource/signin.qrc">
-      <normaloff>:/bee/images/bee_temp_grey.png</normaloff>:/bee/images/bee_temp_grey.png</iconset>
+     <iconset resource="../resource/mainwindow.qrc">
+      <normaloff>:/menu/images/bee_temp_grey.png</normaloff>:/menu/images/bee_temp_grey.png</iconset>
     </property>
     <property name="separatorsCollapsible">
      <bool>false</bool>
@@ -127,7 +127,6 @@
     <property name="toolTipsVisible">
      <bool>false</bool>
     </property>
-    <addaction name="logout_action_2"/>
     <addaction name="action"/>
    </widget>
    <addaction name="control_menu"/>
@@ -271,7 +270,6 @@
   </action>
  </widget>
  <resources>
-  <include location="../resource/signin.qrc"/>
   <include location="../resource/mainwindow.qrc"/>
  </resources>
  <connections/>

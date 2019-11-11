@@ -1,6 +1,5 @@
 import json
 from copy import deepcopy
-from time import sleep
 from PySide2.QtCore import QRegExp, Slot, QTimer, Qt
 from PySide2.QtGui import QRegExpValidator, QMovie
 from PySide2.QtWidgets import QWidget, QMessageBox

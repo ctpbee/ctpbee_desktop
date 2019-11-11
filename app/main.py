@@ -61,9 +61,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
         G.mainwindow = self
-        icon = QIcon()
-        icon.addPixmap(QPixmap("app/resource/images/bee_temp_grey.png"), QIcon.Normal, QIcon.Off)
-        self.setWindowIcon(icon)
         self.job = Job()
         self.kline_job = KInterfaceObject()
         self.bee_ext = None
@@ -149,13 +146,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def about_us_handle(self):
         about = AboutUsDialog()
         about.exec_()
-
-    def logout_handle(self):
-        try:
-            current_app.release()
-        except:
-            pass
-        self.show_sigin()
 
     def on_account(self, ext, account: AccountData) -> None:
         account = account._to_dict()

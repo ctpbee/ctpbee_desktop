@@ -29,7 +29,7 @@
    <string>Form</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resource/signin.qrc">
+   <iconset>
     <normaloff>:/bee/images/bee_temp_grey.png</normaloff>:/bee/images/bee_temp_grey.png</iconset>
   </property>
   <property name="autoFillBackground">
@@ -109,7 +109,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="styleSheet">
-            <string notr="true">image: url(:/bee/images/bee_temp_grey.png);</string>
+            <string notr="true">image: url(:/menu/images/bee_temp_grey.png);</string>
            </property>
            <property name="text">
             <string/>
@@ -559,7 +559,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../resource/signin.qrc"/>
+  <include location="../resource/mainwindow.qrc"/>
  </resources>
  <connections/>
 </ui>

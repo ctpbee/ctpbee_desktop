@@ -13,7 +13,6 @@ class MarketWidget(QWidget, Ui_Market):
         super(MarketWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("行情")
-        self.loading = LoadingDialog()
         self.item_row = 0
         self.bee_ext = mainwindow.bee_ext
         self.mainwindow = mainwindow
@@ -29,6 +28,8 @@ class MarketWidget(QWidget, Ui_Market):
         self.fill_table()
         self.load_time = time.time()
         self.tableWidget.setEnabled(False)
+        # load动画
+        self.loading = LoadingDialog()
         self.loading.msg.setText('正在加载合约列表...')
         self.loading.show()
         # 渲染table

@@ -67,6 +67,13 @@
      </column>
     </widget>
    </item>
+   <item row="0" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <layout class="QVBoxLayout" name="kline_layout"/>
+     </item>
+    </layout>
+   </item>
    <item row="1" column="0">
     <widget class="QWidget" name="verticalWidget" native="true">
      <property name="minimumSize">
@@ -426,8 +433,8 @@
         <item row="2" column="1">
          <widget class="QLabel" name="local_symbol_zn">
           <property name="styleSheet">
-           <string notr="true">color: rgb(255, 170, 0);
-font: 75 11pt &quot;Arial&quot;;</string>
+           <string notr="true">color: rgb(0, 85, 255);
+font: 75 24pt &quot;Arial&quot;;</string>
           </property>
           <property name="text">
            <string/>
@@ -560,13 +567,6 @@ font: 75 11pt &quot;Arial&quot;;</string>
         </item>
        </layout>
       </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <layout class="QVBoxLayout" name="kline_layout"/>
      </item>
     </layout>
    </item>

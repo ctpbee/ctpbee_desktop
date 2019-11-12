@@ -81,10 +81,10 @@ class StrategyWidget(QWidget, Ui_Strategy):
         name = self.strategy_table.item(row, strategy_table_column.index('name')).text()
         res = bee_current_app.suspend_extension(name)
         if res:
-            QMessageBox().information(self, "提示", "'停止成功'", QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox().information(self, "提示", "停止成功", QMessageBox.Ok, QMessageBox.Ok)
             self.fill_table()
         else:
-            QMessageBox().warning(self, "提示", "'停止失败", QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox().warning(self, "提示", "停止失败", QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     def open_strategy_slot(self):
@@ -92,15 +92,15 @@ class StrategyWidget(QWidget, Ui_Strategy):
         name = self.strategy_table.item(row, strategy_table_column.index('name')).text()
         res = bee_current_app.enable_extension(name)
         if res:
-            QMessageBox().information(self, "提示", "'开启成功'", QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox().information(self, "提示", "开启成功", QMessageBox.Ok, QMessageBox.Ok)
             self.fill_table()
         else:
-            QMessageBox().warning(self, "提示", "'开启失败", QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox().warning(self, "提示", "开启失败", QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     def delete_strategy_slot(self):
         row = self.strategy_table.currentRow()
         name = self.strategy_table.item(row, strategy_table_column.index('name')).text()
         bee_current_app.del_extension(name)
-        QMessageBox().information(self, "提示", "'删除成功'", QMessageBox.Ok, QMessageBox.Ok)
+        QMessageBox().information(self, "提示", "删除成功", QMessageBox.Ok, QMessageBox.Ok)
         self.fill_table()

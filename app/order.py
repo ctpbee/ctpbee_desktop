@@ -102,8 +102,8 @@ class OrderWidget(QWidget, Ui_Order):
         self.order_table.setRowCount(self.order_row)
         self.trade_table.setRowCount(self.trade_row)
         #
-        # self.tick_table.horizontalHeader().setStretchLastSection(True)  # 最后一列自适应表格宽度
-        self.tick_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
+        self.tick_table.horizontalHeader().setStretchLastSection(True)  # 最后一列自适应表格宽度
+        # self.tick_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
         self.order_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
         self.position_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
         self.activate_order_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度

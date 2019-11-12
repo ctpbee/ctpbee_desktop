@@ -2,7 +2,7 @@ import json
 import os
 import sys
 
-from PySide2.QtCore import Signal, QObject, Slot
+from PySide2.QtCore import Signal, QObject, Slot, Qt
 from PySide2.QtGui import QCloseEvent, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, QMessageBox, QLabel, QMenu
 
@@ -250,9 +250,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         msg.exec_()
         if msg.clickedButton() == yr_btn:
             try:
-                current_app.release()
+                self.bee_ext.release()
             except:
                 pass
             event.accept()
+            if self.cfg_dialog:
+                self.cfg_dialog.close()
+            if self.log_dialog:
+                self.log_dialog.close()
         else:
             event.ignore()

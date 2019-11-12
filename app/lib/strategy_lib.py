@@ -175,10 +175,10 @@ class StrategyClass(CtpbeeApi):
         pass
 
     def on_realtime(self):
-        pass
+        self.info("this is test message")
 
     def on_contract(self, contract):
-        self.app.subscribe(contract.symbol)
+        pass
 
     def on_order(self, order):
         pass
@@ -187,8 +187,7 @@ class StrategyClass(CtpbeeApi):
         pass
 
     def on_account(self, account: AccountData) -> None:
-        """ """
-        # print(self.converter.account_df)
+        pass
 
     def on_init(self, init):
         pass

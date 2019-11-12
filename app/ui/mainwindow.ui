@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1192</width>
-    <height>868</height>
+    <height>858</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -73,10 +73,10 @@
    <widget class="QMenu" name="control_menu">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>163</y>
-      <width>159</width>
-      <height>96</height>
+      <x>416</x>
+      <y>181</y>
+      <width>147</width>
+      <height>60</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -127,7 +127,6 @@
     <property name="toolTipsVisible">
      <bool>false</bool>
     </property>
-    <addaction name="action"/>
    </widget>
    <addaction name="control_menu"/>
   </widget>

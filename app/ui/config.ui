@@ -35,7 +35,7 @@
     <normaloff>:/menu/images/bee_temp_grey.png</normaloff>:/menu/images/bee_temp_grey.png</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout_2">
-   <item row="1" column="1">
+   <item row="1" column="0" colspan="2">
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -203,22 +203,55 @@
      </item>
     </layout>
    </item>
+   <item row="3" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 170, 0);</string>
+       </property>
+       <property name="text">
+        <string>提交更改</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="2" column="1">
-    <widget class="QPushButton" name="pushButton">
-     <property name="maximumSize">
+    <widget class="Line" name="line">
+     <property name="minimumSize">
       <size>
-       <width>200</width>
-       <height>16777215</height>
+       <width>0</width>
+       <height>10</height>
       </size>
      </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
+     <property name="lineWidth">
+      <number>2</number>
      </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 0);</string>
-     </property>
-     <property name="text">
-      <string>提交更改</string>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>

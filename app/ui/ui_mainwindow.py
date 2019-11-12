@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'mainwindow.ui',
 # licensing of 'mainwindow.ui' applies.
 #
-# Created: Mon Nov 11 16:24:57 2019
+# Created: Tue Nov 12 16:40:39 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1192, 868)
+        MainWindow.resize(1192, 858)
         MainWindow.setMinimumSize(QtCore.QSize(0, 0))
         MainWindow.setMaximumSize(QtCore.QSize(16777215, 16777215))
         MainWindow.setBaseSize(QtCore.QSize(900, 600))
@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
         self.menubar.setNativeMenuBar(True)
         self.menubar.setObjectName("menubar")
         self.control_menu = QtWidgets.QMenu(self.menubar)
-        self.control_menu.setGeometry(QtCore.QRect(270, 163, 159, 96))
+        self.control_menu.setGeometry(QtCore.QRect(416, 181, 147, 60))
         self.control_menu.setMinimumSize(QtCore.QSize(0, 0))
         self.control_menu.setSizeIncrement(QtCore.QSize(0, 0))
         font = QtGui.QFont()
@@ -131,7 +131,6 @@ class Ui_MainWindow(object):
         font.setPointSize(13)
         self.action.setFont(font)
         self.action.setObjectName("action")
-        self.control_menu.addAction(self.action)
         self.menubar.addAction(self.control_menu.menuAction())
 
         self.retranslateUi(MainWindow)

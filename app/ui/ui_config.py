@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Mon Nov 11 15:22:24 2019
+# Created: Tue Nov 12 15:04:56 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -92,13 +92,25 @@ class Ui_Config(object):
         self.REFRESH_INTERVAL.setMaximumSize(QtCore.QSize(200, 16777215))
         self.REFRESH_INTERVAL.setObjectName("REFRESH_INTERVAL")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.REFRESH_INTERVAL)
-        self.formLayout_2.setLayout(1, QtWidgets.QFormLayout.FieldRole, self.formLayout)
+        self.formLayout_2.setLayout(1, QtWidgets.QFormLayout.SpanningRole, self.formLayout)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
         self.pushButton = QtWidgets.QPushButton(Config)
         self.pushButton.setMaximumSize(QtCore.QSize(200, 16777215))
         self.pushButton.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.pushButton.setStyleSheet("background-color: rgb(0, 170, 0);")
         self.pushButton.setObjectName("pushButton")
-        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.pushButton)
+        self.horizontalLayout.addWidget(self.pushButton)
+        self.formLayout_2.setLayout(3, QtWidgets.QFormLayout.SpanningRole, self.horizontalLayout)
+        self.line = QtWidgets.QFrame(Config)
+        self.line.setMinimumSize(QtCore.QSize(0, 10))
+        self.line.setLineWidth(2)
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.line)
 
         self.retranslateUi(Config)
         QtCore.QMetaObject.connectSlotsByName(Config)

@@ -7,6 +7,8 @@ from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
 from app.loading import LoadingDialog
 
+contract_space = " "*2
+
 
 class MarketWidget(QWidget, Ui_Market):
     def __init__(self, mainwindow):
@@ -20,7 +22,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.load_status = self.mainwindow.status_msg
         # ctpbee
         for local_symbol in sorted(G.all_contracts):
-            self.symbol_list.addItem(local_symbol)  # 添加下拉框
+            self.symbol_list.addItem(local_symbol + contract_space + G.all_contracts[local_symbol])  # 添加下拉框
         self.progressBar.setMaximum(len(G.subscribes))
         #
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
@@ -79,11 +81,12 @@ class MarketWidget(QWidget, Ui_Market):
 
     @Slot()
     def subscribe_slot(self):
-        local_symbol = self.symbol_list.currentText()
+        local_symbol = self.symbol_list.currentText().split(contract_space)[0]
+        name = self.symbol_list.currentText().split(contract_space)[1]
         if local_symbol:
             res = self.bee_ext.app.subscribe(local_symbol)
             if res == 0:
-                G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})
+                G.subscribes.update({local_symbol: name})
                 self.progressBar.setMaximum(len(G.subscribes))  # 更新进度条
                 QMessageBox().information(self, "提示", "订阅成功", QMessageBox.Ok, QMessageBox.Ok)
             else:

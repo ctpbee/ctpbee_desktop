@@ -14,11 +14,12 @@ from app.market import MarketWidget
 from app.order import OrderWidget
 from app.strategy import StrategyWidget
 from app.config import ConfigDialog
-from app.about_us import AboutUsDialog
 from ctpbee.constant import *
 from ctpbee.event_engine.engine import EVENT_TIMER
 from ctpbee import current_app
 from app.lib.get_path import path
+from app.log import LogDialog
+from app.home import HomeWidget
 
 
 class Job(QObject):
@@ -64,9 +65,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.job = Job()
         self.kline_job = KInterfaceObject()
         self.bee_ext = None
-
+        self.log_dialog = None
+        self.cfg_dialog = None
         # designer 不支持将action加入菜单栏 只能手撸
-        for a in ["账户", "行情", "下单", "策略", "回测", "配置"]:
+        for a in ["首页", "账户", "行情", "下单", "策略", "回测", "配置", "日志"]:
             self.account_action = QAction(self)
             self.account_action.setText(a)
             self.menubar.addAction(self.account_action)
@@ -98,27 +100,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                      self.bee_ext.app.recorder.get_all_contracts()}
         G.all_contracts = contracts
         # 默认打开account
-        self.widget = AccountWidget(self)
+        self.widget = HomeWidget(self)
         self.setCentralWidget(self.widget)
 
     def menu_triggered(self, q):
         action = q.text()
-        if action == "账户":
+        if action == "首页":
+            self.home_handle()
+        elif action == "账户":
             self.account_handle()
-        if action == "回测":
+        elif action == "回测":
             QMessageBox.information(self, "提示", "正在加班赶...", QMessageBox.Ok, QMessageBox.Ok)
-        if action == "行情":
+        elif action == "行情":
             self.market_handle()
-        if action == "策略":
+        elif action == "策略":
             self.strategy_handle()
-        if action == "配置":
+        elif action == "配置":
             self.config_handle()
-        if action == "下单":
+        elif action == "下单":
             self.order_handle()
-        if action == "注销":
+        elif action == "注销":
             self.logout_handle()
-        if action == '关于':
-            self.about_us_handle()
+        elif action == '日志':
+            self.log_handle()
+
+    def home_handle(self):
+        self.widget = HomeWidget(self)
+        self.setCentralWidget(self.widget)
 
     def strategy_handle(self):
         self.widget = StrategyWidget(self)
@@ -133,8 +141,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setCentralWidget(self.widget)
 
     def config_handle(self):
-        self.cfg_dialog = ConfigDialog(self)
-        self.cfg_dialog.show()
+        if self.cfg_dialog is None:
+            self.cfg_dialog = ConfigDialog(self)
+            self.cfg_dialog.show()
+        else:
+            self.cfg_dialog.raise_()
 
     def order_handle(self):
         if not G.choice_local_symbol:
@@ -143,9 +154,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.widget = OrderWidget(self)
             self.setCentralWidget(self.widget)
 
-    def about_us_handle(self):
-        about = AboutUsDialog()
-        about.exec_()
+    def log_handle(self):
+        if self.log_dialog is None:
+            self.log_dialog = LogDialog(self)
+            self.log_dialog.show()
+        else:
+            self.log_dialog.raise_()
 
     def on_account(self, ext, account: AccountData) -> None:
         account = account._to_dict()

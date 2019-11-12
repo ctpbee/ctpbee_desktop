@@ -25,8 +25,6 @@ class SignInWidget(QWidget, Ui_SignIn):
         super(SignInWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
-        # loading
-        self.loading = LoadingDialog()
         #
         self.load_remember()
         # 设置验证
@@ -108,6 +106,8 @@ class SignInWidget(QWidget, Ui_SignIn):
         }
         bee_app.config.from_mapping(login_info)
         bee_app.start()
+        # loading
+        self.loading = LoadingDialog()
         self.timer.start(2000)  # ms
         self.loading.msg.setText("正在连接服务器...")
         self.loading.exec_()

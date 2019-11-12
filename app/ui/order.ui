@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1748</width>
+    <width>1265</width>
     <height>899</height>
    </rect>
   </property>
@@ -25,79 +25,83 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QFormLayout" name="formLayout_2">
-   <property name="sizeConstraint">
-    <enum>QLayout::SetDefaultConstraint</enum>
-   </property>
-   <property name="rowWrapPolicy">
-    <enum>QFormLayout::DontWrapRows</enum>
-   </property>
-   <item row="0" column="0">
-    <widget class="QTableWidget" name="tick_table">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>100</horstretch>
-       <verstretch>255</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>400</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>500</width>
-       <height>500</height>
-      </size>
-     </property>
-     <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-      <bool>true</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string>key</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>value</string>
-      </property>
-     </column>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="7,0,3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="8,0,2">
      <item>
       <layout class="QVBoxLayout" name="kline_layout"/>
      </item>
+     <item>
+      <widget class="Line" name="line_2">
+       <property name="minimumSize">
+        <size>
+         <width>10</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="lineWidth">
+        <number>2</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="tick_table">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>100</horstretch>
+         <verstretch>255</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>500</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>500</height>
+        </size>
+       </property>
+       <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+        <bool>true</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>key</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>value</string>
+        </property>
+       </column>
+      </widget>
+     </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QWidget" name="verticalWidget" native="true">
+   <item>
+    <widget class="Line" name="line">
      <property name="minimumSize">
       <size>
-       <width>400</width>
-       <height>0</height>
+       <width>0</width>
+       <height>10</height>
       </size>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>日志信息</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListWidget" name="log_list"/>
-      </item>
-     </layout>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="8,0,2">
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="minimumSize">
@@ -108,7 +112,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>1000</width>
+         <width>16777215</width>
          <height>16777215</height>
         </size>
        </property>
@@ -140,278 +144,332 @@
         <bool>false</bool>
        </property>
        <widget class="QWidget" name="position_tab">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>1000</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
         <attribute name="title">
          <string>持仓数据</string>
         </attribute>
-        <widget class="QTableWidget" name="position_table">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>1000</width>
-           <height>331</height>
-          </rect>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>1000</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <column>
-          <property name="text">
-           <string>持仓合约</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>持仓方向</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>交易所</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>持仓手数</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>浮动盈亏</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>持仓均价</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>昨日持仓手数</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>操作</string>
-          </property>
-         </column>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QTableWidget" name="position_table">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::DefaultContextMenu</enum>
+           </property>
+           <property name="lineWidth">
+            <number>1</number>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <column>
+            <property name="text">
+             <string>持仓合约</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>持仓方向</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>交易所</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>持仓手数</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>浮动盈亏</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>持仓均价</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>昨日持仓手数</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>操作</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
        </widget>
        <widget class="QWidget" name="active_order_tab">
         <property name="maximumSize">
          <size>
-          <width>1000</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
         <attribute name="title">
          <string>待成交数据</string>
         </attribute>
-        <widget class="QTableWidget" name="activate_order_table">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>1000</width>
-           <height>331</height>
-          </rect>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>1000</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <column>
-          <property name="text">
-           <string>id</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单合约</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单方向</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>交易所</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单手数</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单价格</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>状态</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单时间</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单类型</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>操作</string>
-          </property>
-         </column>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QTableWidget" name="activate_order_table">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <column>
+            <property name="text">
+             <string>id</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单合约</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单方向</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>交易所</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单手数</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单价格</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>状态</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单时间</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单类型</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>操作</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
        </widget>
        <widget class="QWidget" name="order_tab">
         <property name="maximumSize">
          <size>
-          <width>1000</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
         <attribute name="title">
          <string>发单数据</string>
         </attribute>
-        <widget class="QTableWidget" name="order_table">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>1000</width>
-           <height>331</height>
-          </rect>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>1000</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <column>
-          <property name="text">
-           <string>报单合约</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单方向</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>交易所</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单手数</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单价格</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>状态</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>时间</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>价格类型</string>
-          </property>
-         </column>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QTableWidget" name="order_table">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <column>
+            <property name="text">
+             <string>报单合约</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单方向</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>交易所</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单手数</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单价格</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>状态</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>时间</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>价格类型</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
        </widget>
        <widget class="QWidget" name="trade_tab">
         <property name="maximumSize">
          <size>
-          <width>1000</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
         <attribute name="title">
          <string>成交数据</string>
         </attribute>
-        <widget class="QTableWidget" name="trade_table">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>1000</width>
-           <height>321</height>
-          </rect>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>1000</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <column>
-          <property name="text">
-           <string>成交合约</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>成交方向</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>交易所</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单手数</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>报单价格</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>开平</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>成交时间</string>
-          </property>
-         </column>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QTableWidget" name="trade_table">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <column>
+            <property name="text">
+             <string>成交合约</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>成交方向</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>交易所</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单手数</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>报单价格</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>开平</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>成交时间</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
        </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_3">
+       <property name="minimumSize">
+        <size>
+         <width>10</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="lineWidth">
+        <number>2</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
       </widget>
      </item>
      <item>
@@ -423,6 +481,50 @@
         </size>
        </property>
        <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">image: url(:/menu/icon/下单.png);</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+            <underline>false</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>下单</string>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
@@ -518,50 +620,6 @@ font: 75 24pt &quot;Arial&quot;;</string>
          <widget class="QPushButton" name="short_btn">
           <property name="text">
            <string>卖空</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_8">
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">image: url(:/menu/icon/下单.png);</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="label_6">
-          <property name="font">
-           <font>
-            <weight>75</weight>
-            <italic>false</italic>
-            <bold>true</bold>
-            <underline>false</underline>
-           </font>
-          </property>
-          <property name="text">
-           <string>下单</string>
           </property>
          </widget>
         </item>

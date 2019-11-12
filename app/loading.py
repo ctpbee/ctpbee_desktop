@@ -1,4 +1,4 @@
-from PySide2.QtCore import Qt, QTimer
+from PySide2.QtCore import Qt, QTimer, QSize
 from PySide2.QtGui import QCloseEvent
 from PySide2.QtWidgets import QDialog
 from app.ui.ui_loading import Ui_Loading
@@ -9,6 +9,7 @@ class LoadingDialog(QDialog, Ui_Loading):
         super(LoadingDialog, self).__init__()
         self.setupUi(self)
         self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏整个头部
+        self.setWindowOpacity(0.5)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.do)
         self.timer.start(500)

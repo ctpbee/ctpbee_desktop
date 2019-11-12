@@ -5,8 +5,8 @@
 # Form implementation generated from reading ui file 'account.ui',
 # licensing of 'account.ui' applies.
 #
-# Created: Sun Sep 29 21:49:13 2019
-#      by: pyside2-uic  running on PySide2 5.13.1
+# Created: Tue Nov 12 16:05:57 2019
+#      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,8 +17,10 @@ class Ui_Account(object):
         Account.setObjectName("Account")
         Account.resize(836, 703)
         Account.setBaseSize(QtCore.QSize(900, 600))
-        self.formLayout = QtWidgets.QFormLayout(Account)
-        self.formLayout.setObjectName("formLayout")
+        self.gridLayout = QtWidgets.QGridLayout(Account)
+        self.gridLayout.setObjectName("gridLayout")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
         self.tableWidget = QtWidgets.QTableWidget(Account)
         self.tableWidget.setMinimumSize(QtCore.QSize(500, 500))
         self.tableWidget.setBaseSize(QtCore.QSize(300, 200))
@@ -29,13 +31,21 @@ class Ui_Account(object):
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.tableWidget)
+        self.gridLayout.addWidget(self.tableWidget, 1, 1, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem1, 1, 0, 1, 1)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem2, 2, 1, 1, 1)
+        self.verticalSlider = QtWidgets.QSlider(Account)
+        self.verticalSlider.setOrientation(QtCore.Qt.Vertical)
+        self.verticalSlider.setObjectName("verticalSlider")
+        self.gridLayout.addWidget(self.verticalSlider, 1, 2, 1, 1)
         self.label = QtWidgets.QLabel(Account)
         font = QtGui.QFont()
         font.setPointSize(16)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.label)
+        self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
 
         self.retranslateUi(Account)
         QtCore.QMetaObject.connectSlotsByName(Account)

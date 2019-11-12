@@ -8,13 +8,7 @@ python run.py
 ```
 
 > 关于打包[ubuntu]
-
-打包时报错 No module named 'win32com'
-```
-pip install pypiwin32
-```
-> 因为本人对Pyinstaller不熟悉，查阅各种资料，最后才得以这种不太优雅的方式进行打包，如果我的打包姿势不对或者有更好的打包方式
-欢迎指出和提出。
+##### ！路径不要有中文
 ```
 pyinstaller ctpbee_desktop.py #生成 ctpbee_desktop.spec  build  dist
 
@@ -38,4 +32,8 @@ pyinstaller ctpbee_desktop.spec  # 注意后缀  .spec
 ```
 cd dist/ctpbee_desktop 
 ./ctpbee_desktop
+```
+打包时报错 No module named 'win32com'
+```
+pip install pypiwin32
 ```

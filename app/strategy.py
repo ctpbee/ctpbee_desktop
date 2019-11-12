@@ -70,11 +70,9 @@ class StrategyWidget(QWidget, Ui_Strategy):
             self.strategy_table.insertRow(self.row)
             self.strategy_table.setItem(self.row, 0, QTableWidgetItem(k))
             self.strategy_table.setItem(self.row, 1, QTableWidgetItem(status))
-            if k == 'default_setting':
-                s_btn.setEnabled(False)
-                d_btn.setEnabled(False)
-            self.strategy_table.setCellWidget(self.row, 2, s_btn)
-            self.strategy_table.setCellWidget(self.row, 3, d_btn)
+            if k != 'default_setting':
+                self.strategy_table.setCellWidget(self.row, 2, s_btn)
+                self.strategy_table.setCellWidget(self.row, 3, d_btn)
             self.row += 1
 
     @Slot()

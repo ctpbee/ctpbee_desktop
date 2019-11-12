@@ -102,21 +102,20 @@ class OrderWidget(QWidget, Ui_Order):
         self.order_table.setRowCount(self.order_row)
         self.trade_table.setRowCount(self.trade_row)
         #
-        # self.tick_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
-        self.tick_table.horizontalHeader().setStretchLastSection(True)  # 最后一列自适应表格宽度
-        self.order_table.horizontalHeader().setStretchLastSection(True)
-        self.position_table.horizontalHeader().setStretchLastSection(True)
-        self.activate_order_table.horizontalHeader().setStretchLastSection(True)
-        self.trade_table.horizontalHeader().setStretchLastSection(True)
+        # self.tick_table.horizontalHeader().setStretchLastSection(True)  # 最后一列自适应表格宽度
+        self.tick_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
+        self.order_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
+        self.position_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
+        self.activate_order_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
+        self.trade_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
+
         self.activate_order_table.setColumnHidden(0, True)  # 设置order_id隐藏
         # 信号插槽
-        self.obj = self.mainwindow.job
-        self.obj.order_tick_signal.connect(self.set_tick_slot)
-        self.obj.order_position_signal.connect(self.set_position_slot)
-        self.obj.order_activate_signal.connect(self.set_activate_slot)
-        self.obj.order_order_signal.connect(self.set_order_slot)
-        self.obj.order_trade_signal.connect(self.set_trade_slot)
-        self.obj.order_log_signal.connect(self.set_log_slot)
+        self.mainwindow.job.order_tick_signal.connect(self.set_tick_slot)
+        self.mainwindow.job.order_position_signal.connect(self.set_position_slot)
+        self.mainwindow.job.order_activate_signal.connect(self.set_activate_slot)
+        self.mainwindow.job.order_order_signal.connect(self.set_order_slot)
+        self.mainwindow.job.order_trade_signal.connect(self.set_trade_slot)
         # 信号控制
         self.symbol_name_list.currentIndexChanged.connect(self.symbol_change_slot)  # 监听合约列表
 
@@ -239,10 +238,10 @@ class OrderWidget(QWidget, Ui_Order):
                 msg = self.bee_ext.app.recorder.get_new_error()['data']['ErrorMsg']
                 QMessageBox().warning(self, "提示", str(msg), QMessageBox.Ok, QMessageBox.Ok)
             else:
-                msg = "成功下单"
+                msg = "下单请求发送成功"
                 QMessageBox().information(self, "提示", str(msg), QMessageBox.Ok, QMessageBox.Ok)
         except Exception as e:
-            msg = "下单失败"
+            msg = "下单请求发送失败"
             QMessageBox().warning(self, "提示", str(msg), QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
@@ -258,12 +257,6 @@ class OrderWidget(QWidget, Ui_Order):
             QMessageBox().information(self, "提示", "撤单请求发送成功", QMessageBox.Ok, QMessageBox.Ok)
         except Exception:
             QMessageBox().warning(self, "提示", "撤单请求发送失败", QMessageBox.Ok, QMessageBox.Ok)
-
-    @Slot(str)
-    def set_log_slot(self, record: str):
-        self.log_list.insertItem(0, record)
-        if self.log_list.count() > 500:
-            self.log_list.clear()
 
     @Slot(dict)
     def set_tick_slot(self, tick: dict):

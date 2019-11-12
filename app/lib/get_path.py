@@ -26,7 +26,6 @@ def get_folder_path(folder_name: str):
     TRADER_DIR, TEMP_DIR = _get_trader_dir(".ctpbee")
     folder_path = TEMP_DIR.joinpath(folder_name)
     if not folder_path.exists():
-        print(folder_path)
         os.makedirs(folder_path)
     return folder_path
 
@@ -38,4 +37,5 @@ user_account_path = path + '/user_account.json'
 def init_file():
     for i in [user_account_path]:
         if not os.path.exists(i):
-            open(i, 'w')
+            with open(i, 'w'):
+                pass

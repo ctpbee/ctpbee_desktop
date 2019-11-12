@@ -24,13 +24,15 @@ class AccountWidget(QWidget, Ui_Account):
         self.row = 0
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
-
+        self.verticalSlider.valueChanged.connect(self.diss)
         #
         self.fill_table()
-
         #
-        self.obj = mainwindow.job
-        self.obj.account_signal.connect(self.set_item)
+        self.mainwindow = mainwindow
+        self.mainwindow.job.account_signal.connect(self.set_item)
+
+    def diss(self):
+        self.mainwindow.status_msg.setText("您真闲..." + str(self.verticalSlider.value()))
 
     def fill_table(self):
         """

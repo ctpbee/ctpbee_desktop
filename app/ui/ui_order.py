@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'order.ui',
 # licensing of 'order.ui' applies.
 #
-# Created: Tue Nov 12 13:57:53 2019
+# Created: Wed Nov 13 20:57:23 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -22,6 +22,18 @@ class Ui_Order(object):
         Order.setMinimumSize(QtCore.QSize(0, 0))
         self.verticalLayout = QtWidgets.QVBoxLayout(Order)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.account_label = QtWidgets.QLabel(Order)
+        self.account_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.account_label.setObjectName("account_label")
+        self.horizontalLayout_3.addWidget(self.account_label)
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.line_4 = QtWidgets.QFrame(Order)
+        self.line_4.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_4.setObjectName("line_4")
+        self.verticalLayout.addWidget(self.line_4)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.kline_layout = QtWidgets.QVBoxLayout()
@@ -41,7 +53,7 @@ class Ui_Order(object):
         sizePolicy.setHeightForWidth(self.tick_table.sizePolicy().hasHeightForWidth())
         self.tick_table.setSizePolicy(sizePolicy)
         self.tick_table.setMinimumSize(QtCore.QSize(0, 500))
-        self.tick_table.setMaximumSize(QtCore.QSize(400, 500))
+        self.tick_table.setMaximumSize(QtCore.QSize(400, 16777215))
         self.tick_table.setObjectName("tick_table")
         self.tick_table.setColumnCount(2)
         self.tick_table.setRowCount(0)
@@ -279,14 +291,15 @@ class Ui_Order(object):
         self.buy_btn.setObjectName("buy_btn")
         self.formLayout.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.buy_btn)
         self.short_btn = QtWidgets.QPushButton(self.widget)
+
         self.short_btn.setObjectName("short_btn")
         self.formLayout.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.short_btn)
         self.horizontalLayout_2.addWidget(self.widget)
         self.horizontalLayout_2.setStretch(0, 8)
         self.horizontalLayout_2.setStretch(2, 2)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.verticalLayout.setStretch(0, 7)
-        self.verticalLayout.setStretch(2, 3)
+        self.verticalLayout.setStretch(2, 7)
+        self.verticalLayout.setStretch(3, 3)
 
         self.retranslateUi(Order)
         self.tabWidget.setCurrentIndex(0)
@@ -294,8 +307,8 @@ class Ui_Order(object):
 
     def retranslateUi(self, Order):
         Order.setWindowTitle(QtWidgets.QApplication.translate("Order", "Form", None, -1))
+        self.account_label.setText(QtWidgets.QApplication.translate("Order", "账户信息...", None, -1))
         self.tick_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Order", "key", None, -1))
-
         self.tick_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Order", "value", None, -1))
         self.position_table.setSortingEnabled(True)
         self.position_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Order", "持仓合约", None, -1))

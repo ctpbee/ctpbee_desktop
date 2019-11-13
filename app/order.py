@@ -106,6 +106,7 @@ class OrderWidget(QWidget, Ui_Order):
         self.mainwindow.job.order_activate_signal.connect(self.set_activate_slot)
         self.mainwindow.job.order_order_signal.connect(self.set_order_slot)
         self.mainwindow.job.order_trade_signal.connect(self.set_trade_slot)
+        self.mainwindow.job.account_signal.connect(self.set_account_slot)
         # 信号控制
         self.symbol_name_list.currentIndexChanged.connect(self.symbol_change_slot)  # 监听合约列表
         # 初始化
@@ -113,12 +114,12 @@ class OrderWidget(QWidget, Ui_Order):
         self.fill_other()
 
     def search_path(self, dir):
-        p = os.path.split(dir)[0] + '/static/kline.html'
+        p = os.path.split(dir)[0] + G.kline_folder
         # print(p)
         self.t -= 1
         if not os.path.exists(p):
             if self.t < 0:  # 防止超过递归深度
-                return os.path.split(__file__)[0] + '/static/kline.html'
+                return os.path.split(__file__)[0] + G.kline_folder
             return self.search_path(dir)
         return p
 
@@ -238,6 +239,21 @@ class OrderWidget(QWidget, Ui_Order):
         self.open_order('short')
 
     @Slot(dict)
+    def set_account_slot(self, account):
+        map = {
+            "accountid": "账户名",
+            "available": "账户可用",
+            "balance": "余额",
+            "frozen": "冻结",
+            "gateway_name": "接口",
+            "local_account_id": "本地账户名",
+        }
+        info = []
+        for k, v in map.items():
+            info.append(str(v) + " : " + str(account.get(k, "")))
+        self.account_label.setText("    ".join(info))
+
+    @Slot(dict)
     def set_tick_slot(self, tick: dict):
         local_symbol = tick['local_symbol']
         if local_symbol != G.choice_local_symbol:
@@ -252,7 +268,6 @@ class OrderWidget(QWidget, Ui_Order):
                 row = G.order_tick_row_map.index(k)
             self.tick_table.setItem(row, 0, QTableWidgetItem(v))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
-
 
     @Slot(list)
     def set_position_slot(self, positions: list):

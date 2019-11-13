@@ -14,5 +14,6 @@ class G(dict):
     choice_local_symbol = None
     order_tick_row_map = []  # with tick ={}
 
-
+    #kline
+    kline_folder = "/static/kline.html"
 

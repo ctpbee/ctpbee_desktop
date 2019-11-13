@@ -25,7 +25,28 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="7,0,3">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,7,3,0">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
+     <item>
+      <widget class="QLabel" name="account_label">
+       <property name="text">
+        <string>账户信息...</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="8,0,2">
      <item>
@@ -64,7 +85,7 @@
        <property name="maximumSize">
         <size>
          <width>400</width>
-         <height>500</height>
+         <height>16777215</height>
         </size>
        </property>
        <attribute name="verticalHeaderShowSortIndicator" stdset="0">

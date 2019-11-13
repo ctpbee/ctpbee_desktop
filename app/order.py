@@ -1,5 +1,6 @@
 import json
 import os
+import operator
 from time import sleep
 from PySide2.QtCore import Slot, QUrl
 from PySide2.QtWebChannel import QWebChannel
@@ -50,11 +51,6 @@ class OrderWidget(QWidget, Ui_Order):
         super(OrderWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("下单")
-        self.tick_row = len(G.order_tick_row_map)
-        self.position_row = len(G.order_position_row_map)
-        self.activate_row = len(G.order_activate_row_map)
-        self.order_row = len(G.order_order_row_map)
-        self.trade_row = len(G.order_trade_row_map)
         #
         self.position_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.activate_order_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
@@ -88,17 +84,14 @@ class OrderWidget(QWidget, Ui_Order):
         self.buy_btn.clicked.connect(self.buy_slot)
         self.short_btn.clicked.connect(self.short_slot)
         # 初始化table
-        # self.fill_tick_table()
-        # self.fill_position_table()
-        # self.fill_trade_table()
-        # self.fill_order_table()
-        # self.fill_activate_table()
+        self.tick_row = len(G.order_tick_row_map)
+        self.fill_tick_table()
 
         self.tick_table.setRowCount(self.tick_row)
-        self.position_table.setRowCount(self.position_row)
-        self.activate_order_table.setRowCount(self.activate_row)
-        self.order_table.setRowCount(self.order_row)
-        self.trade_table.setRowCount(self.trade_row)
+        self.position_table.setRowCount(0)
+        self.activate_order_table.setRowCount(0)
+        self.order_table.setRowCount(0)
+        self.trade_table.setRowCount(0)
         #
         self.tick_table.horizontalHeader().setStretchLastSection(True)  # 最后一列自适应表格宽度
         # self.tick_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
@@ -145,66 +138,6 @@ class OrderWidget(QWidget, Ui_Order):
             self.tick_table.insertRow(row)
             self.tick_table.setItem(row, 0, QTableWidgetItem(str(tick_zn[k])))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
-
-    def fill_position_table(self):
-        d = G.order_position_row_map
-        for index, k in enumerate(d):
-            row = index
-            try:
-                p = G.order_position[k]
-            except KeyError:  # 说明此订单已平
-                d.remove(k)  # 删除表row映射
-                continue
-            self.position_table.insertRow(row)
-            for i, col in enumerate(position_table_column):
-                if col != 'operator':
-                    self.position_table.setItem(row, i, QTableWidgetItem(str(p[col])))
-                else:
-                    btn = QPushButton('平仓')
-                    self.position_table.setCellWidget(row, i, btn)
-
-    def fill_order_table(self):
-        d = G.order_order_row_map
-        for index, k in enumerate(d):
-            row = index
-            try:
-                p = G.order_order[k]
-            except KeyError:
-                d.remove(k)
-                continue
-            self.order_table.insertRow(row)
-            for i, col in enumerate(order_table_column):
-                self.order_table.setItem(row, i, QTableWidgetItem(str(p[col])))
-
-    def fill_activate_table(self):
-        d = G.order_activate_row_map
-        for index, k in enumerate(d):
-            row = index
-            try:
-                p = G.order_activate[k]
-            except KeyError:
-                d.remove(k)
-                continue
-            self.activate_order_table.insertRow(row)
-            for i, col in enumerate(activate_order_table_column):
-                if col != 'operator':
-                    self.activate_order_table.setItem(row, i, QTableWidgetItem(str(p[col])))
-                else:
-                    btn = QPushButton('撤单')
-                    self.activate_order_table.setCellWidget(row, i, btn)
-
-    def fill_trade_table(self):
-        d = G.order_trade_row_map
-        for index, k in enumerate(d):
-            row = index
-            try:
-                p = G.order_trade[k]
-            except KeyError:
-                d.remove(k)
-                continue
-            self.trade_table.insertRow(row)
-            for i, col in enumerate(trade_table_column):
-                self.trade_table.setItem(row, i, QTableWidgetItem(str(p[col])))
 
     @Slot()
     def close_position(self):
@@ -299,11 +232,12 @@ class OrderWidget(QWidget, Ui_Order):
 
     @Slot(list)
     def set_position_slot(self, positions: list):
-        self.position_table.clearContents()
+        self.position_table.setRowCount(0)
         # print("positions", positions)
-        for p in positions:
-            local_position_id = p["local_symbol"] + p["direction"]
-            row = G.order_position_row_map.index(local_position_id)
+        row = 0
+        x = sorted(positions, key=operator.itemgetter('local_symbol'))
+        for p in x:
+            self.position_table.insertRow(row)
             for i, col in enumerate(position_table_column):
                 if col != 'operator':
                     self.position_table.setItem(row, i, QTableWidgetItem(str(p[col])))
@@ -311,14 +245,16 @@ class OrderWidget(QWidget, Ui_Order):
                     btn = QPushButton('平仓')
                     btn.clicked.connect(self.close_position)
                     self.position_table.setCellWidget(row, i, btn)
+            row += 1
 
     @Slot(list)
     def set_activate_slot(self, active_orders: list):
-        self.activate_order_table.clearContents()
+        self.activate_order_table.setRowCount(0)
+        row = 0
         print("active_orders", active_orders)
-        for o in active_orders:
-            local_order_id = o['local_order_id']
-            row = G.order_activate_row_map.index(local_order_id)
+        x = sorted(active_orders, key=operator.itemgetter('local_symbol'))
+        for o in x:
+            self.activate_order_table.insertRow(row)
             for i, col in enumerate(activate_order_table_column):  # 渲染
                 if col != 'operator':
                     self.activate_order_table.setItem(row, i, QTableWidgetItem(str(o[col])))
@@ -326,24 +262,30 @@ class OrderWidget(QWidget, Ui_Order):
                     btn = QPushButton('撤单')
                     btn.clicked.connect(self.cancel_order)
                     self.activate_order_table.setCellWidget(row, i, btn)
+            row += 1
 
     @Slot(list)
     def set_order_slot(self, orders: list):
-        self.order_table.clearContents()
+        self.order_table.setRowCount(0)
+        row = 0
         print("orders", orders)
-        for o in orders:
-            local_order_id = o['local_order_id']
-
-            row = G.order_order_row_map.index(local_order_id)
+        x = sorted(orders, key=operator.itemgetter('local_symbol'))
+        for o in x:
+            self.order_table.insertRow(row)
+            # 渲染
             for i, col in enumerate(order_table_column):
                 self.order_table.setItem(row, i, QTableWidgetItem(str(o[col])))
+            row += 1
 
     @Slot(list)
     def set_trade_slot(self, trades: list):
-        self.trade_table.clearContents()
+        self.trade_table.setRowCount(0)
+        row = 0
+        x = sorted(trades, key=operator.itemgetter('local_symbol'))
         print("trades", trades)
-        for t in trades:
-            local_trade_id = t['local_trade_id']
-            row = G.order_trade_row_map.index(local_trade_id)
+        for t in x:
+            self.trade_table.insertRow(row)
+
             for i, col in enumerate(trade_table_column):
                 self.trade_table.setItem(row, i, QTableWidgetItem(str(t[col])))
+            row += 1

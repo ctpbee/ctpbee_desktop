@@ -303,13 +303,7 @@ class OrderWidget(QWidget, Ui_Order):
         # print("positions", positions)
         for p in positions:
             local_position_id = p["local_symbol"] + p["direction"]
-            if local_position_id not in G.order_position_row_map:
-                row = self.position_row
-                G.order_position_row_map.append(local_position_id)
-                self.position_table.insertRow(row)
-                self.position_row += 1
-            else:
-                row = G.order_position_row_map.index(local_position_id)
+            row = G.order_position_row_map.index(local_position_id)
             for i, col in enumerate(position_table_column):
                 if col != 'operator':
                     self.position_table.setItem(row, i, QTableWidgetItem(str(p[col])))
@@ -324,13 +318,7 @@ class OrderWidget(QWidget, Ui_Order):
         print("active_orders", active_orders)
         for o in active_orders:
             local_order_id = o['local_order_id']
-            if local_order_id not in G.order_activate_row_map:  # 不在table
-                row = self.activate_row
-                G.order_activate_row_map.append(local_order_id)
-                self.activate_order_table.insertRow(row)
-                self.activate_row += 1
-            else:  # in table
-                row = G.order_activate_row_map.index(local_order_id)
+            row = G.order_activate_row_map.index(local_order_id)
             for i, col in enumerate(activate_order_table_column):  # 渲染
                 if col != 'operator':
                     self.activate_order_table.setItem(row, i, QTableWidgetItem(str(o[col])))
@@ -345,13 +333,8 @@ class OrderWidget(QWidget, Ui_Order):
         print("orders", orders)
         for o in orders:
             local_order_id = o['local_order_id']
-            if local_order_id not in G.order_order_row_map:
-                row = self.order_row
-                G.order_order_row_map.append(local_order_id)
-                self.order_table.insertRow(row)
-                self.order_row += 1
-            else:
-                row = G.order_order_row_map.index(local_order_id)
+
+            row = G.order_order_row_map.index(local_order_id)
             for i, col in enumerate(order_table_column):
                 self.order_table.setItem(row, i, QTableWidgetItem(str(o[col])))
 
@@ -361,12 +344,6 @@ class OrderWidget(QWidget, Ui_Order):
         print("trades", trades)
         for t in trades:
             local_trade_id = t['local_trade_id']
-            if local_trade_id not in G.order_trade_row_map:
-                row = self.trade_row
-                G.order_trade_row_map.append(local_trade_id)
-                self.trade_table.insertRow(row)
-                self.trade_row += 1
-            else:
-                row = G.order_trade_row_map.index(local_trade_id)
+            row = G.order_trade_row_map.index(local_trade_id)
             for i, col in enumerate(trade_table_column):
                 self.trade_table.setItem(row, i, QTableWidgetItem(str(t[col])))

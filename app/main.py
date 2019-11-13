@@ -192,28 +192,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_order(self, ext, order: OrderData) -> None:
         active_orders = []
-        G.order_activate.clear()
-        G.order_order.clear()
+        active_orders_id = []
         for order1 in self.bee_ext.app.recorder.get_all_active_orders():
             o1 = order1._to_dict()
             active_orders.append(o1)
-            G.order_activate[o1['local_order_id']] = o1
+            active_orders_id.append(o1['local_order_id'])
+
+        G.update_order_activate_row_map(active_orders_id)
         self.job.order_activate_signal.emit(active_orders)
 
         orders = []
+        orders_id = []
         for order2 in self.bee_ext.app.recorder.get_all_orders():
             o2 = order2._to_dict()
             orders.append(o2)
-            G.order_order[o2['local_order_id']] = o2
+            orders_id.append(o2['local_order_id'])
+
+        G.update_order_order_row_map(orders_id)
         self.job.order_order_signal.emit(orders)
 
     def on_realtime(*args):
-        G.order_position.clear()
         self = args[0]
         all_positions = self.bee_ext.app.recorder.get_all_positions()
+        positions_id = []
         for p in all_positions:
             mark = p["local_symbol"] + p["direction"]
-            G.order_position[mark] = p
+            positions_id.append(mark)
+        G.update_order_position_row_map(positions_id)
         self.job.order_position_signal.emit(all_positions)
 
     def on_position(self, ext, position: PositionData) -> None:
@@ -233,11 +238,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_trade(self, ext, trade: TradeData) -> None:
         trades = []
-        G.order_trade.clear()
+        trades_id = []
         for trade in self.bee_ext.app.recorder.get_all_trades():
             t = trade._to_dict()
             trades.append(t)
-            G.order_trade[t['local_trade_id']] = t
+            trades_id.append(t['local_trade_id'])
+        G.update_order_trade_row_map(trades_id)
         self.job.order_trade_signal.emit(trades)
 
     def on_init(self, ext, init):

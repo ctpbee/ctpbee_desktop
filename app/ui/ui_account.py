@@ -5,7 +5,7 @@
 # Form implementation generated from reading ui file 'account.ui',
 # licensing of 'account.ui' applies.
 #
-# Created: Tue Nov 12 16:05:57 2019
+# Created: Wed Nov 13 10:57:09 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,9 +20,9 @@ class Ui_Account(object):
         self.gridLayout = QtWidgets.QGridLayout(Account)
         self.gridLayout.setObjectName("gridLayout")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
+        self.gridLayout.addItem(spacerItem, 1, 0, 1, 1)
         self.tableWidget = QtWidgets.QTableWidget(Account)
-        self.tableWidget.setMinimumSize(QtCore.QSize(500, 500))
+        self.tableWidget.setMinimumSize(QtCore.QSize(500, 350))
         self.tableWidget.setBaseSize(QtCore.QSize(300, 200))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(2)
@@ -32,20 +32,20 @@ class Ui_Account(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
         self.gridLayout.addWidget(self.tableWidget, 1, 1, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem1, 1, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem2, 2, 1, 1, 1)
         self.verticalSlider = QtWidgets.QSlider(Account)
         self.verticalSlider.setOrientation(QtCore.Qt.Vertical)
         self.verticalSlider.setObjectName("verticalSlider")
         self.gridLayout.addWidget(self.verticalSlider, 1, 2, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem1, 0, 2, 1, 1)
         self.label = QtWidgets.QLabel(Account)
         font = QtGui.QFont()
         font.setPointSize(16)
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem2, 2, 1, 1, 1)
 
         self.retranslateUi(Account)
         QtCore.QMetaObject.connectSlotsByName(Account)

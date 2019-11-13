@@ -65,11 +65,9 @@ class OrderWidget(QWidget, Ui_Order):
         self.mainwindow = mainwindow
         self.bee_ext = mainwindow.bee_ext
         # 合约列表
-        self.local_symbol_zn.setText("未选择")
+        self.local_symbol_zn.setText(G.subscribes[G.choice_local_symbol] or "未选择")
         for local_symbol in sorted(G.subscribes):
             self.symbol_name_list.addItem(local_symbol)
-            if local_symbol == G.choice_local_symbol:
-                self.local_symbol_zn.setText(G.subscribes[local_symbol])
         self.symbol_name_list.setCurrentText(G.choice_local_symbol or "未选择")
         # k-line
         self.browser = QWebEngineView(self)
@@ -90,11 +88,11 @@ class OrderWidget(QWidget, Ui_Order):
         self.buy_btn.clicked.connect(self.buy_slot)
         self.short_btn.clicked.connect(self.short_slot)
         # 初始化table
-        self.fill_tick_table()
-        self.fill_position_table()
-        self.fill_trade_table()
-        self.fill_order_table()
-        self.fill_activate_table()
+        # self.fill_tick_table()
+        # self.fill_position_table()
+        # self.fill_trade_table()
+        # self.fill_order_table()
+        # self.fill_activate_table()
 
         self.tick_table.setRowCount(self.tick_row)
         self.position_table.setRowCount(self.position_row)
@@ -142,17 +140,21 @@ class OrderWidget(QWidget, Ui_Order):
     def fill_tick_table(self):
         d = G.order_tick_row_map
         tick = G.market_tick[G.choice_local_symbol]
-        for k in sorted(d, key=d.__getitem__):
-            row = d[k]
+        for index, k in enumerate(d):
+            row = index
             self.tick_table.insertRow(row)
-            self.tick_table.setItem(d[k], 0, QTableWidgetItem(str(tick_zn[k])))
-            self.tick_table.setItem(d[k], 1, QTableWidgetItem(str(tick[k])))
+            self.tick_table.setItem(row, 0, QTableWidgetItem(str(tick_zn[k])))
+            self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
 
     def fill_position_table(self):
         d = G.order_position_row_map
-        for k in sorted(d, key=d.__getitem__):  # k == local_position_id
-            row = d[k]
-            p = G.order_position[k]
+        for index, k in enumerate(d):
+            row = index
+            try:
+                p = G.order_position[k]
+            except KeyError:  # 说明此订单已平
+                d.remove(k)  # 删除表row映射
+                continue
             self.position_table.insertRow(row)
             for i, col in enumerate(position_table_column):
                 if col != 'operator':
@@ -163,18 +165,26 @@ class OrderWidget(QWidget, Ui_Order):
 
     def fill_order_table(self):
         d = G.order_order_row_map
-        for k in sorted(d, key=d.__getitem__):  # k == local_order_id
-            row = d[k]
-            p = G.order_order[k]
+        for index, k in enumerate(d):
+            row = index
+            try:
+                p = G.order_order[k]
+            except KeyError:
+                d.remove(k)
+                continue
             self.order_table.insertRow(row)
             for i, col in enumerate(order_table_column):
                 self.order_table.setItem(row, i, QTableWidgetItem(str(p[col])))
 
     def fill_activate_table(self):
         d = G.order_activate_row_map
-        for k in sorted(d, key=d.__getitem__):  # k == local_order_id
-            row = d[k]
-            p = G.order_activate[k]
+        for index, k in enumerate(d):
+            row = index
+            try:
+                p = G.order_activate[k]
+            except KeyError:
+                d.remove(k)
+                continue
             self.activate_order_table.insertRow(row)
             for i, col in enumerate(activate_order_table_column):
                 if col != 'operator':
@@ -185,9 +195,13 @@ class OrderWidget(QWidget, Ui_Order):
 
     def fill_trade_table(self):
         d = G.order_trade_row_map
-        for k in sorted(d, key=d.__getitem__):  # k == local_trade_id
-            row = d[k]
-            p = G.order_trade[k]
+        for index, k in enumerate(d):
+            row = index
+            try:
+                p = G.order_trade[k]
+            except KeyError:
+                d.remove(k)
+                continue
             self.trade_table.insertRow(row)
             for i, col in enumerate(trade_table_column):
                 self.trade_table.setItem(row, i, QTableWidgetItem(str(p[col])))
@@ -258,6 +272,14 @@ class OrderWidget(QWidget, Ui_Order):
         except Exception:
             QMessageBox().warning(self, "提示", "撤单请求发送失败", QMessageBox.Ok, QMessageBox.Ok)
 
+    @Slot()
+    def buy_slot(self):
+        self.open_order('long')
+
+    @Slot()
+    def short_slot(self):
+        self.open_order('short')
+
     @Slot(dict)
     def set_tick_slot(self, tick: dict):
         local_symbol = tick['local_symbol']
@@ -266,27 +288,28 @@ class OrderWidget(QWidget, Ui_Order):
         for k, v in tick_zn.items():
             if k not in G.order_tick_row_map:
                 row = self.tick_row
-                G.order_tick_row_map[k] = row
+                G.order_tick_row_map.append(k)
                 self.tick_table.insertRow(row)
                 self.tick_row += 1
             else:
-                row = G.order_tick_row_map[k]
+                row = G.order_tick_row_map.index(k)
             self.tick_table.setItem(row, 0, QTableWidgetItem(v))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
         # print("tick", tick)
 
     @Slot(list)
     def set_position_slot(self, positions: list):
+        self.position_table.clearContents()
         # print("positions", positions)
         for p in positions:
             local_position_id = p["local_symbol"] + p["direction"]
             if local_position_id not in G.order_position_row_map:
                 row = self.position_row
-                G.order_position_row_map[local_position_id] = row
+                G.order_position_row_map.append(local_position_id)
                 self.position_table.insertRow(row)
                 self.position_row += 1
             else:
-                row = G.order_position_row_map[local_position_id]
+                row = G.order_position_row_map.index(local_position_id)
             for i, col in enumerate(position_table_column):
                 if col != 'operator':
                     self.position_table.setItem(row, i, QTableWidgetItem(str(p[col])))
@@ -297,16 +320,17 @@ class OrderWidget(QWidget, Ui_Order):
 
     @Slot(list)
     def set_activate_slot(self, active_orders: list):
+        self.activate_order_table.clearContents()
         print("active_orders", active_orders)
         for o in active_orders:
             local_order_id = o['local_order_id']
             if local_order_id not in G.order_activate_row_map:  # 不在table
                 row = self.activate_row
-                G.order_activate_row_map[local_order_id] = row
+                G.order_activate_row_map.append(local_order_id)
                 self.activate_order_table.insertRow(row)
                 self.activate_row += 1
             else:  # in table
-                row = G.order_activate_row_map[local_order_id]
+                row = G.order_activate_row_map.index(local_order_id)
             for i, col in enumerate(activate_order_table_column):  # 渲染
                 if col != 'operator':
                     self.activate_order_table.setItem(row, i, QTableWidgetItem(str(o[col])))
@@ -315,40 +339,34 @@ class OrderWidget(QWidget, Ui_Order):
                     btn.clicked.connect(self.cancel_order)
                     self.activate_order_table.setCellWidget(row, i, btn)
 
-    @Slot()
-    def buy_slot(self):
-        self.open_order('long')
-
-    @Slot()
-    def short_slot(self):
-        self.open_order('short')
-
     @Slot(list)
     def set_order_slot(self, orders: list):
+        self.order_table.clearContents()
         print("orders", orders)
         for o in orders:
             local_order_id = o['local_order_id']
             if local_order_id not in G.order_order_row_map:
                 row = self.order_row
-                G.order_order_row_map[local_order_id] = row
+                G.order_order_row_map.append(local_order_id)
                 self.order_table.insertRow(row)
                 self.order_row += 1
             else:
-                row = G.order_order_row_map[local_order_id]
+                row = G.order_order_row_map.index(local_order_id)
             for i, col in enumerate(order_table_column):
                 self.order_table.setItem(row, i, QTableWidgetItem(str(o[col])))
 
     @Slot(list)
     def set_trade_slot(self, trades: list):
+        self.trade_table.clearContents()
         print("trades", trades)
         for t in trades:
             local_trade_id = t['local_trade_id']
             if local_trade_id not in G.order_trade_row_map:
                 row = self.trade_row
-                G.order_trade_row_map[local_trade_id] = row
+                G.order_trade_row_map.append(local_trade_id)
                 self.trade_table.insertRow(row)
                 self.trade_row += 1
             else:
-                row = G.order_trade_row_map[local_trade_id]
+                row = G.order_trade_row_map.index(local_trade_id)
             for i, col in enumerate(trade_table_column):
                 self.trade_table.setItem(row, i, QTableWidgetItem(str(t[col])))

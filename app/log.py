@@ -8,7 +8,7 @@ class LogDialog(QDialog, Ui_Log):
     def __init__(self, mainwindow):
         super(LogDialog, self).__init__()
         self.setupUi(self)
-        self.setWindowFlags(Qt.WindowStaysOnTopHint)
+        # self.setWindowFlags(Qt.WindowStaysOnTopHint)#窗口置顶
         self.mainwindow = mainwindow
         self.mainwindow.job.order_log_signal.connect(self.set_log_slot)
 

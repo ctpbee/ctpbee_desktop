@@ -20,8 +20,8 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="2">
-    <spacer name="horizontalSpacer_4">
+   <item row="1" column="0">
+    <spacer name="horizontalSpacer_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -38,7 +38,7 @@
      <property name="minimumSize">
       <size>
        <width>500</width>
-       <height>500</height>
+       <height>350</height>
       </size>
      </property>
      <property name="baseSize">
@@ -65,8 +65,24 @@
      </column>
     </widget>
    </item>
-   <item row="1" column="0">
-    <spacer name="horizontalSpacer_2">
+   <item row="1" column="2">
+    <widget class="QSlider" name="verticalSlider">
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="value">
+      <number>40</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <spacer name="horizontalSpacer_4">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -77,6 +93,18 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>基本账户信息</string>
+     </property>
+    </widget>
    </item>
    <item row="2" column="1">
     <spacer name="verticalSpacer">
@@ -90,25 +118,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="1" column="2">
-    <widget class="QSlider" name="verticalSlider">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="label">
-     <property name="font">
-      <font>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>基本账户信息</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

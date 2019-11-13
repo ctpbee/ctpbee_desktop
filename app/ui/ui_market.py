@@ -7,8 +7,8 @@
 # Form implementation generated from reading ui file 'market.ui',
 # licensing of 'market.ui' applies.
 #
-# Created: Mon Sep 30 14:00:05 2019
-#      by: pyside2-uic  running on PySide2 5.13.1
+# Created: Wed Nov 13 13:36:07 2019
+#      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -42,7 +42,7 @@ class Ui_Market(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(3, item)
         self.tableWidget.horizontalHeader().setCascadingSectionResizes(False)
-        self.tableWidget.horizontalHeader().setSortIndicatorShown(False)
+        self.tableWidget.horizontalHeader().setSortIndicatorShown(True)
         self.tableWidget.verticalHeader().setCascadingSectionResizes(False)
         self.tableWidget.verticalHeader().setSortIndicatorShown(False)
         self.formLayout.setWidget(10, QtWidgets.QFormLayout.FieldRole, self.tableWidget)
@@ -61,36 +61,54 @@ class Ui_Market(object):
         self.horizontalLayout.addWidget(self.symbol_list)
         self.subscribe_singel = QtWidgets.QPushButton(Market)
         self.subscribe_singel.setMaximumSize(QtCore.QSize(100, 200))
+        self.subscribe_singel.setStyleSheet("background-color: rgb(0, 85, 255);")
         self.subscribe_singel.setObjectName("subscribe_singel")
         self.horizontalLayout.addWidget(self.subscribe_singel)
-        self.pushButton_test = QtWidgets.QPushButton(Market)
-        self.pushButton_test.setObjectName("pushButton_test")
-        self.horizontalLayout.addWidget(self.pushButton_test)
+        self.subscribe_type = QtWidgets.QPushButton(Market)
+        self.subscribe_type.setStyleSheet("background-color: rgb(0, 170, 0);")
+        self.subscribe_type.setObjectName("subscribe_type")
+        self.horizontalLayout.addWidget(self.subscribe_type)
+        self.subscribe_all = QtWidgets.QPushButton(Market)
+        self.subscribe_all.setStyleSheet("background-color: rgb(255, 170, 0);")
+        self.subscribe_all.setObjectName("subscribe_all")
+        self.horizontalLayout.addWidget(self.subscribe_all)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.horizontalLayout.setStretch(0, 4)
         self.horizontalLayout.setStretch(1, 5)
-        self.horizontalLayout.setStretch(3, 4)
+        self.horizontalLayout.setStretch(4, 4)
         self.formLayout.setLayout(6, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout)
         self.label = QtWidgets.QLabel(Market)
-        self.label.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.label.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label.setObjectName("label")
         self.formLayout.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.label)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem1)
+        self.unsubscribe = QtWidgets.QPushButton(Market)
+        self.unsubscribe.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.unsubscribe.setObjectName("unsubscribe")
+        self.horizontalLayout_2.addWidget(self.unsubscribe)
+        self.formLayout.setLayout(12, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_2)
 
         self.retranslateUi(Market)
         QtCore.QMetaObject.connectSlotsByName(Market)
 
     def retranslateUi(self, Market):
         Market.setWindowTitle(QtWidgets.QApplication.translate("Market", "Form", None, -1))
+        self.tableWidget.setSortingEnabled(True)
         self.tableWidget.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Market", "中文名", None, -1))
         self.tableWidget.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Market", "品种", None, -1))
         self.tableWidget.horizontalHeaderItem(2).setText(QtWidgets.QApplication.translate("Market", "行情", None, -1))
         self.tableWidget.horizontalHeaderItem(3).setText(QtWidgets.QApplication.translate("Market", "操作", None, -1))
         self.subscribe_singel.setText(QtWidgets.QApplication.translate("Market", "订阅单个", None, -1))
-        self.pushButton_test.setText(QtWidgets.QApplication.translate("Market", "订阅所有【测试】", None, -1))
+        self.subscribe_type.setText(QtWidgets.QApplication.translate("Market", "订阅此品种", None, -1))
+        self.subscribe_all.setText(QtWidgets.QApplication.translate("Market", "订阅所有合约", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("Market", "订阅列表", None, -1))
+        self.unsubscribe.setText(QtWidgets.QApplication.translate("Market", "取消订阅所有", None, -1))
 

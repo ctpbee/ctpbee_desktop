@@ -1,12 +1,12 @@
 import json
 from copy import deepcopy
 from PySide2.QtCore import QRegExp, Slot, QTimer, Qt
-from PySide2.QtGui import QRegExpValidator, QMovie
+from PySide2.QtGui import QRegExpValidator, QMovie, QCloseEvent
 from PySide2.QtWidgets import QWidget, QMessageBox
 
 from app.lib.global_var import G
 from app.ui.ui_signin import Ui_SignIn
-from ctpbee import CtpBee, VLogger
+from ctpbee import CtpBee, VLogger, current_app
 from app.lib.get_path import user_account_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
@@ -16,7 +16,10 @@ class Vlog(VLogger):
     def handler_record(self, record):
         msg = f"{record['created'].split(' ')[1]}   {record['name']} " \
               f"  {record['levelname']}   {record['owner']}   {record['message']}"
-        if G.mainwindow: G.mainwindow.job.order_log_signal.emit(msg)
+        if G.mainwindow:
+            G.mainwindow.job.order_log_signal.emit(msg)
+        if G.loading:
+            G.loading.msg.setText(record['message'])
 
 
 class SignInWidget(QWidget, Ui_SignIn):
@@ -108,18 +111,18 @@ class SignInWidget(QWidget, Ui_SignIn):
         bee_app.start()
         # loading
         self.loading = LoadingDialog()
+        G.loading = self.loading
         self.timer.start(2000)  # ms
         self.loading.msg.setText("正在连接服务器...")
         self.loading.exec_()
         if bee_app and \
                 bee_app.trader and \
                 bee_app.td_login_status:
-            self.close()
             mainwindow = MainWindow()
             mainwindow.sign_in_success(bee_app=bee_app)
             mainwindow.show()
+            self.close()
         else:
-            # bee_app.release()
             QMessageBox.warning(self, "提示", "登录出现错误", QMessageBox.Ok, QMessageBox.Ok)
 
     def sign_in_check(self):
@@ -167,3 +170,12 @@ class SignInWidget(QWidget, Ui_SignIn):
                     json.dump(account, f)
 
         self.sign_in(info)
+
+    def closeEvent(self, event: QCloseEvent):
+        G.loading = None
+        if G.mainwindow is None:
+            try:
+                current_app.release()
+            except Exception:
+                pass
+        event.accept()

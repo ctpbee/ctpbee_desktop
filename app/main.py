@@ -192,6 +192,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_order(self, ext, order: OrderData) -> None:
         active_orders = []
+        G.order_activate.clear()
+        G.order_order.clear()
         for order1 in self.bee_ext.app.recorder.get_all_active_orders():
             o1 = order1._to_dict()
             active_orders.append(o1)
@@ -206,7 +208,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.job.order_order_signal.emit(orders)
 
     def on_realtime(*args):
-
+        G.order_position.clear()
         self = args[0]
         all_positions = self.bee_ext.app.recorder.get_all_positions()
         for p in all_positions:
@@ -231,6 +233,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_trade(self, ext, trade: TradeData) -> None:
         trades = []
+        G.order_trade.clear()
         for trade in self.bee_ext.app.recorder.get_all_trades():
             t = trade._to_dict()
             trades.append(t)
@@ -250,7 +253,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         msg.exec_()
         if msg.clickedButton() == yr_btn:
             try:
-                self.bee_ext.release()
+                current_app.release()
             except:
                 pass
             event.accept()

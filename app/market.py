@@ -7,7 +7,8 @@ from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
 from app.loading import LoadingDialog
 
-contract_space = " "*2
+contract_space = " " * 2
+market_table_column = ['name', 'local_symbol', 'last_price', 'operator']
 
 
 class MarketWidget(QWidget, Ui_Market):
@@ -15,7 +16,7 @@ class MarketWidget(QWidget, Ui_Market):
         super(MarketWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("行情")
-        self.item_row = 0
+        self.item_row = len(G.market_tick_row_map)
         self.bee_ext = mainwindow.bee_ext
         self.mainwindow = mainwindow
         self.progressBar = self.mainwindow.progressbar
@@ -39,19 +40,14 @@ class MarketWidget(QWidget, Ui_Market):
         self.obj.market_signal.connect(self.set_item_slot)
         # 订阅
         self.subscribe_singel.clicked.connect(self.subscribe_slot)
+        self.subscribe_type.clicked.connect(self.subscribe_type_slot)
+        self.subscribe_all.clicked.connect(self.subscribe_all_slot)
+        # self.unsubscribe.clicked.connect(self.unsubscribe_slot)
+
         # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.timer_slot)
         self.timer.start(500)
-
-        self.pushButton_test.clicked.connect(self.test_all)
-
-    @Slot()
-    def test_all(self):
-        for local_symbol in sorted(G.all_contracts):
-            self.bee_ext.app.subscribe(local_symbol)  # 订阅 可去除  ，下同
-            G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})  # 更新订阅列表
-        self.mainwindow.market_handle()
 
     @Slot()
     def go_order(self):
@@ -80,6 +76,12 @@ class MarketWidget(QWidget, Ui_Market):
             self.load_status.setText("订阅合约列表加载完成")
 
     @Slot()
+    def unsubscribe_slot(self):
+        for i in G.subscribes:
+            self.bee_ext.app.market.unsubscribe(i.split('.')[0])
+        self.mainwindow.market_handle()
+
+    @Slot()
     def subscribe_slot(self):
         local_symbol = self.symbol_list.currentText().split(contract_space)[0]
         name = self.symbol_list.currentText().split(contract_space)[1]
@@ -92,6 +94,34 @@ class MarketWidget(QWidget, Ui_Market):
             else:
                 QMessageBox().warning(self, "提示", "订阅失败", QMessageBox.Ok, QMessageBox.Ok)
 
+    @Slot()
+    def subscribe_type_slot(self):
+        local_symbol_ = self.symbol_list.currentText().split(contract_space)[0]
+        symbol = ''.join([x for x in local_symbol_.split('.')[0] if x.isalpha()])  # AP
+        for local_symbol in G.all_contracts:
+            if symbol in local_symbol:
+                res = self.bee_ext.app.subscribe(local_symbol)
+                if res == 0:
+                    G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})
+                    self.progressBar.setMaximum(len(G.subscribes))  # 更新进度条
+        self.mainwindow.market_handle()
+
+    @Slot()
+    def subscribe_all_slot(self):
+        for local_symbol in sorted(G.all_contracts):
+            self.bee_ext.app.subscribe(local_symbol)  # 订阅
+            G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})  # 更新订阅列表
+        self.mainwindow.market_handle()
+
+    def insert_(self, row, tick):
+        for i, col in enumerate(market_table_column):
+            if col == 'operator':
+                btn = QPushButton('前往下单')
+                btn.clicked.connect(self.go_order)
+                self.tableWidget.setCellWidget(row, i, btn)
+            else:
+                self.tableWidget.setItem(row, i, QTableWidgetItem(str(tick[col])))
+
     def fill_table(self):
         """
         必须按序填充
@@ -100,43 +130,30 @@ class MarketWidget(QWidget, Ui_Market):
         self.load_status.setText("加载订阅合约...")
         d = G.market_tick_row_map
         count = len(d)
-        for index, k in enumerate(sorted(d, key=d.__getitem__)):
-            row = d[k]
+        for index, local_symbol in enumerate(d):
+            row = index
             self.tableWidget.insertRow(row)
-            tick = G.market_tick[k]
-            name = tick['name']
-            local_symbol = tick['local_symbol']
-            last_price = tick['last_price']
-            self.tableWidget.setItem(row, 0, QTableWidgetItem(name))
-            self.tableWidget.setItem(row, 1, QTableWidgetItem(local_symbol))
-            self.tableWidget.setItem(row, 2, QTableWidgetItem(str(last_price)))
-            btn = QPushButton('前往下单')
-            btn.clicked.connect(self.go_order)
-            self.tableWidget.setCellWidget(row, 3, btn)
+            tick = G.market_tick[local_symbol]
+            self.insert_(row, tick)
             # 反馈
             self.progressBar.setValue((index + 1 // count))
-            self.load_status.setText(f"加载 {name}")
+            self.load_status.setText("加载中...")
 
     #
     @Slot()
     def set_item_slot(self, tick: dict):
-        name = tick['name']
         local_symbol = tick['local_symbol']
-        last_price = tick['last_price']
         if local_symbol not in G.market_tick_row_map:  # 不在table ,插入row
             row = self.item_row
-            G.market_tick_row_map[local_symbol] = row
+            G.market_tick_row_map.append(local_symbol)
             self.tableWidget.insertRow(row)
             self.item_row += 1
+            # 渲染
             self.load_time = time.time()
             self.progressBar.setValue(row)
-
+            self.insert_(row, tick)
         else:  # 已在table中 ,更新对应row
-            row = G.market_tick_row_map[local_symbol]
-
-        self.tableWidget.setItem(row, 0, QTableWidgetItem(name))
-        self.tableWidget.setItem(row, 1, QTableWidgetItem(local_symbol))
-        self.tableWidget.setItem(row, 2, QTableWidgetItem(str(last_price)))
-        btn = QPushButton('前往下单')
-        btn.clicked.connect(self.go_order)
-        self.tableWidget.setCellWidget(row, 3, btn)
+            row = G.market_tick_row_map.index(local_symbol)
+            for i, col in enumerate(market_table_column):
+                if col != 'operator':  # 按钮无需更新
+                    self.tableWidget.setItem(row, i, QTableWidgetItem(str(tick[col])))

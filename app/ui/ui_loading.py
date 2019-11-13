@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'loading.ui',
 # licensing of 'loading.ui' applies.
 #
-# Created: Tue Nov 12 15:09:52 2019
+# Created: Wed Nov 13 13:25:38 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,8 +14,8 @@ class Ui_Loading(object):
     def setupUi(self, Loading):
         Loading.setObjectName("Loading")
         Loading.resize(329, 95)
-        Loading.setMinimumSize(QtCore.QSize(329, 95))
-        Loading.setMaximumSize(QtCore.QSize(329, 95))
+        Loading.setMinimumSize(QtCore.QSize(0, 0))
+        Loading.setMaximumSize(QtCore.QSize(16777215, 16777215))
         Loading.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "border-radius:30px;")
         self.verticalLayout = QtWidgets.QVBoxLayout(Loading)

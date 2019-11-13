@@ -32,7 +32,7 @@ class AccountWidget(QWidget, Ui_Account):
         self.mainwindow.job.account_signal.connect(self.set_item)
 
     def diss(self):
-        self.mainwindow.status_msg.setText("您真闲..." + str(self.verticalSlider.value()))
+        self.mainwindow.status_msg.setText("您可真闲..." + str(self.verticalSlider.value()))
 
     def fill_table(self):
         """
@@ -40,8 +40,8 @@ class AccountWidget(QWidget, Ui_Account):
         :return:
         """
         d = G.account_row_map
-        for k in sorted(d, key=d.__getitem__):  # 必须按顺序插入row ,否则渲染失败
-            row = d[k]
+        for index, k in enumerate(d):  # 必须按顺序插入row ,否则渲染失败
+            row = index
             self.tableWidget.insertRow(row)
             key = key_zn(k)
             value = G.account[k]  # 获取值
@@ -53,11 +53,11 @@ class AccountWidget(QWidget, Ui_Account):
         for k, v in account.items():
             if k not in G.account_row_map:
                 row = self.row
-                G.account_row_map[k] = row
+                G.account_row_map.append(k)
                 self.tableWidget.insertRow(row)
                 self.row += 1
             else:
-                row = G.account_row_map[k]
+                row = G.account_row_map.index(k)
             key = key_zn(k)
             self.tableWidget.setItem(row, 0, QTableWidgetItem(key))
             self.tableWidget.setItem(row, 1, QTableWidgetItem(str(v)))

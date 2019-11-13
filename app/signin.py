@@ -16,6 +16,7 @@ class Vlog(VLogger):
     def handler_record(self, record):
         msg = f"{record['created'].split(' ')[1]}   {record['name']} " \
               f"  {record['levelname']}   {record['owner']}   {record['message']}"
+        G.log_history.append(msg)
         if G.mainwindow:
             G.mainwindow.job.order_log_signal.emit(msg)
         if G.loading:

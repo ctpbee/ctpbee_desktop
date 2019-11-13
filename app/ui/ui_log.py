@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'log.ui',
 # licensing of 'log.ui' applies.
 #
-# Created: Tue Nov 12 13:29:52 2019
+# Created: Wed Nov 13 17:55:03 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -15,15 +15,18 @@ class Ui_Log(object):
         Log.setObjectName("Log")
         Log.resize(675, 212)
         Log.setMinimumSize(QtCore.QSize(675, 212))
-        Log.setMaximumSize(QtCore.QSize(675, 212))
+        Log.setMaximumSize(QtCore.QSize(9999999, 16777215))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/menu/images/bee_temp_grey.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Log.setWindowIcon(icon)
-        self.formlayout = QtWidgets.QFormLayout(Log)
-        self.formlayout.setObjectName("formlayout")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(Log)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
         self.log_list = QtWidgets.QListWidget(Log)
         self.log_list.setObjectName("log_list")
-        self.formlayout.setWidget(0, QtWidgets.QFormLayout.SpanningRole, self.log_list)
+        self.verticalLayout.addWidget(self.log_list)
+        self.verticalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(Log)
         QtCore.QMetaObject.connectSlotsByName(Log)

@@ -99,7 +99,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         contracts = {contract.local_symbol: contract.name for contract in
                      self.bee_ext.app.recorder.get_all_contracts()}
         G.all_contracts = contracts
-        # 默认打开account
+        # 默认打开
         self.widget = HomeWidget(self)
         self.setCentralWidget(self.widget)
 
@@ -192,33 +192,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_order(self, ext, order: OrderData) -> None:
         active_orders = []
-        active_orders_id = []
         for order1 in self.bee_ext.app.recorder.get_all_active_orders():
             o1 = order1._to_dict()
             active_orders.append(o1)
-            active_orders_id.append(o1['local_order_id'])
-
-        G.update_order_activate_row_map(active_orders_id)
         self.job.order_activate_signal.emit(active_orders)
 
         orders = []
-        orders_id = []
         for order2 in self.bee_ext.app.recorder.get_all_orders():
             o2 = order2._to_dict()
             orders.append(o2)
-            orders_id.append(o2['local_order_id'])
-
-        G.update_order_order_row_map(orders_id)
         self.job.order_order_signal.emit(orders)
 
     def on_realtime(*args):
         self = args[0]
         all_positions = self.bee_ext.app.recorder.get_all_positions()
-        positions_id = []
-        for p in all_positions:
-            mark = p["local_symbol"] + p["direction"]
-            positions_id.append(mark)
-        G.update_order_position_row_map(positions_id)
         self.job.order_position_signal.emit(all_positions)
 
     def on_position(self, ext, position: PositionData) -> None:
@@ -238,12 +225,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_trade(self, ext, trade: TradeData) -> None:
         trades = []
-        trades_id = []
         for trade in self.bee_ext.app.recorder.get_all_trades():
             t = trade._to_dict()
             trades.append(t)
-            trades_id.append(t['local_trade_id'])
-        G.update_order_trade_row_map(trades_id)
         self.job.order_trade_signal.emit(trades)
 
     def on_init(self, ext, init):

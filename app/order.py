@@ -13,12 +13,12 @@ from app.lib.global_var import G
 from app.ui.ui_order import Ui_Order
 
 tick_zn = {
+    "local_symbol": '本地id',
+    "last_price": '最新价格',
     "ask_price_1": '买一价',
     "ask_volume_1": '买一量',
     "bid_price_1": '卖一价',
     "bid_volume_1": '卖一量',
-    "last_price": '最新价格',
-    "local_symbol": '本地id',
     "exchange": '交易所',
     "open_interest": '持仓量',
     "pre_close": '昨日收盘价',
@@ -85,9 +85,8 @@ class OrderWidget(QWidget, Ui_Order):
         self.short_btn.clicked.connect(self.short_slot)
         # 初始化table
         self.tick_row = len(G.order_tick_row_map)
-        self.fill_tick_table()
 
-        self.tick_table.setRowCount(self.tick_row)
+        self.tick_table.setRowCount(0)
         self.position_table.setRowCount(0)
         self.activate_order_table.setRowCount(0)
         self.order_table.setRowCount(0)
@@ -109,6 +108,9 @@ class OrderWidget(QWidget, Ui_Order):
         self.mainwindow.job.order_trade_signal.connect(self.set_trade_slot)
         # 信号控制
         self.symbol_name_list.currentIndexChanged.connect(self.symbol_change_slot)  # 监听合约列表
+        # 初始化
+        self.fill_tick_table()
+        self.fill_other()
 
     def search_path(self, dir):
         p = os.path.split(dir)[0] + '/static/kline.html'
@@ -133,11 +135,33 @@ class OrderWidget(QWidget, Ui_Order):
     def fill_tick_table(self):
         d = G.order_tick_row_map
         tick = G.market_tick[G.choice_local_symbol]
-        for index, k in enumerate(d):
-            row = index
+        for row, k in enumerate(d):
             self.tick_table.insertRow(row)
             self.tick_table.setItem(row, 0, QTableWidgetItem(str(tick_zn[k])))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
+
+    def fill_other(self):
+        ##position
+        all_positions = bee_current_app.recorder.get_all_positions()
+        self.set_position_slot(all_positions)
+        ## active
+        active_orders = []
+        for order1 in bee_current_app.recorder.get_all_active_orders():
+            o1 = order1._to_dict()
+            active_orders.append(o1)
+        self.set_activate_slot(active_orders)
+        ## order
+        orders = []
+        for order2 in bee_current_app.recorder.get_all_orders():
+            o2 = order2._to_dict()
+            orders.append(o2)
+        self.set_order_slot(orders)
+        ## trade
+        trades = []
+        for trade in bee_current_app.recorder.get_all_trades():
+            t = trade._to_dict()
+            trades.append(t)
+        self.set_trade_slot(trades)
 
     @Slot()
     def close_position(self):
@@ -228,7 +252,7 @@ class OrderWidget(QWidget, Ui_Order):
                 row = G.order_tick_row_map.index(k)
             self.tick_table.setItem(row, 0, QTableWidgetItem(v))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
-        # print("tick", tick)
+
 
     @Slot(list)
     def set_position_slot(self, positions: list):

@@ -1,5 +1,7 @@
 from PySide2.QtCore import Slot
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QTableWidget, QHeaderView
+from ctpbee import current_app
+
 from app.ui.ui_account import Ui_Account
 from app.lib.global_var import G
 
@@ -39,6 +41,7 @@ class AccountWidget(QWidget, Ui_Account):
         必须按序填充
         :return:
         """
+        current_app.trader.query_account()
         d = G.account_row_map
         for index, k in enumerate(d):  # 必须按顺序插入row ,否则渲染失败
             row = index

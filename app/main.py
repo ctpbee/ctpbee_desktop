@@ -4,7 +4,8 @@ import sys
 
 from PySide2.QtCore import Signal, QObject, Slot, Qt
 from PySide2.QtGui import QCloseEvent, QIcon, QPixmap
-from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, QMessageBox, QLabel, QMenu
+from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, QMessageBox, QLabel, QMenu, \
+    QSystemTrayIcon
 
 from app.lib.global_var import G
 from app.ui.ui_mainwindow import Ui_MainWindow
@@ -62,11 +63,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
         G.mainwindow = self
+        self.exit_ = False
         self.job = Job()
         self.kline_job = KInterfaceObject()
         self.bee_ext = None
         self.log_dialog = None
         self.cfg_dialog = None
+        self.tray_init()
         # designer 不支持将action加入菜单栏 只能手撸
         for a in ["首页", "账户", "行情", "下单", "策略", "回测", "配置", "日志"]:
             self.account_action = QAction(self)
@@ -233,23 +236,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def on_init(self, ext, init):
         pass
 
-    def closeEvent(self, event: QCloseEvent):
+    def tray_init(self):
+        icon = QIcon("app/resource/images/bee_temp_grey.png")
+        menu = QMenu()
+        openAction = menu.addAction("界面")
+        exitAction = menu.addAction("退出")
+        openAction.triggered.connect(self.show)
+        exitAction.triggered.connect(self.quit)
+        self.tray = QSystemTrayIcon()
+        self.tray.setIcon(icon)
+        self.tray.setContextMenu(menu)
+        self.tray.activated.connect(self.iconActivated)
+        self.tray.show()
+        self.tray.setToolTip("ctpbee桌面端")
 
-        msg = QMessageBox(QMessageBox.Question, "提示", "是否要退出程序？",
-                          QMessageBox.NoButton,
-                          self)
-        yr_btn = msg.addButton(self.tr("确定"), QMessageBox.YesRole)
-        msg.addButton(self.tr("取消"), QMessageBox.NoRole)
-        msg.exec_()
-        if msg.clickedButton() == yr_btn:
+    def quit(self):
+        self.exit_ = True
+        self.close()
+
+    def iconActivated(self, reason):
+        if reason in (QSystemTrayIcon.Trigger, QSystemTrayIcon.DoubleClick):
+            if self.isHidden():
+                self.show()
+            else:
+                self.hide()
+
+    def closeEvent(self, event: QCloseEvent):
+        if self.exit_:
+            event.accept()
             try:
                 current_app.release()
             except:
                 pass
-            event.accept()
             if self.cfg_dialog:
                 self.cfg_dialog.close()
             if self.log_dialog:
                 self.log_dialog.close()
         else:
+            self.hide()
             event.ignore()

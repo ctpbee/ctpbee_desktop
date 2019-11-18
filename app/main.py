@@ -237,7 +237,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pass
 
     def tray_init(self):
-        icon = QIcon("app/resource/images/bee_temp_grey.png")
+        icon = QIcon(":menu/images/bee_temp_grey.png")
         menu = QMenu()
         openAction = menu.addAction("界面")
         exitAction = menu.addAction("退出")

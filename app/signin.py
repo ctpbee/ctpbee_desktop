@@ -113,7 +113,7 @@ class SignInWidget(QWidget, Ui_SignIn):
         # loading
         self.loading = LoadingDialog()
         G.loading = self.loading
-        self.timer.start(2000)  # ms
+        self.timer.start(3000)  # ms
         self.loading.msg.setText("正在连接服务器...")
         self.loading.exec_()
         if bee_app and \

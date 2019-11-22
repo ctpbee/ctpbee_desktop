@@ -239,8 +239,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def tray_init(self):
         icon = QIcon(":menu/images/bee_temp_grey.png")
         menu = QMenu()
-        openAction = menu.addAction("界面")
-        exitAction = menu.addAction("退出")
+        openAction = menu.addAction("🍯 界面")
+        exitAction = menu.addAction("❎ 退出")
         openAction.triggered.connect(self.show)
         exitAction.triggered.connect(self.quit)
         self.tray = QSystemTrayIcon()
@@ -264,6 +264,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def closeEvent(self, event: QCloseEvent):
         if self.exit_:
             event.accept()
+            self.tray.hide()
             try:
                 current_app.release()
             except:
@@ -273,5 +274,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.log_dialog:
                 self.log_dialog.close()
         else:
+            self.tray.showMessage("ctpbee", "以最小化隐藏在托盘", msecs=2)
             self.hide()
             event.ignore()

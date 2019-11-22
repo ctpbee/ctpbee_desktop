@@ -1,5 +1,6 @@
 from PySide2.QtCore import Slot
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QTableWidget, QHeaderView
+from PySide2.QtCharts import QtCharts
 from ctpbee import current_app
 
 from app.ui.ui_account import Ui_Account
@@ -25,16 +26,11 @@ class AccountWidget(QWidget, Ui_Account):
         self.setWindowTitle("账户")
         self.row = 0
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
-        self.verticalSlider.valueChanged.connect(self.diss)
-        #
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度        #
         self.fill_table()
         #
         self.mainwindow = mainwindow
         self.mainwindow.job.account_signal.connect(self.set_item)
-
-    def diss(self):
-        self.mainwindow.status_msg.setText("您可真闲..." + str(self.verticalSlider.value()))
 
     def fill_table(self):
         """

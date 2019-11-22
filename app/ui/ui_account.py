@@ -5,7 +5,7 @@
 # Form implementation generated from reading ui file 'account.ui',
 # licensing of 'account.ui' applies.
 #
-# Created: Wed Nov 13 10:57:09 2019
+# Created: Fri Nov 22 14:32:37 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,10 +32,6 @@ class Ui_Account(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
         self.gridLayout.addWidget(self.tableWidget, 1, 1, 1, 1)
-        self.verticalSlider = QtWidgets.QSlider(Account)
-        self.verticalSlider.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider.setObjectName("verticalSlider")
-        self.gridLayout.addWidget(self.verticalSlider, 1, 2, 1, 1)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem1, 0, 2, 1, 1)
         self.label = QtWidgets.QLabel(Account)
@@ -45,7 +41,7 @@ class Ui_Account(object):
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem2, 2, 1, 1, 1)
+        self.gridLayout.addItem(spacerItem2, 2, 0, 1, 1)
 
         self.retranslateUi(Account)
         QtCore.QMetaObject.connectSlotsByName(Account)

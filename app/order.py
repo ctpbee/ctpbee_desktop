@@ -263,13 +263,21 @@ class OrderWidget(QWidget, Ui_Order):
         if local_symbol != G.choice_local_symbol:
             return
         for k, v in tick_zn.items():
-            if k not in G.order_tick_row_map:
+            if k not in G.order_tick_row_map:  # 不在表中
                 row = self.tick_row
                 G.order_tick_row_map.append(k)
                 self.tick_table.insertRow(row)
                 self.tick_row += 1
             else:
                 row = G.order_tick_row_map.index(k)
+                if k not in ["local_symbol", "exchange", "datetime"]:
+                    space_ = " " * 2
+                    old = self.tick_table.item(row, 1).text()
+                    different = float(tick[k]) - float(old)
+                    if different > 0:  # 增
+                        v = f"{v}{space_}↑≈{'%0.2f' % abs(different)}"
+                    elif different < 0:  # 减
+                        v = f"{v}{space_}↓≈{'%0.2f' % abs(different)}"
             self.tick_table.setItem(row, 0, QTableWidgetItem(v))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
 

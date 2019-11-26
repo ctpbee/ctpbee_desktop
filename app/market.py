@@ -163,12 +163,12 @@ class MarketWidget(QWidget, Ui_Market):
                         if old:  # 非空表
                             space_ = " " * 3
                             old = float(old.text().split(space_)[0])
-                            difference = abs(new - old)
+                            difference = new - old
                             if difference > 0:  # 涨
-                                it = QTableWidgetItem(f"{str(new)}{space_}↑{difference}")
+                                it = QTableWidgetItem(f"{str(new)}{space_}↑≈{'%0.2f' % abs(difference)}")
                                 it.setTextColor(QColor('red'))
                             elif difference < 0:  # 跌
-                                it = QTableWidgetItem(f"{str(new)}{space_}↓{difference}")
+                                it = QTableWidgetItem(f"{str(new)}{space_}↓≈{'%0.2f' % abs(difference)}")
                                 it.setTextColor(QColor('green'))
                             else:
                                 it = QTableWidgetItem(f"{str(new)}")

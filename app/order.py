@@ -3,12 +3,14 @@ import os
 import operator
 from time import sleep
 from PySide2.QtCore import Slot, QUrl
+from PySide2.QtGui import QColor
 from PySide2.QtWebChannel import QWebChannel
 from PySide2.QtWebEngineWidgets import QWebEngineView
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QTableWidget, QHeaderView
 from ctpbee import helper
 from ctpbee.constant import Exchange, TickData
 from ctpbee import current_app as bee_current_app
+
 from app.lib.global_var import G
 from app.ui.ui_order import Ui_Order
 
@@ -142,6 +144,8 @@ class OrderWidget(QWidget, Ui_Order):
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
 
     def fill_other(self):
+        ##acount
+        bee_current_app.trader.query_account()
         ##position
         all_positions = bee_current_app.recorder.get_all_positions()
         self.set_position_slot(all_positions)
@@ -272,14 +276,22 @@ class OrderWidget(QWidget, Ui_Order):
     @Slot(list)
     def set_position_slot(self, positions: list):
         self.position_table.setRowCount(0)
-        # print("positions", positions)
         row = 0
         x = sorted(positions, key=operator.itemgetter('local_symbol'))
         for p in x:
             self.position_table.insertRow(row)
             for i, col in enumerate(position_table_column):
                 if col != 'operator':
-                    self.position_table.setItem(row, i, QTableWidgetItem(str(p[col])))
+                    if col == 'position_profit':
+                        new = float(p[col])
+                        it = QTableWidgetItem(str(new))
+                        if new > 0:
+                            it.setTextColor(QColor('red'))
+                        elif new < 0:
+                            it.setTextColor(QColor('green'))
+                        self.position_table.setItem(row, i, it)
+                    else:
+                        self.position_table.setItem(row, i, QTableWidgetItem(str(p[col])))
                 else:
                     btn = QPushButton('平仓')
                     btn.clicked.connect(self.close_position)
@@ -290,7 +302,6 @@ class OrderWidget(QWidget, Ui_Order):
     def set_activate_slot(self, active_orders: list):
         self.activate_order_table.setRowCount(0)
         row = 0
-        print("active_orders", active_orders)
         x = sorted(active_orders, key=operator.itemgetter('local_symbol'))
         for o in x:
             self.activate_order_table.insertRow(row)
@@ -307,7 +318,6 @@ class OrderWidget(QWidget, Ui_Order):
     def set_order_slot(self, orders: list):
         self.order_table.setRowCount(0)
         row = 0
-        print("orders", orders)
         x = sorted(orders, key=operator.itemgetter('local_symbol'))
         for o in x:
             self.order_table.insertRow(row)
@@ -321,7 +331,6 @@ class OrderWidget(QWidget, Ui_Order):
         self.trade_table.setRowCount(0)
         row = 0
         x = sorted(trades, key=operator.itemgetter('local_symbol'))
-        print("trades", trades)
         for t in x:
             self.trade_table.insertRow(row)
 

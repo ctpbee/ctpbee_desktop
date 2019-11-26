@@ -1,6 +1,7 @@
 import time
 
 from PySide2.QtCore import Slot, QTimer
+from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QListWidgetItem, QTableWidget, \
     QHeaderView
 from app.ui.ui_market import Ui_Market
@@ -156,4 +157,23 @@ class MarketWidget(QWidget, Ui_Market):
             row = G.market_tick_row_map.index(local_symbol)
             for i, col in enumerate(market_table_column):
                 if col != 'operator':  # 按钮无需更新
-                    self.tableWidget.setItem(row, i, QTableWidgetItem(str(tick[col])))
+                    if col == "last_price":  # 对最新价动态颜色表示涨跌
+                        old = self.tableWidget.item(row, i)
+                        new = float(tick[col])
+                        if old:  # 非空表
+                            space_ = " " * 3
+                            old = float(old.text().split(space_)[0])
+                            difference = abs(new - old)
+                            if difference > 0:  # 涨
+                                it = QTableWidgetItem(f"{str(new)}{space_}↑{difference}")
+                                it.setTextColor(QColor('red'))
+                            elif difference < 0:  # 跌
+                                it = QTableWidgetItem(f"{str(new)}{space_}↓{difference}")
+                                it.setTextColor(QColor('green'))
+                            else:
+                                it = QTableWidgetItem(f"{str(new)}")
+                        else:
+                            it = QTableWidgetItem(str(tick[col]))
+                        self.tableWidget.setItem(row, i, it)
+                    else:
+                        self.tableWidget.setItem(row, i, QTableWidgetItem(str(tick[col])))

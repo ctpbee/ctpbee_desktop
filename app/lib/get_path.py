@@ -30,8 +30,11 @@ def get_folder_path(folder_name: str):
     return folder_path
 
 
-path = str(get_folder_path('ctpbee_desktop'))
-user_account_path = path + '/user_account.json'
+desktop_path = str(get_folder_path('ctpbee_desktop'))
+path = os.path.join(desktop_path, 'ticks')
+if not os.path.exists(path):
+    os.mkdir(path)
+user_account_path = os.path.join(desktop_path, 'user_account.json')
 
 
 def init_file():

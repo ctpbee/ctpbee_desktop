@@ -51,33 +51,14 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.setWindowTitle("ctpbee客户端")
         #
         self.load_remember()
-        # 设置验证
-        reg = QRegExp("PB[0~9]{8}")
-        pValidator = QRegExpValidator(self)
-        pValidator.setRegExp(reg)
-        self.userid_1.setValidator(pValidator)
-        self.userid_2.setValidator(pValidator)
-
-        reg = QRegExp("[a-zA-z0-9]+$")
-        pValidator.setRegExp(reg)
-        self.password_1.setValidator(pValidator)
-        self.password_2.setValidator(pValidator)
-
-        self.sign_in_btn_1.clicked.connect(self.sign_in_check)
-        self.sign_in_btn_2.clicked.connect(self.sign_in_check)
-        self.password_1.returnPressed.connect(self.sign_in_check)
-        # 检测是否为空
+        self.sign_in_btn_1.clicked.connect(self.common_sign_in)
+        self.sign_in_btn_2.clicked.connect(self.detailed_sign_in)
+        self.sign_in_btn_2.setEnabled(True)
+        self.sign_in_btn_2.setStyleSheet("QPushButton{background-color:green}")
+        self.password_1.returnPressed.connect(self.common_sign_in)
         # 普通
         self.userid_1.textChanged[str].connect(self.check_disable)
         self.password_1.textChanged[str].connect(self.check_disable)
-        # 详细
-        self.userid_2.textChanged[str].connect(self.check_disable)
-        self.password_2.textChanged[str].connect(self.check_disable)
-        self.auth_code_2.textChanged[str].connect(self.check_disable)
-        self.td_address_2.textChanged[str].connect(self.check_disable)
-        self.md_address_2.textChanged[str].connect(self.check_disable)
-        self.appid_2.textChanged[str].connect(self.check_disable)
-        self.brokerid_2.textChanged[str].connect(self.check_disable)
         # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.close_load)
@@ -90,13 +71,6 @@ class SignInWidget(QWidget, Ui_SignIn):
                 self.sign_in_btn_1.setStyleSheet("QPushButton{background-color:green}")
             else:
                 self.sign_in_btn_1.setEnabled(False)
-        if self.login_tab.currentIndex() == 1:
-            if self.userid_2.text() and self.password_2.text() and self.auth_code_2.text() and self.brokerid_2.text() \
-                    and self.td_address_2.text() and self.md_address_2.text() and self.appid_2.text():
-                self.sign_in_btn_2.setEnabled(True)
-                self.sign_in_btn_2.setStyleSheet("QPushButton{background-color:green}")
-            else:
-                self.sign_in_btn_2.setEnabled(False)
 
     def load_remember(self):
         path_list = os.listdir(desktop_path)
@@ -161,6 +135,22 @@ class SignInWidget(QWidget, Ui_SignIn):
                 bee_app.trader and \
                 bee_app.td_login_status:
             ##
+            return True
+        else:
+            return False
+
+    def common_sign_in(self):
+        info = dict(
+            userid=self.userid_1.text(),
+            password=self.password_1.text(),
+            interface=self.interface_1.currentText(),
+        )
+        which_ = self.other.currentText()
+        if which_ == 'simnow24小时':
+            info.update(simnow_24)
+        elif which_ == 'simnow移动':
+            info.update(simnow_yd)
+        if self.sign_in(info):
             G.current_account = info['userid']
             G.user_path = get_user_path(info['userid'])
             ##
@@ -171,7 +161,7 @@ class SignInWidget(QWidget, Ui_SignIn):
             mainwindow.show()
             self.close()
         else:
-            if self.other.currentText() == 'simnow24小时':
+            if which_ == 'simnow24小时':
                 msg = 'simnow移动'
                 info.update(simnow_yd)
             else:
@@ -182,37 +172,37 @@ class SignInWidget(QWidget, Ui_SignIn):
             if reply == QMessageBox.Yes:
                 self.sign_in(info)
 
-    def sign_in_check(self):
-        info = None
-        if self.login_tab.currentIndex() == 0:  # 普通登录
-            info = dict(
-                userid=self.userid_1.text(),
-                password=self.password_1.text(),
-                interface=self.interface_1.currentText(),
-            )
-            if self.other.currentText() == 'simnow24小时':
-                info.update(simnow_24)
-            if self.other.currentText() == 'simnow移动':
-                info.update(simnow_yd)
-        if self.login_tab.currentIndex() == 1:  # 详细登录
-            info = dict(
-                userid=self.userid_2.text(),
-                password=self.password_2.text(),
-                brokerid=self.brokerid_2.text(),
-                md_address=self.md_address_2.text(),
-                td_address=self.td_address_2.text(),
-                product_info="",
-                appid=self.appid_2.text(),
-                auth_code=self.auth_code_2.text(),
-                interface=self.interface_2.currentText(),
-            )
+    def detailed_sign_in(self):
+        info = dict(
+            userid=self.userid_2.text(),
+            password=self.password_2.text(),
+            brokerid=self.brokerid_2.text(),
+            md_address=self.md_address_2.text(),
+            td_address=self.td_address_2.text(),
+            product_info="",
+            appid=self.appid_2.text(),
+            auth_code=self.auth_code_2.text(),
+            interface=self.interface_2.currentText(),
+        )
+        if self.sign_in(info):
+            G.current_account = info['userid']
+            G.user_path = get_user_path(info['userid'])
+            ##
+            self.load_config()
+            ###
             if self.rember_me.isChecked():
-                account_path = os.path.join(get_user_path(self.userid_2.text()), f".account.json")
+                account_path = os.path.join(get_user_path(G.current_account), f".account.json")
                 with open(account_path, 'w') as f:
                     account = deepcopy(info)
                     account.pop('password')
                     json.dump(account, f)
-        self.sign_in(info)
+            mainwindow = MainWindow()
+            mainwindow.sign_in_success()
+            mainwindow.show()
+            self.close()
+        else:
+            QMessageBox.information(self, '提示', "登录出现错误",
+                                    QMessageBox.Ok, QMessageBox.Ok)
 
     def closeEvent(self, event: QCloseEvent):
         G.loading = None

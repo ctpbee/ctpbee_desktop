@@ -277,6 +277,8 @@ class OrderWidget(QWidget, Ui_Order):
                         v = f"{v}{space_}↑≈{'%0.2f' % abs(different)}"
                     elif different < 0:  # 减
                         v = f"{v}{space_}↓≈{'%0.2f' % abs(different)}"
+                    else:
+                        continue
             self.tick_table.setItem(row, 0, QTableWidgetItem(v))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
 

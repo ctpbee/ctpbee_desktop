@@ -1,6 +1,8 @@
 from PySide2.QtGui import QCloseEvent
 from PySide2.QtWidgets import QMessageBox, QDialog
 from PySide2.QtCore import Qt, Slot
+
+from app.lib.global_var import G
 from app.ui.ui_config import Ui_Config
 from ctpbee import current_app as bee_current_app
 
@@ -35,14 +37,16 @@ class ConfigDialog(QDialog, Ui_Config):
 
     @Slot()
     def update_config(self):
-        bee_current_app.config['REFRESH_INTERVAL'] = float(self.REFRESH_INTERVAL.text())
-        bee_current_app.config['SLIPPAGE_SHORT'] = float(self.SLIPPAGE_SHORT.text())
-        bee_current_app.config['SLIPPAGE_BUY'] = float(self.SLIPPAGE_BUY.text())
-        bee_current_app.config['SLIPPAGE_COVER'] = float(self.SLIPPAGE_COVER.text())
-        bee_current_app.config['SLIPPAGE_SELL'] = float(self.SLIPPAGE_SELL.text())
-        bee_current_app.config['INSTRUMENT_INDEPEND'] = True if self.INSTRUMENT_INDEPEND.isChecked() else False
-        bee_current_app.config['SHARED_FUNC'] = True if self.SHARED_FUNC.isChecked() else False
-        bee_current_app.config['CLOSE_PATTERN'] = str(self.CLOSE_PATTERN.currentText())
+        G.config.REFRESH_INTERVAL = bee_current_app.config['REFRESH_INTERVAL'] = float(self.REFRESH_INTERVAL.text())
+        G.config.SLIPPAGE_SHORT = bee_current_app.config['SLIPPAGE_SHORT'] = float(self.SLIPPAGE_SHORT.text())
+        G.config.SLIPPAGE_BUY = bee_current_app.config['SLIPPAGE_BUY'] = float(self.SLIPPAGE_BUY.text())
+        G.config.SLIPPAGE_COVER = bee_current_app.config['SLIPPAGE_COVER'] = float(self.SLIPPAGE_COVER.text())
+        G.config.SLIPPAGE_SELL = bee_current_app.config['SLIPPAGE_SELL'] = float(self.SLIPPAGE_SELL.text())
+        G.config.INSTRUMENT_INDEPEND = bee_current_app.config[
+            'INSTRUMENT_INDEPEND'] = True if self.INSTRUMENT_INDEPEND.isChecked() else False
+        G.config.SHARED_FUNC = bee_current_app.config[
+            'SHARED_FUNC'] = True if self.SHARED_FUNC.isChecked() else False
+        G.config.CLOSE_PATTERN = bee_current_app.config['CLOSE_PATTERN'] = str(self.CLOSE_PATTERN.currentText())
         QMessageBox.information(self, '提示', '修改成功', QMessageBox.Ok, QMessageBox.Ok)
 
     def closeEvent(self, arg__1: QCloseEvent):

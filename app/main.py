@@ -18,7 +18,7 @@ from app.config import ConfigDialog
 from ctpbee.constant import *
 from ctpbee.event_engine.engine import EVENT_TIMER
 from ctpbee import current_app
-from app.lib.get_path import desktop_path, path
+from app.lib.get_path import desktop_path, tick_path
 from app.log import LogDialog
 from app.home import HomeWidget
 
@@ -49,7 +49,7 @@ class KInterfaceObject(QObject):
     def get_history_data(self):
         """js传数据通过调用此函数"""
         try:
-            file_path = path + f"/{str(G.choice_local_symbol)}.json"
+            file_path = tick_path + f"/{str(G.choice_local_symbol)}.json"
             with open(file_path, 'r') as f:
                 data = f.read()
         except:
@@ -87,8 +87,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.addPermanentWidget(self.status_msg, stretch=5)
         self.statusbar.addPermanentWidget(self.market_msg, stretch=5)
 
-    def sign_in_success(self, bee_app):
-        self.bee_ext = CtpbeeApi('default_setting', bee_app)
+    def sign_in_success(self):
+        self.bee_ext = CtpbeeApi('default_setting', current_app)
         self.bee_ext.map[EVENT_ACCOUNT] = self.on_account
         self.bee_ext.map[EVENT_CONTRACT] = self.on_contract
         self.bee_ext.map[EVENT_BAR] = self.on_bar
@@ -168,7 +168,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         account = account._to_dict()
         G.account = account
         self.job.account_signal.emit(account)
-        file_path = os.path.join(desktop_path, f"{account['accountid']}_diary.json")
+        file_path = os.path.join(desktop_path, f".diary.json")
         now = datetime.strftime(datetime.now(), "%Y/%m/%d-%H:%M")
         data = {}
         if os.path.exists(file_path):

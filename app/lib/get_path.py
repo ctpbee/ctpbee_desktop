@@ -30,16 +30,20 @@ def get_folder_path(folder_name: str):
     return folder_path
 
 
+def get_user_path(accountid):
+    path = os.path.join(desktop_path, accountid)
+    if not os.path.exists(path):
+        os.mkdir(path)
+    return path
+
+
+def join_path(rootdir, *args):
+    for i in args:
+        rootdir = os.path.join(rootdir, i)
+    return rootdir
+
+
 desktop_path = str(get_folder_path('ctpbee_desktop'))
-path = os.path.join(desktop_path, 'ticks')
-if not os.path.exists(path):
-    os.mkdir(path)
-user_account_path = os.path.join(desktop_path, 'user_account.json')
-
-
-
-def init_file():
-    for i in [user_account_path]:
-        if not os.path.exists(i):
-            with open(i, 'w'):
-                pass
+tick_path = os.path.join(desktop_path, 'ticks')
+if not os.path.exists(tick_path):
+    os.mkdir(tick_path)

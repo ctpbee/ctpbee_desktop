@@ -3,7 +3,6 @@ import sys
 import platform
 from PySide2.QtWidgets import QApplication
 
-from app.lib.get_path import init_file
 from app.signin import SignInWidget
 
 if __name__ == '__main__':
@@ -18,7 +17,6 @@ if __name__ == '__main__':
         import ctypes
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("ctpbee_desktop")
 
-    init_file()
     app = QApplication(sys.argv)
 
     signinwindow = SignInWidget()

@@ -1,4 +1,5 @@
 import json
+import os
 from copy import deepcopy
 from PySide2.QtCore import QRegExp, Slot, QTimer, Qt
 from PySide2.QtGui import QRegExpValidator, QMovie, QCloseEvent
@@ -7,7 +8,7 @@ from PySide2.QtWidgets import QWidget, QMessageBox
 from app.lib.global_var import G
 from app.ui.ui_signin import Ui_SignIn
 from ctpbee import CtpBee, VLogger, current_app
-from app.lib.get_path import user_account_path
+from app.lib.get_path import get_user_path, desktop_path, join_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
 
@@ -21,6 +22,25 @@ class Vlog(VLogger):
             G.mainwindow.job.order_log_signal.emit(msg)
         if G.loading:
             G.loading.msg.setText(record['message'])
+
+
+simnow_yd = dict(
+    brokerid="9999",
+    md_address="tcp://218.202.237.33:10112",
+    td_address="tcp://218.202.237.33:10102",
+    product_info="",
+    appid="simnow_client_test",
+    auth_code="0000000000000000",
+)
+
+simnow_24 = dict(
+    brokerid="9999",
+    md_address="tcp://180.168.146.187:10131",
+    td_address="tcp://180.168.146.187:10130",
+    product_info="",
+    appid="simnow_client_test",
+    auth_code="0000000000000000",
+)
 
 
 class SignInWidget(QWidget, Ui_SignIn):
@@ -79,22 +99,43 @@ class SignInWidget(QWidget, Ui_SignIn):
                 self.sign_in_btn_2.setEnabled(False)
 
     def load_remember(self):
-        with open(user_account_path, 'r')as f:
-            info = f.read()
-        if info:
+        path_list = os.listdir(desktop_path)
+        for i in path_list:
+            path = join_path(desktop_path, i, '.account.json')
+            if not os.path.exists(path):
+                continue
+            with open(path, 'r')as f:
+                info = f.read()
+            if info:
+                try:
+                    info = json.loads(info)
+                    if not isinstance(info, dict):
+                        raise Exception
+                except Exception:
+                    info = {}
+                self.userid_2.setText(info.get('userid'))
+                self.brokerid_2.setText(info.get('brokerid'))
+                self.auth_code_2.setText(info.get('auth_code'))
+                self.appid_2.setText(info.get('appid'))
+                self.td_address_2.setText(info.get('td_address'))
+                self.md_address_2.setText(info.get('md_address'))
+                self.interface_2.setCurrentText(info.get('interface'))
+            return
+
+    def load_config(self):
+        config_path = os.path.join(G.user_path, ".config.json")
+        if not os.path.exists(config_path):
+            return
+        with open(config_path, 'r')as f:
+            data = f.read()
             try:
-                info = json.loads(info)
-                if not isinstance(info, dict):
+                cfg = json.loads(data)
+                if not isinstance(cfg, dict):
                     raise Exception
             except Exception:
-                info = {}
-            self.userid_2.setText(info.get('userid'))
-            self.brokerid_2.setText(info.get('brokerid'))
-            self.auth_code_2.setText(info.get('auth_code'))
-            self.appid_2.setText(info.get('appid'))
-            self.td_address_2.setText(info.get('td_address'))
-            self.md_address_2.setText(info.get('md_address'))
-            self.interface_2.setCurrentText(info.get('interface'))
+                return
+            for k, v in cfg.items():
+                current_app.config[k] = v
 
     def close_load(self):
         self.loading.close()
@@ -119,13 +160,27 @@ class SignInWidget(QWidget, Ui_SignIn):
         if bee_app and \
                 bee_app.trader and \
                 bee_app.td_login_status:
+            ##
             G.current_account = info['userid']
+            G.user_path = get_user_path(info['userid'])
+            ##
+            self.load_config()
+            ###
             mainwindow = MainWindow()
-            mainwindow.sign_in_success(bee_app=bee_app)
+            mainwindow.sign_in_success()
             mainwindow.show()
             self.close()
         else:
-            QMessageBox.warning(self, "提示", "登录出现错误", QMessageBox.Ok, QMessageBox.Ok)
+            if self.other.currentText() == 'simnow24小时':
+                msg = 'simnow移动'
+                info.update(simnow_yd)
+            else:
+                msg = 'simnow24小时'
+                info.update(simnow_24)
+            reply = QMessageBox.question(self, '登录出现错误', "是否尝试" + msg,
+                                         QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
+                self.sign_in(info)
 
     def sign_in_check(self):
         info = None
@@ -136,23 +191,9 @@ class SignInWidget(QWidget, Ui_SignIn):
                 interface=self.interface_1.currentText(),
             )
             if self.other.currentText() == 'simnow24小时':
-                info.update(dict(
-                    brokerid="9999",
-                    md_address="tcp://180.168.146.187:10131",
-                    td_address="tcp://180.168.146.187:10130",
-                    product_info="",
-                    appid="simnow_client_test",
-                    auth_code="0000000000000000",
-                ))
+                info.update(simnow_24)
             if self.other.currentText() == 'simnow移动':
-                info.update(dict(
-                    brokerid="9999",
-                    md_address="tcp://218.202.237.33:10112",
-                    td_address="tcp://218.202.237.33:10102",
-                    product_info="",
-                    appid="simnow_client_test",
-                    auth_code="0000000000000000",
-                ))
+                info.update(simnow_yd)
         if self.login_tab.currentIndex() == 1:  # 详细登录
             info = dict(
                 userid=self.userid_2.text(),
@@ -166,11 +207,11 @@ class SignInWidget(QWidget, Ui_SignIn):
                 interface=self.interface_2.currentText(),
             )
             if self.rember_me.isChecked():
-                with open(user_account_path, 'w') as f:
+                account_path = os.path.join(get_user_path(self.userid_2.text()), f".account.json")
+                with open(account_path, 'w') as f:
                     account = deepcopy(info)
                     account.pop('password')
                     json.dump(account, f)
-
         self.sign_in(info)
 
     def closeEvent(self, event: QCloseEvent):

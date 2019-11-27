@@ -36,7 +36,7 @@ class AccountWidget(QWidget, Ui_Account):
         #
         self.mainwindow = mainwindow
         self.mainwindow.job.account_signal.connect(self.set_item)
-        self.mainwindow.job.account_signal.connect(self.set_pg)
+        # self.mainwindow.job.account_signal.connect(self.set_pg)
         ##
         # self.plot = pg.PlotWidget(background=QColor('white'))
         # self.x_axis = self.plot.getAxis('bottom')
@@ -53,8 +53,8 @@ class AccountWidget(QWidget, Ui_Account):
                     x = dict(enumerate(data.keys()))
                     y_available = [i['available'] for i in data.values()]
                     # y_balance = [i['balance'] for i in data.values()]
-                    self.x_axis.setTicks([x.items()])
-                    self.plot.plot(list(x.keys()), y_available, symbol='o')
+                    # self.x_axis.setTicks([x.items()])
+                    self.plot.plot(y_available, symbol='o')
                     # self.plot.plot(list(x.keys()), y_balance, symbol='t')
 
     def fill_table(self):

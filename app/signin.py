@@ -119,6 +119,7 @@ class SignInWidget(QWidget, Ui_SignIn):
         if bee_app and \
                 bee_app.trader and \
                 bee_app.td_login_status:
+            G.current_account = info['userid']
             mainwindow = MainWindow()
             mainwindow.sign_in_success(bee_app=bee_app)
             mainwindow.show()

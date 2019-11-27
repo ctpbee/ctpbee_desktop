@@ -8,12 +8,12 @@ class G(dict):
     market_tick = {}
     market_tick_row_map = []
     # account
+    current_account = None
     account = {}
     account_row_map = []
     # order
     choice_local_symbol = None
     order_tick_row_map = []  # with tick ={}
 
-    #kline
+    # kline
     kline_folder = "/static/kline.html"
-

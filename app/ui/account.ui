@@ -103,6 +103,9 @@
      </property>
     </spacer>
    </item>
+   <item row="2" column="1">
+    <layout class="QVBoxLayout" name="account_layout"/>
+   </item>
   </layout>
  </widget>
  <resources/>

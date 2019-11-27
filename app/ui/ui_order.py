@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'order.ui',
 # licensing of 'order.ui' applies.
 #
-# Created: Fri Nov 15 14:23:06 2019
+# Created: Wed Nov 27 14:49:29 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -310,7 +310,7 @@ class Ui_Order(object):
         self.account_label.setText(QtWidgets.QApplication.translate("Order", "账户信息...", None, -1))
         self.tick_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Order", "key", None, -1))
         self.tick_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Order", "value", None, -1))
-        self.position_table.setSortingEnabled(True)
+        self.position_table.setSortingEnabled(False)
         self.position_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Order", "持仓合约", None, -1))
         self.position_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Order", "持仓方向", None, -1))
         self.position_table.horizontalHeaderItem(2).setText(QtWidgets.QApplication.translate("Order", "交易所", None, -1))
@@ -320,7 +320,7 @@ class Ui_Order(object):
         self.position_table.horizontalHeaderItem(6).setText(QtWidgets.QApplication.translate("Order", "昨日持仓手数", None, -1))
         self.position_table.horizontalHeaderItem(7).setText(QtWidgets.QApplication.translate("Order", "操作", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.position_tab), QtWidgets.QApplication.translate("Order", "持仓数据", None, -1))
-        self.activate_order_table.setSortingEnabled(True)
+        self.activate_order_table.setSortingEnabled(False)
         self.activate_order_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Order", "id", None, -1))
         self.activate_order_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Order", "报单合约", None, -1))
         self.activate_order_table.horizontalHeaderItem(2).setText(QtWidgets.QApplication.translate("Order", "报单方向", None, -1))
@@ -332,7 +332,7 @@ class Ui_Order(object):
         self.activate_order_table.horizontalHeaderItem(8).setText(QtWidgets.QApplication.translate("Order", "报单类型", None, -1))
         self.activate_order_table.horizontalHeaderItem(9).setText(QtWidgets.QApplication.translate("Order", "操作", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.active_order_tab), QtWidgets.QApplication.translate("Order", "待成交数据", None, -1))
-        self.order_table.setSortingEnabled(True)
+        self.order_table.setSortingEnabled(False)
         self.order_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Order", "报单合约", None, -1))
         self.order_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Order", "报单方向", None, -1))
         self.order_table.horizontalHeaderItem(2).setText(QtWidgets.QApplication.translate("Order", "交易所", None, -1))
@@ -342,7 +342,7 @@ class Ui_Order(object):
         self.order_table.horizontalHeaderItem(6).setText(QtWidgets.QApplication.translate("Order", "时间", None, -1))
         self.order_table.horizontalHeaderItem(7).setText(QtWidgets.QApplication.translate("Order", "价格类型", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.order_tab), QtWidgets.QApplication.translate("Order", "发单数据", None, -1))
-        self.trade_table.setSortingEnabled(True)
+        self.trade_table.setSortingEnabled(False)
         self.trade_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Order", "成交合约", None, -1))
         self.trade_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Order", "成交方向", None, -1))
         self.trade_table.horizontalHeaderItem(2).setText(QtWidgets.QApplication.translate("Order", "交易所", None, -1))

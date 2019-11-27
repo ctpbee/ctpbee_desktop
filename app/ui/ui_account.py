@@ -5,7 +5,7 @@
 # Form implementation generated from reading ui file 'account.ui',
 # licensing of 'account.ui' applies.
 #
-# Created: Fri Nov 22 14:32:37 2019
+# Created: Tue Nov 26 17:08:45 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -42,6 +42,9 @@ class Ui_Account(object):
         self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem2, 2, 0, 1, 1)
+        self.account_layout = QtWidgets.QVBoxLayout()
+        self.account_layout.setObjectName("account_layout")
+        self.gridLayout.addLayout(self.account_layout, 2, 1, 1, 1)
 
         self.retranslateUi(Account)
         QtCore.QMetaObject.connectSlotsByName(Account)

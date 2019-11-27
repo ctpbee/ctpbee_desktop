@@ -18,7 +18,7 @@ from app.config import ConfigDialog
 from ctpbee.constant import *
 from ctpbee.event_engine.engine import EVENT_TIMER
 from ctpbee import current_app
-from app.lib.get_path import path
+from app.lib.get_path import desktop_path, path
 from app.log import LogDialog
 from app.home import HomeWidget
 
@@ -168,6 +168,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         account = account._to_dict()
         G.account = account
         self.job.account_signal.emit(account)
+        file_path = os.path.join(desktop_path, f"{account['accountid']}_diary.json")
+        now = datetime.strftime(datetime.now(), "%Y/%m/%d-%H:%M")
+        data = {}
+        if os.path.exists(file_path):
+            with open(file_path, 'r')as fp:
+                old = fp.read()
+                if old:
+                    data = json.loads(old)
+        with open(file_path, 'w')as fp:
+            data.update({now: {'available': account['available'], 'balance': account['balance']}})
+            json.dump(data, fp)
 
     def on_contract(self, ext, contract: ContractData):
         pass
@@ -179,7 +190,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if bar.local_symbol == G.choice_local_symbol:
             self.kline_job.transfer_signal.emit({bar.local_symbol: info})
         # 存入文件
-        file_path = path + f"/{str(bar.local_symbol)}.json"
+        file_path = os.path.join(path, f"{str(bar.local_symbol)}.json")
         old = {}
         if os.path.exists(file_path):
             with open(file_path, 'r') as f:

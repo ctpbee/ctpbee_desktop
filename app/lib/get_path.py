@@ -37,6 +37,7 @@ if not os.path.exists(path):
 user_account_path = os.path.join(desktop_path, 'user_account.json')
 
 
+
 def init_file():
     for i in [user_account_path]:
         if not os.path.exists(i):

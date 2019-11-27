@@ -1,13 +1,9 @@
-0
-1
-2
-3
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'market.ui',
 # licensing of 'market.ui' applies.
 #
-# Created: Wed Nov 13 13:36:07 2019
+# Created: Wed Nov 27 14:48:40 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -42,7 +38,7 @@ class Ui_Market(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(3, item)
         self.tableWidget.horizontalHeader().setCascadingSectionResizes(False)
-        self.tableWidget.horizontalHeader().setSortIndicatorShown(True)
+        self.tableWidget.horizontalHeader().setSortIndicatorShown(False)
         self.tableWidget.verticalHeader().setCascadingSectionResizes(False)
         self.tableWidget.verticalHeader().setSortIndicatorShown(False)
         self.formLayout.setWidget(10, QtWidgets.QFormLayout.FieldRole, self.tableWidget)
@@ -101,7 +97,7 @@ class Ui_Market(object):
 
     def retranslateUi(self, Market):
         Market.setWindowTitle(QtWidgets.QApplication.translate("Market", "Form", None, -1))
-        self.tableWidget.setSortingEnabled(True)
+        self.tableWidget.setSortingEnabled(False)
         self.tableWidget.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Market", "中文名", None, -1))
         self.tableWidget.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Market", "品种", None, -1))
         self.tableWidget.horizontalHeaderItem(2).setText(QtWidgets.QApplication.translate("Market", "行情", None, -1))

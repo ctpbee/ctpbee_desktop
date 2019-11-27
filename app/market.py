@@ -70,11 +70,11 @@ class MarketWidget(QWidget, Ui_Market):
     @Slot()
     def timer_slot(self):
         if time.time() - self.load_time > 0.5:
-            self.tableWidget.setEnabled(True)
-            self.loading.close()
-            self.timer.stop()
             self.progressBar.setValue(len(G.subscribes))
             self.load_status.setText("订阅合约列表加载完成")
+            self.timer.stop()
+            self.loading.close()
+            self.tableWidget.setEnabled(True)
 
     @Slot()
     def unsubscribe_slot(self):
@@ -150,30 +150,31 @@ class MarketWidget(QWidget, Ui_Market):
             self.tableWidget.insertRow(row)
             self.item_row += 1
             # 渲染
-            self.load_time = time.time()
+            self.load_time = time.time()  # 刷新关闭渲染动画计时
             self.progressBar.setValue(row)
             self.insert_(row, tick)
         else:  # 已在table中 ,更新对应row
             row = G.market_tick_row_map.index(local_symbol)
             for i, col in enumerate(market_table_column):
-                if col != 'operator':  # 按钮无需更新
-                    if col == "last_price":  # 对最新价动态颜色表示涨跌
-                        old = self.tableWidget.item(row, i)
-                        new = float(tick[col])
-                        if old:  # 非空表
-                            space_ = " " * 3
-                            old = float(old.text().split(space_)[0])
-                            difference = new - old
-                            if difference > 0:  # 涨
-                                it = QTableWidgetItem(f"{str(new)}{space_}↑≈{'%0.2f' % abs(difference)}")
-                                it.setTextColor(QColor('red'))
-                            elif difference < 0:  # 跌
-                                it = QTableWidgetItem(f"{str(new)}{space_}↓≈{'%0.2f' % abs(difference)}")
-                                it.setTextColor(QColor('green'))
-                            else:
-                                it = QTableWidgetItem(f"{str(new)}")
+                if col == 'operator':  # 按钮无需更新
+                    continue
+                if col == "last_price":  # 对最新价动态颜色表示涨跌
+                    old = self.tableWidget.item(row, i)
+                    new = float(tick[col])
+                    if old:  # 非空表
+                        space_ = " " * 3
+                        old = float(old.text().split(space_)[0])
+                        difference = new - old
+                        if difference > 0:  # 涨
+                            it = QTableWidgetItem(f"{str(new)}{space_}↑≈{'%0.2f' % abs(difference)}")
+                            it.setTextColor(QColor('red'))
+                        elif difference < 0:  # 跌
+                            it = QTableWidgetItem(f"{str(new)}{space_}↓≈{'%0.2f' % abs(difference)}")
+                            it.setTextColor(QColor('green'))
                         else:
-                            it = QTableWidgetItem(str(tick[col]))
-                        self.tableWidget.setItem(row, i, it)
+                            continue
                     else:
-                        self.tableWidget.setItem(row, i, QTableWidgetItem(str(tick[col])))
+                        it = QTableWidgetItem(str(tick[col]))
+                    self.tableWidget.setItem(row, i, it)
+                else:
+                    self.tableWidget.setItem(row, i, QTableWidgetItem(str(tick[col])))

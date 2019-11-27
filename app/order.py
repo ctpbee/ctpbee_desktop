@@ -131,8 +131,9 @@ class OrderWidget(QWidget, Ui_Order):
         self.kline_job.qt_to_js.emit(json.dumps(data))
 
     def symbol_change_slot(self):
-        if G.choice_local_symbol != self.symbol_name_list.currentText():
-            G.choice_local_symbol = self.symbol_name_list.currentText()
+        symbol = self.symbol_name_list.currentText()
+        if G.choice_local_symbol != symbol:
+            G.choice_local_symbol = symbol
             self.mainwindow.order_handle()
 
     def fill_tick_table(self):
@@ -176,7 +177,6 @@ class OrderWidget(QWidget, Ui_Order):
         exchange = self.position_table.item(row, position_table_column.index('exchange')).text()
         volume = self.position_table.item(row, position_table_column.index('volume')).text()
         local_symbol = symbol + '.' + exchange
-        print(local_symbol)
         tick = TickData(symbol=symbol, exchange=exchange_map[exchange])
         try:
             price = self.bee_ext.app.recorder.get_tick(local_symbol).last_price
@@ -191,7 +191,7 @@ class OrderWidget(QWidget, Ui_Order):
                 QMessageBox().information(self, "提示", "平仓请求发送成功", QMessageBox.Ok, QMessageBox.Ok)
             except Exception as e:
                 print(e)
-                QMessageBox().warning(self, "提示", "平仓请求发送失败", QMessageBox.Ok, QMessageBox.Ok)
+                QMessageBox().warning(self, "提示", "平仓请求发送失败" + str(e), QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     def open_order(self, direction):
@@ -217,8 +217,7 @@ class OrderWidget(QWidget, Ui_Order):
                 msg = "下单请求发送成功"
                 QMessageBox().information(self, "提示", str(msg), QMessageBox.Ok, QMessageBox.Ok)
         except Exception as e:
-            msg = "下单请求发送失败"
-            QMessageBox().warning(self, "提示", str(msg), QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox().warning(self, "提示", "下单请求发送失败" + str(e), QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     def cancel_order(self):
@@ -231,8 +230,8 @@ class OrderWidget(QWidget, Ui_Order):
         try:
             bee_current_app.cancel_order(req)
             QMessageBox().information(self, "提示", "撤单请求发送成功", QMessageBox.Ok, QMessageBox.Ok)
-        except Exception:
-            QMessageBox().warning(self, "提示", "撤单请求发送失败", QMessageBox.Ok, QMessageBox.Ok)
+        except Exception as e:
+            QMessageBox().warning(self, "提示", "撤单请求发送失败"+str(e), QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     def buy_slot(self):

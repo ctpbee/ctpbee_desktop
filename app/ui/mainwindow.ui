@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resource/mainwindow.qrc">
+    <normaloff>:/menu/images/bee_temp_grey.png</normaloff>:/menu/images/bee_temp_grey.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -26,6 +30,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resource/mainwindow.qrc"/>
+ </resources>
  <connections/>
 </ui>

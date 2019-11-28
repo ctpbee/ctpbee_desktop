@@ -50,8 +50,11 @@ class SignInWidget(QWidget, Ui_SignIn):
         super(SignInWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
+        self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
         self.setStyleSheet(QssHelper.read_signin())
         #
+        self.close_btn.clicked.connect(self.close)
+        self.min_btn.clicked.connect(self.showMinimized)
         self.load_remember()
         self.sign_in_btn_1.clicked.connect(self.common_sign_in)
         self.sign_in_btn_2.clicked.connect(self.detailed_sign_in)
@@ -204,3 +207,22 @@ class SignInWidget(QWidget, Ui_SignIn):
             except Exception:
                 pass
         event.accept()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.m_flag = True
+            self.r_flag = False
+            self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
+            event.accept()
+
+    def mouseReleaseEvent(self, event):
+        self.r_flag = True
+        event.accept()
+
+    def mouseMoveEvent(self, QMouseEvent):
+        try:
+            if Qt.LeftButton and self.m_flag and not self.r_flag:
+                self.move(QMouseEvent.globalPos() - self.m_Position)  # 更改窗口位置
+                QMouseEvent.accept()
+        except:
+            pass

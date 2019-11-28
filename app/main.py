@@ -8,6 +8,7 @@ from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, 
     QSystemTrayIcon
 
 from app.lib.global_var import G
+from app.lib.helper import QssHelper
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
 from app.account import AccountWidget
@@ -62,6 +63,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
+        self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
+        self.setStyleSheet(QssHelper.read_mainwindow())
         G.mainwindow = self
         self.exit_ = False
         self.job = Job()
@@ -288,3 +291,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tray.showMessage("ctpbee", "以最小化隐藏在托盘", msecs=2)
             self.hide()
             event.ignore()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.m_flag = True
+            self.r_flag = False
+            self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
+            event.accept()
+
+    def mouseReleaseEvent(self, event):
+        self.r_flag = True
+        event.accept()
+
+    def mouseMoveEvent(self, QMouseEvent):
+        try:
+            if Qt.LeftButton and self.m_flag and not self.r_flag:
+                self.move(QMouseEvent.globalPos() - self.m_Position)  # 更改窗口位置
+                QMouseEvent.accept()
+        except:
+            pass

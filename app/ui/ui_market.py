@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'market.ui',
 # licensing of 'market.ui' applies.
 #
-# Created: Wed Nov 27 14:48:40 2019
+# Created: Thu Nov 28 13:26:00 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -57,15 +57,12 @@ class Ui_Market(object):
         self.horizontalLayout.addWidget(self.symbol_list)
         self.subscribe_singel = QtWidgets.QPushButton(Market)
         self.subscribe_singel.setMaximumSize(QtCore.QSize(100, 200))
-        self.subscribe_singel.setStyleSheet("background-color: rgb(0, 85, 255);")
         self.subscribe_singel.setObjectName("subscribe_singel")
         self.horizontalLayout.addWidget(self.subscribe_singel)
         self.subscribe_type = QtWidgets.QPushButton(Market)
-        self.subscribe_type.setStyleSheet("background-color: rgb(0, 170, 0);")
         self.subscribe_type.setObjectName("subscribe_type")
         self.horizontalLayout.addWidget(self.subscribe_type)
         self.subscribe_all = QtWidgets.QPushButton(Market)
-        self.subscribe_all.setStyleSheet("background-color: rgb(255, 170, 0);")
         self.subscribe_all.setObjectName("subscribe_all")
         self.horizontalLayout.addWidget(self.subscribe_all)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)

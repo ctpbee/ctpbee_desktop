@@ -19,7 +19,7 @@ keys = [
 
 class ConfigDialog(QDialog, Ui_Config):
     def __init__(self, mainwindow):
-        super(ConfigDialog, self).__init__()
+        super(ConfigDialog, self).__init__(parent=mainwindow)
         self.setupUi(self)
         self.mainwindow = mainwindow
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))

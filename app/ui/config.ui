@@ -229,9 +229,6 @@
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
        </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 170, 0);</string>
-       </property>
        <property name="text">
         <string>提交更改</string>
        </property>

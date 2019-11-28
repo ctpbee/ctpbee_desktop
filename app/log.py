@@ -8,7 +8,7 @@ from app.ui.ui_log import Ui_Log
 
 class LogDialog(QDialog, Ui_Log):
     def __init__(self, mainwindow):
-        super(LogDialog, self).__init__()
+        super(LogDialog, self).__init__(parent=mainwindow)
         self.setupUi(self)
         # self.setWindowFlags(Qt.WindowStaysOnTopHint)#窗口置顶
         self.mainwindow = mainwindow

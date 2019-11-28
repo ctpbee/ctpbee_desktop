@@ -303,6 +303,7 @@ class OrderWidget(QWidget, Ui_Order):
                         self.position_table.setItem(row, i, QTableWidgetItem(str(p[col])))
                 else:
                     btn = QPushButton('平仓')
+                    btn.setStyleSheet("background-color:green;color:white")
                     btn.clicked.connect(self.close_position)
                     self.position_table.setCellWidget(row, i, btn)
             row += 1
@@ -319,6 +320,7 @@ class OrderWidget(QWidget, Ui_Order):
                     self.activate_order_table.setItem(row, i, QTableWidgetItem(str(o[col])))
                 else:
                     btn = QPushButton('撤单')
+                    btn.setStyleSheet("background-color:blue;color:white")
                     btn.clicked.connect(self.cancel_order)
                     self.activate_order_table.setCellWidget(row, i, btn)
             row += 1

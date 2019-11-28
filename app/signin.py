@@ -11,6 +11,7 @@ from ctpbee import CtpBee, VLogger, current_app
 from app.lib.get_path import get_user_path, desktop_path, join_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
+from app.lib.helper import QssHelper
 
 
 class Vlog(VLogger):
@@ -49,12 +50,12 @@ class SignInWidget(QWidget, Ui_SignIn):
         super(SignInWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
+        self.setStyleSheet(QssHelper.read_signin())
         #
         self.load_remember()
         self.sign_in_btn_1.clicked.connect(self.common_sign_in)
         self.sign_in_btn_2.clicked.connect(self.detailed_sign_in)
         self.sign_in_btn_2.setEnabled(True)
-        self.sign_in_btn_2.setStyleSheet("QPushButton{background-color:green}")
         self.password_1.returnPressed.connect(self.common_sign_in)
         # 普通
         self.userid_1.textChanged[str].connect(self.check_disable)
@@ -68,7 +69,6 @@ class SignInWidget(QWidget, Ui_SignIn):
         if self.login_tab.currentIndex() == 0:
             if self.userid_1.text() and self.password_1.text():
                 self.sign_in_btn_1.setEnabled(True)
-                self.sign_in_btn_1.setStyleSheet("QPushButton{background-color:green}")
             else:
                 self.sign_in_btn_1.setEnabled(False)
 
@@ -109,7 +109,8 @@ class SignInWidget(QWidget, Ui_SignIn):
             except Exception:
                 return
             for k, v in cfg.items():
-                current_app.config[k] = v
+                if hasattr(current_app.config, k):
+                    current_app.config[k] = v
 
     def close_load(self):
         self.loading.close()
@@ -128,13 +129,22 @@ class SignInWidget(QWidget, Ui_SignIn):
         # loading
         self.loading = LoadingDialog()
         G.loading = self.loading
-        self.timer.start(3000)  # ms
+        self.timer.start(2000)  # ms
         self.loading.msg.setText("正在连接服务器...")
         self.loading.exec_()
         if bee_app and \
                 bee_app.trader and \
                 bee_app.td_login_status:
             ##
+            G.current_account = info['userid']
+            G.user_path = get_user_path(G.current_account)
+            ##
+            self.load_config()
+            ###
+            mainwindow = MainWindow()
+            mainwindow.sign_in_success()
+            mainwindow.show()
+            self.close()
             return True
         else:
             return False
@@ -150,17 +160,7 @@ class SignInWidget(QWidget, Ui_SignIn):
             info.update(simnow_24)
         elif which_ == 'simnow移动':
             info.update(simnow_yd)
-        if self.sign_in(info):
-            G.current_account = info['userid']
-            G.user_path = get_user_path(info['userid'])
-            ##
-            self.load_config()
-            ###
-            mainwindow = MainWindow()
-            mainwindow.sign_in_success()
-            mainwindow.show()
-            self.close()
-        else:
+        if not self.sign_in(info):
             if which_ == 'simnow24小时':
                 msg = 'simnow移动'
                 info.update(simnow_yd)
@@ -170,7 +170,8 @@ class SignInWidget(QWidget, Ui_SignIn):
             reply = QMessageBox.question(self, '登录出现错误', "是否尝试" + msg,
                                          QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
             if reply == QMessageBox.Yes:
-                self.sign_in(info)
+                if not self.sign_in(info):
+                    QMessageBox.information(self, "提示", "登录失败")
 
     def detailed_sign_in(self):
         info = dict(
@@ -185,21 +186,12 @@ class SignInWidget(QWidget, Ui_SignIn):
             interface=self.interface_2.currentText(),
         )
         if self.sign_in(info):
-            G.current_account = info['userid']
-            G.user_path = get_user_path(info['userid'])
-            ##
-            self.load_config()
-            ###
             if self.rember_me.isChecked():
                 account_path = os.path.join(get_user_path(G.current_account), f".account.json")
                 with open(account_path, 'w') as f:
                     account = deepcopy(info)
                     account.pop('password')
                     json.dump(account, f)
-            mainwindow = MainWindow()
-            mainwindow.sign_in_success()
-            mainwindow.show()
-            self.close()
         else:
             QMessageBox.information(self, '提示', "登录出现错误",
                                     QMessageBox.Ok, QMessageBox.Ok)

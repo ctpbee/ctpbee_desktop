@@ -3,12 +3,13 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Tue Nov 12 15:04:56 2019
+# Created: Thu Nov 28 13:27:06 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide2 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Config(object):
     def setupUi(self, Config):
@@ -100,7 +101,6 @@ class Ui_Config(object):
         self.pushButton = QtWidgets.QPushButton(Config)
         self.pushButton.setMaximumSize(QtCore.QSize(200, 16777215))
         self.pushButton.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.pushButton.setStyleSheet("background-color: rgb(0, 170, 0);")
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout.addWidget(self.pushButton)
         self.formLayout_2.setLayout(3, QtWidgets.QFormLayout.SpanningRole, self.horizontalLayout)
@@ -128,5 +128,6 @@ class Ui_Config(object):
         self.CLOSE_PATTERN.setItemText(0, QtWidgets.QApplication.translate("Config", "today", None, -1))
         self.CLOSE_PATTERN.setItemText(1, QtWidgets.QApplication.translate("Config", "yesterday", None, -1))
         self.pushButton.setText(QtWidgets.QApplication.translate("Config", "提交更改", None, -1))
+
 
 import app.resource.mainwindow_rc

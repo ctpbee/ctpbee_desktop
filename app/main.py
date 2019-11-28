@@ -168,7 +168,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         account = account._to_dict()
         G.account = account
         self.job.account_signal.emit(account)
-        file_path = os.path.join(desktop_path, f".diary.json")
+        file_path = os.path.join(G.user_path, ".diary.json")
         now = datetime.strftime(datetime.now(), "%Y/%m/%d-%H:%M")
         data = {}
         if os.path.exists(file_path):
@@ -190,7 +190,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if bar.local_symbol == G.choice_local_symbol:
             self.kline_job.transfer_signal.emit({bar.local_symbol: info})
         # 存入文件
-        file_path = os.path.join(path, f"{str(bar.local_symbol)}.json")
+        file_path = os.path.join(tick_path, f"{str(bar.local_symbol)}.json")
         old = {}
         if os.path.exists(file_path):
             with open(file_path, 'r') as f:

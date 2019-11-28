@@ -3,6 +3,7 @@ from PySide2.QtWidgets import QMessageBox, QDialog
 from PySide2.QtCore import Qt, Slot
 
 from app.lib.global_var import G
+from app.lib.helper import QssHelper
 from app.ui.ui_config import Ui_Config
 from ctpbee import current_app as bee_current_app
 
@@ -19,8 +20,9 @@ keys = [
 
 class ConfigDialog(QDialog, Ui_Config):
     def __init__(self, mainwindow):
-        super(ConfigDialog, self).__init__(parent=mainwindow)
+        super(ConfigDialog, self).__init__()
         self.setupUi(self)
+        self.setStyleSheet(QssHelper.read_config())
         self.mainwindow = mainwindow
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))
         self.SLIPPAGE_SHORT.setValue(float(bee_current_app.config['SLIPPAGE_SHORT']))

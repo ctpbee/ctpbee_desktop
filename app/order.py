@@ -12,6 +12,7 @@ from ctpbee.constant import Exchange, TickData
 from ctpbee import current_app as bee_current_app
 
 from app.lib.global_var import G
+from app.lib.helper import QssHelper
 from app.ui.ui_order import Ui_Order
 
 tick_zn = {
@@ -52,6 +53,7 @@ class OrderWidget(QWidget, Ui_Order):
     def __init__(self, mainwindow):
         super(OrderWidget, self).__init__()
         self.setupUi(self)
+        self.setStyleSheet(QssHelper.read_order())
         self.setWindowTitle("下单")
         #
         self.position_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
@@ -59,6 +61,12 @@ class OrderWidget(QWidget, Ui_Order):
         self.order_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.trade_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.tick_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
+        self.tick_table.horizontalHeader().setVisible(False)  # 水平表头不可见
+        self.tick_table.verticalHeader().setVisible(False)  # 垂直表头不可见
+        self.position_table.verticalHeader().setVisible(False)  # 垂直表头不可见
+        self.activate_order_table.verticalHeader().setVisible(False)  # 垂直表头不可见
+        self.order_table.verticalHeader().setVisible(False)  # 垂直表头不可见
+        self.trade_table.verticalHeader().setVisible(False)  # 垂直表头不可见
         #
         self.mainwindow = mainwindow
         self.bee_ext = mainwindow.bee_ext
@@ -231,7 +239,7 @@ class OrderWidget(QWidget, Ui_Order):
             bee_current_app.cancel_order(req)
             QMessageBox().information(self, "提示", "撤单请求发送成功", QMessageBox.Ok, QMessageBox.Ok)
         except Exception as e:
-            QMessageBox().warning(self, "提示", "撤单请求发送失败"+str(e), QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox().warning(self, "提示", "撤单请求发送失败" + str(e), QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     def buy_slot(self):

@@ -10,7 +10,6 @@ color:#f0f0f0;
 }
 QStatusBar{
 background:#b6b6b6;
-
 }
 QProgressBar {
     border-radius: 5px;
@@ -25,4 +24,13 @@ QProgressBar::chunk {
 QMenuBar::item:selected {
     color: #b81d18;
     background: #202020
+}
+
+QPushButton{
+    padding:10px
+}
+
+
+QPushButton:hover{
+    background:#b81d18;
 }

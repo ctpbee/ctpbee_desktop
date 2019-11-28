@@ -90,12 +90,18 @@
      <property name="styleSheet">
       <string notr="true"/>
      </property>
+     <property name="tabPosition">
+      <enum>QTabWidget::North</enum>
+     </property>
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
      <widget class="QWidget" name="login1">
       <attribute name="title">
-       <string>普通登录</string>
+       <string>快速登录</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0" colspan="2">

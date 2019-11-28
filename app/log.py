@@ -3,13 +3,16 @@ from PySide2.QtGui import QCloseEvent
 from PySide2.QtWidgets import QDialog
 
 from app.lib.global_var import G
+from app.lib.helper import QssHelper
 from app.ui.ui_log import Ui_Log
 
 
 class LogDialog(QDialog, Ui_Log):
     def __init__(self, mainwindow):
-        super(LogDialog, self).__init__(parent=mainwindow)
+        super(LogDialog, self).__init__()
         self.setupUi(self)
+        self.setStyleSheet(QssHelper.read_log())
+
         # self.setWindowFlags(Qt.WindowStaysOnTopHint)#窗口置顶
         self.mainwindow = mainwindow
         self.mainwindow.job.order_log_signal.connect(self.set_log_slot)

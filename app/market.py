@@ -3,7 +3,9 @@ import time
 from PySide2.QtCore import Slot, QTimer
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QListWidgetItem, QTableWidget, \
-    QHeaderView
+    QHeaderView, QAbstractItemView
+
+from app.lib.helper import QssHelper
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
 from app.loading import LoadingDialog
@@ -16,6 +18,7 @@ class MarketWidget(QWidget, Ui_Market):
     def __init__(self, mainwindow):
         super(MarketWidget, self).__init__()
         self.setupUi(self)
+        self.setStyleSheet(QssHelper.read_market())
         self.setWindowTitle("行情")
         self.item_row = len(G.market_tick_row_map)
         self.bee_ext = mainwindow.bee_ext
@@ -29,6 +32,8 @@ class MarketWidget(QWidget, Ui_Market):
         #
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
+        self.tableWidget.verticalHeader().setVisible(False)
+        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.fill_table()
         self.load_time = time.time()
         self.tableWidget.setEnabled(False)

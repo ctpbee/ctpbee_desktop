@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'market.ui',
 # licensing of 'market.ui' applies.
 #
-# Created: Thu Nov 28 13:26:00 2019
+# Created: Thu Nov 28 20:43:55 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -84,7 +84,6 @@ class Ui_Market(object):
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
         self.unsubscribe = QtWidgets.QPushButton(Market)
-        self.unsubscribe.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.unsubscribe.setObjectName("unsubscribe")
         self.horizontalLayout_2.addWidget(self.unsubscribe)
         self.formLayout.setLayout(12, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_2)

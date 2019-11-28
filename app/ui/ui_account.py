@@ -5,7 +5,7 @@
 # Form implementation generated from reading ui file 'account.ui',
 # licensing of 'account.ui' applies.
 #
-# Created: Tue Nov 26 17:08:45 2019
+# Created: Thu Nov 28 19:17:41 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -22,7 +22,7 @@ class Ui_Account(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 1, 0, 1, 1)
         self.tableWidget = QtWidgets.QTableWidget(Account)
-        self.tableWidget.setMinimumSize(QtCore.QSize(500, 350))
+        self.tableWidget.setMinimumSize(QtCore.QSize(0, 0))
         self.tableWidget.setBaseSize(QtCore.QSize(300, 200))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(2)

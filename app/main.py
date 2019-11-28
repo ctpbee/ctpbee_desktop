@@ -62,7 +62,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
-        self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
+        # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框 会导致闪屏异常
         self.setStyleSheet(QssHelper.read_mainwindow())
         self.recovery_size = QSize(self.width(), self.height())
         G.mainwindow = self
@@ -120,7 +120,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif action == "账户":
             self.account_handle()
         elif action == "回测":
-            QMessageBox.information(self, "提示", "正在加班赶...", QMessageBox.Ok, QMessageBox.Ok)
+            return
         elif action == "行情":
             self.market_handle()
         elif action == "策略":
@@ -296,28 +296,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.hide()
             event.ignore()
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self.m_flag = True
-            self.r_flag = False
-            self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
-            event.accept()
-
-    def mouseReleaseEvent(self, event):
-        self.r_flag = True
-        event.accept()
-
-    def mouseMoveEvent(self, QMouseEvent):
-        try:
-            if Qt.LeftButton and self.m_flag and not self.r_flag:
-                self.move(QMouseEvent.globalPos() - self.m_Position)  # 更改窗口位置
-                QMouseEvent.accept()
-        except:
-            pass
-
-    def mouseDoubleClickEvent(self, event):
-        if self.isFullScreen():
-            self.showNormal()
-        else:
-            self.showFullScreen()
-        event.accept()
+    # def mousePressEvent(self, event):
+    #     if event.button() == Qt.LeftButton:
+    #         self.m_flag = True
+    #         self.r_flag = False
+    #         self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
+    #         event.accept()
+    #
+    # def mouseReleaseEvent(self, event):
+    #     self.r_flag = True
+    #     event.accept()
+    #
+    # def mouseMoveEvent(self, QMouseEvent):
+    #     try:
+    #         if Qt.LeftButton and self.m_flag and not self.r_flag:
+    #             self.move(QMouseEvent.globalPos() - self.m_Position)  # 更改窗口位置
+    #             QMouseEvent.accept()
+    #     except:
+    #         pass
+    #
+    # def mouseDoubleClickEvent(self, event):
+    #     if self.isFullScreen():
+    #         self.showNormal()
+    #     else:
+    #         self.showFullScreen()
+    #     event.accept()

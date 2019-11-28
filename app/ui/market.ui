@@ -184,9 +184,6 @@
      </item>
      <item>
       <widget class="QPushButton" name="unsubscribe">
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 255, 255);</string>
-       </property>
        <property name="text">
         <string>取消订阅所有</string>
        </property>

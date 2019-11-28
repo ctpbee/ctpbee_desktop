@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'signin.ui',
 # licensing of 'signin.ui' applies.
 #
-# Created: Thu Nov 28 14:47:09 2019
+# Created: Thu Nov 28 19:05:39 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -47,6 +47,8 @@ class Ui_SignIn(object):
         font.setPointSize(11)
         self.login_tab.setFont(font)
         self.login_tab.setStyleSheet("")
+        self.login_tab.setTabPosition(QtWidgets.QTabWidget.North)
+        self.login_tab.setTabShape(QtWidgets.QTabWidget.Rounded)
         self.login_tab.setObjectName("login_tab")
         self.login1 = QtWidgets.QWidget()
         self.login1.setObjectName("login1")
@@ -363,7 +365,7 @@ class Ui_SignIn(object):
         self.other.setItemText(0, QtWidgets.QApplication.translate("SignIn", "simnow24小时", None, -1))
         self.other.setItemText(1, QtWidgets.QApplication.translate("SignIn", "simnow移动", None, -1))
         self.sign_in_btn_1.setText(QtWidgets.QApplication.translate("SignIn", "登   录", None, -1))
-        self.login_tab.setTabText(self.login_tab.indexOf(self.login1), QtWidgets.QApplication.translate("SignIn", "普通登录", None, -1))
+        self.login_tab.setTabText(self.login_tab.indexOf(self.login1), QtWidgets.QApplication.translate("SignIn", "快速登录", None, -1))
         self.label_6.setText(QtWidgets.QApplication.translate("SignIn", "用户名", None, -1))
         self.userid_2.setPlaceholderText(QtWidgets.QApplication.translate("SignIn", "USERNAME", None, -1))
         self.label_7.setText(QtWidgets.QApplication.translate("SignIn", "密码", None, -1))

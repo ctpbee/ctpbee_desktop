@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1265</width>
-    <height>899</height>
+    <width>1613</width>
+    <height>804</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,11 +25,18 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,7,3,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,6,4,0,0">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
      <item>
       <widget class="QLabel" name="account_label">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>账户信息...</string>
        </property>
@@ -79,7 +86,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>500</height>
+         <height>400</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -122,7 +129,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="8,0,2">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="7,3">
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="minimumSize">
@@ -144,7 +151,7 @@
         <enum>QTabWidget::North</enum>
        </property>
        <property name="tabShape">
-        <enum>QTabWidget::Triangular</enum>
+        <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
         <number>0</number>
@@ -153,7 +160,7 @@
         <bool>true</bool>
        </property>
        <property name="documentMode">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="tabsClosable">
         <bool>false</bool>
@@ -478,176 +485,234 @@
       </widget>
      </item>
      <item>
-      <widget class="Line" name="line_3">
+      <widget class="QWidget" name="widget" native="true">
        <property name="minimumSize">
         <size>
-         <width>10</width>
+         <width>0</width>
          <height>0</height>
         </size>
        </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QWidget" name="widget" native="true">
        <property name="maximumSize">
         <size>
          <width>300</width>
          <height>16777215</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>12</pointsize>
+         <weight>9</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 75 12pt &quot;Arial&quot;;</string>
+       </property>
        <layout class="QFormLayout" name="formLayout">
-        <item row="0" column="0">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+        <property name="horizontalSpacing">
+         <number>7</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>15</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item row="0" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,9">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_8">
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">image: url(:/menu/icon/下单.png);</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="label_6">
-          <property name="font">
-           <font>
-            <weight>75</weight>
-            <italic>false</italic>
-            <bold>true</bold>
-            <underline>false</underline>
-           </font>
-          </property>
-          <property name="text">
-           <string>下单</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>中文名</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="local_symbol_zn">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(0, 85, 255);
-font: 75 24pt &quot;Arial&quot;;</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>合约</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QComboBox" name="symbol_name_list">
-          <property name="editable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>类型</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QComboBox" name="price_type">
           <item>
-           <property name="text">
-            <string>限价</string>
-           </property>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>中文名：</string>
+            </property>
+           </widget>
           </item>
           <item>
-           <property name="text">
-            <string>市价</string>
-           </property>
+           <widget class="QLabel" name="local_symbol_zn">
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>12</pointsize>
+              <weight>9</weight>
+              <italic>false</italic>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
           </item>
-         </widget>
+         </layout>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>价格</string>
+        <item row="1" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,9">
+          <property name="spacing">
+           <number>0</number>
           </property>
-         </widget>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>合约：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="symbol_name_list">
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
-        <item row="5" column="1">
-         <widget class="QDoubleSpinBox" name="price">
-          <property name="maximum">
-           <double>9999999.000000000000000</double>
+        <item row="2" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,9">
+          <property name="spacing">
+           <number>0</number>
           </property>
-         </widget>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>类型：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="price_type">
+            <item>
+             <property name="text">
+              <string>限价</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>市价</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
         </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>手数</string>
+        <item row="3" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,9">
+          <property name="spacing">
+           <number>0</number>
           </property>
-         </widget>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>价格：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDoubleSpinBox" name="price">
+            <property name="maximum">
+             <double>9999999.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
-        <item row="6" column="1">
-         <widget class="QSpinBox" name="volume">
-          <property name="minimum">
-           <number>1</number>
+        <item row="4" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,9">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <property name="maximum">
-           <number>9999999</number>
-          </property>
-         </widget>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>手数：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="volume">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>9999999</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
-        <item row="7" column="1">
-         <widget class="QPushButton" name="buy_btn">
-          <property name="text">
-           <string>买多</string>
+        <item row="5" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <property name="spacing">
+           <number>0</number>
           </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="QPushButton" name="short_btn">
-          <property name="text">
-           <string>卖空</string>
-          </property>
-         </widget>
+          <item>
+           <widget class="QPushButton" name="buy_btn">
+            <property name="text">
+             <string>买多</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_5">
+            <property name="minimumSize">
+             <size>
+              <width>10</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="short_btn">
+            <property name="text">
+             <string>卖空</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>10</height>
+      </size>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -1,0 +1,44 @@
+QWidget{
+background:#202020;
+color:#f0f0f0;
+margin:0px;
+}
+
+QTableWidget{
+    border:none;
+}
+
+QTableCornerButton::section,QHeaderView::section{
+background:#004687;
+color:#f0f0f0;
+}
+
+QComboBox{
+    color:#f0f0f0;
+    border:1px solid #b81d18;
+    border-radius:5px;
+}
+
+QPushButton{
+    padding:10px
+}
+
+
+QPushButton:hover{
+    background:#b81d18;
+}
+
+QSlider::handle:vertical {
+    height: 14px;
+    margin-left: -3px;
+    margin-right: -3px;
+    border-radius: 6px;
+
+}
+
+QSlider::handle:horizontal {
+    width: 13px;
+    margin-top: -3px;
+    margin-bottom: -3px;
+    border-radius: 6px;
+}

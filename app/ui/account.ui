@@ -37,8 +37,8 @@
     <widget class="QTableWidget" name="tableWidget">
      <property name="minimumSize">
       <size>
-       <width>500</width>
-       <height>350</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="baseSize">

@@ -7,8 +7,11 @@ from PySide2.QtWidgets import QWidget, QTableWidgetItem, QTableWidget, QHeaderVi
 from ctpbee import current_app
 
 from app.lib.get_path import desktop_path
+from app.lib.helper import QssHelper
 from app.ui.ui_account import Ui_Account
 from app.lib.global_var import G
+
+
 # import pyqtgraph as pg
 
 
@@ -29,9 +32,13 @@ class AccountWidget(QWidget, Ui_Account):
         super(AccountWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("账户")
+        self.setStyleSheet(QssHelper.read_account())
         self.row = 0
+        self.tableWidget.horizontalHeader().setVisible(False)
+        self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度        #
+        # self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度        #
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)  # 最后一列自适应表格宽度
         self.fill_table()
         #
         self.mainwindow = mainwindow
@@ -89,4 +96,4 @@ class AccountWidget(QWidget, Ui_Account):
     # @Slot(dict)
     # def set_pg(self, account):
     #     pass
-        # self.plot.setData()
+    # self.plot.setData()

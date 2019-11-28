@@ -1,0 +1,16 @@
+QWidget{
+background:#202020;
+    color: white;
+
+}
+QToolBox::tab{
+margin:0px;
+border-radius: 5px;
+color: #b81d18;
+
+}
+
+QToolBox::tab:selected {
+    color: white;
+    background:#b81d18;
+}

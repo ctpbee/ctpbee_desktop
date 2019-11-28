@@ -9,6 +9,7 @@ class QssHelper:
     account = join_path(qss_path, 'account.qss')
     order = join_path(qss_path, 'order.qss')
     mainwindow = join_path(qss_path, 'mainwindow.qss')
+    home = join_path(qss_path, 'home.qss')
 
     @classmethod
     def read_signin(cls):
@@ -23,4 +24,9 @@ class QssHelper:
     @classmethod
     def read_mainwindow(cls):
         with open(cls.mainwindow, 'r')as f:
+            return f.read()
+
+    @classmethod
+    def read_home(cls):
+        with open(cls.home, 'r')as f:
             return f.read()

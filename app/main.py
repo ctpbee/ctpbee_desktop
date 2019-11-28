@@ -1,8 +1,7 @@
 import json
 import os
 import sys
-
-from PySide2.QtCore import Signal, QObject, Slot, Qt
+from PySide2.QtCore import Signal, QObject, Slot, Qt, QSize
 from PySide2.QtGui import QCloseEvent, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, QMessageBox, QLabel, QMenu, \
     QSystemTrayIcon
@@ -65,6 +64,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("ctpbee桌面端")
         self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
         self.setStyleSheet(QssHelper.read_mainwindow())
+        self.recovery_size = QSize(self.width(), self.height())
         G.mainwindow = self
         self.exit_ = False
         self.job = Job()
@@ -79,6 +79,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.account_action.setText(a)
             self.menubar.addAction(self.account_action)
         self.menubar.triggered[QAction].connect(self.menu_triggered)
+        # self.menubar.mouseDoubleClickEvent = self.Menu_mouseDoubleClickEvent
+        # self.menubar.mousePressEvent = self.Menu_mousePressEvent
+        # self.menubar.mouseMoveEvent = self.Menu_mouseMoveEvent
+        # self.menubar.mouseReleaseEvent = self.Menu_mouseReleaseEvent
         #
         self.status_msg = QLabel("实时信息")
         self.market_msg = QLabel("最新行情")
@@ -310,3 +314,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 QMouseEvent.accept()
         except:
             pass
+
+    def mouseDoubleClickEvent(self, event):
+        if self.isFullScreen():
+            self.showNormal()
+        else:
+            self.showFullScreen()
+        event.accept()

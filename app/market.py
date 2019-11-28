@@ -118,7 +118,6 @@ class MarketWidget(QWidget, Ui_Market):
         for i, col in enumerate(market_table_column):
             if col == 'operator':
                 btn = QPushButton('前往下单')
-                btn.setStyleSheet("background-color:green;color:white")
                 btn.clicked.connect(self.go_order)
                 self.tableWidget.setCellWidget(row, i, btn)
             else:

@@ -1,5 +1,7 @@
 from PySide2.QtCore import Slot
 from PySide2.QtWidgets import QWidget
+
+from app.lib.helper import QssHelper
 from app.ui.ui_home import Ui_Home
 from app.lib.global_var import G
 import webbrowser
@@ -9,6 +11,7 @@ class HomeWidget(QWidget, Ui_Home):
     def __init__(self, mainwindow):
         super(HomeWidget, self).__init__()
         self.setupUi(self)
+        self.setStyleSheet(QssHelper.read_home())
         self.beebtn.clicked.connect(self.open_url)
         self.issues_btn.clicked.connect(self.open_url2)
 

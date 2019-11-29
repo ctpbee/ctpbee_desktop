@@ -10,9 +10,6 @@ from app.lib.get_path import desktop_path
 from app.ui.ui_account import Ui_Account
 from app.lib.global_var import G
 
-
-# import pyqtgraph as pg
-
 qss = """
                 QWidget{
                 color:#f0f0f0;
@@ -53,26 +50,6 @@ class AccountWidget(QWidget, Ui_Account):
         #
         self.mainwindow = mainwindow
         self.mainwindow.job.account_signal.connect(self.set_item)
-        # self.mainwindow.job.account_signal.connect(self.set_pg)
-        ##
-        # self.plot = pg.PlotWidget(background=QColor('white'))
-        # self.x_axis = self.plot.getAxis('bottom')
-        # self.account_layout.addWidget(self.plot)
-        # self.fill_pg()
-
-    def fill_pg(self):
-        file_path = os.path.join(desktop_path, f"{G.current_account}_diary.json")
-        if os.path.exists(file_path):
-            with open(file_path, 'r')as f:
-                d = f.read()
-                if d:
-                    data = json.loads(d)
-                    x = dict(enumerate(data.keys()))
-                    y_available = [i['available'] for i in data.values()]
-                    # y_balance = [i['balance'] for i in data.values()]
-                    # self.x_axis.setTicks([x.items()])
-                    self.plot.plot(y_available, symbol='o')
-                    # self.plot.plot(list(x.keys()), y_balance, symbol='t')
 
     def fill_table(self):
         """
@@ -102,8 +79,3 @@ class AccountWidget(QWidget, Ui_Account):
             key = key_zn(k)
             self.tableWidget.setItem(row, 0, QTableWidgetItem(key))
             self.tableWidget.setItem(row, 1, QTableWidgetItem(str(v)))
-
-    # @Slot(dict)
-    # def set_pg(self, account):
-    #     pass
-    # self.plot.setData()

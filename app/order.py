@@ -83,6 +83,10 @@ QTabBar::tab:!selected{
     margin-top:5px;
 }
 
+#local_symbol_zn{
+color:#00c1c1
+}
+
 QWebEngineView{
 background:#202020;
 }

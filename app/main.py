@@ -1,12 +1,13 @@
 import json
 import os
 import sys
-from PySide2.QtCore import Signal, QObject, Slot, Qt, QSize
-from PySide2.QtGui import QCloseEvent, QIcon, QPixmap
+from PySide2.QtCore import Signal, QObject, Slot, Qt, QSize, QThread
+from PySide2.QtGui import QCloseEvent, QIcon, QPixmap, QBitmap, QPainter
 from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, QMessageBox, QLabel, QMenu, \
     QSystemTrayIcon
 
 from app.lib.global_var import G
+from app.lib.helper import Job, KInterfaceObject, RecordObject
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
 from app.account import AccountWidget
@@ -17,55 +18,14 @@ from app.config import ConfigDialog
 from ctpbee.constant import *
 from ctpbee.event_engine.engine import EVENT_TIMER
 from ctpbee import current_app
-from app.lib.get_path import desktop_path, tick_path
 from app.log import LogDialog
 from app.home import HomeWidget
-
-
-class Job(QObject):
-    account_signal = Signal(dict)
-    market_signal = Signal(dict)
-    order_tick_signal = Signal(dict)
-    order_position_signal = Signal(list)
-    order_activate_signal = Signal(list)
-    order_order_signal = Signal(list)
-    order_trade_signal = Signal(list)
-    order_log_signal = Signal(str)
-
-    def __init__(self):
-        super(self.__class__, self).__init__()
-
-
-class KInterfaceObject(QObject):
-    qt_to_js = Signal(str)  # channel only str
-    js_to_qt = Signal(str)
-    transfer_signal = Signal(dict)
-
-    def __init__(self):
-        super(self.__class__, self).__init__()
-
-    @Slot(result=str)
-    def get_history_data(self):
-        """js传数据通过调用此函数"""
-        try:
-            file_path = tick_path + f"/{str(G.choice_local_symbol)}.json"
-            with open(file_path, 'r') as f:
-                data = f.read()
-        except:
-            data = json.dumps({G.choice_local_symbol: []})
-        return data
-
 
 qss = """
 QMainWindow{
 background:#202020;
 color:#f0f0f0;
 margin:0px;
-}
-
-QMessageBox{
-background:#202020;
-color:#f0f0f0;
 }
 
 
@@ -86,6 +46,7 @@ QProgressBar::chunk {
     margin: 0.5px;
     background-color: #1B89CA;
 }
+
 QMenuBar::item:selected {
     color: #b81d18;
     background: #202020
@@ -96,7 +57,6 @@ QPushButton{
     background: #202020
 
 }
-
 
 QPushButton:hover{
     background:#b81d18;
@@ -110,11 +70,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("ctpbee桌面端")
         self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框 会导致闪屏异常
         self.setStyleSheet(qss)
-        self.recovery_size = QSize(self.width(), self.height())
+        #
         G.mainwindow = self
         self.exit_ = False
         self.job = Job()
         self.kline_job = KInterfaceObject()
+        self.record_job = RecordObject()
+        self.tick_thread = QThread()
+        self.record_job.moveToThread(self.tick_thread)
+        self.tick_thread.started.connect(self.record_job.record)
+        self.tick_thread.start()
         self.bee_ext = None
         self.log_dialog = None
         self.cfg_dialog = None
@@ -154,6 +119,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 默认打开
         self.widget = HomeWidget(self)
         self.setCentralWidget(self.widget)
+
+    def submask(self):
+        self.bmp = QBitmap(self.size())
+        self.bmp.fill()
+        self.p = QPainter(self.bmp)
+        self.p.setPen(Qt.black)
+        self.p.setBrush(Qt.black)
+        self.p.drawRoundedRect(self.bmp.rect(), 10, 10)
+        self.setMask(self.bmp)
 
     def menu_triggered(self, q):
         action = q.text()
@@ -217,17 +191,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         account = account._to_dict()
         G.account = account
         self.job.account_signal.emit(account)
-        file_path = os.path.join(G.user_path, ".diary.json")
-        now = datetime.strftime(datetime.now(), "%Y/%m/%d-%H:%M")
-        data = {}
-        if os.path.exists(file_path):
-            with open(file_path, 'r')as fp:
-                old = fp.read()
-                if old:
-                    data = json.loads(old)
-        with open(file_path, 'w')as fp:
-            data.update({now: {'available': account['available'], 'balance': account['balance']}})
-            json.dump(data, fp)
 
     def on_contract(self, ext, contract: ContractData):
         pass
@@ -239,19 +202,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if bar.local_symbol == G.choice_local_symbol:
             self.kline_job.transfer_signal.emit({bar.local_symbol: info})
         # 存入文件
-        file_path = os.path.join(tick_path, f"{str(bar.local_symbol)}.json")
-        old = {}
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as f:
-                data = f.read()
-                if data:
-                    old = json.loads(data)
-        with open(file_path, 'w') as f:
-            if not old.get(bar.local_symbol):
-                old.setdefault(bar.local_symbol, []).append(info)
-            else:
-                old[bar.local_symbol].append(info)
-            json.dump(old, f)
+        self.record_job.sig_bar_record[str, list].emit(bar.local_symbol, info)
 
     def on_order(self, ext, order: OrderData) -> None:
         active_orders = []
@@ -337,7 +288,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tray.showMessage("ctpbee", "以最小化隐藏在托盘", msecs=2)
             self.hide()
             event.ignore()
-
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:

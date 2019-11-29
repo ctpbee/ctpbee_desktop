@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'order.ui',
 # licensing of 'order.ui' applies.
 #
-# Created: Thu Nov 28 20:30:35 2019
+# Created: Fri Nov 29 19:13:47 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,9 +26,9 @@ class Ui_Order(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.account_label = QtWidgets.QLabel(Order)
         font = QtGui.QFont()
-        font.setPointSize(11)
-        font.setWeight(75)
-        font.setBold(True)
+        font.setPointSize(8)
+        font.setWeight(50)
+        font.setBold(False)
         self.account_label.setFont(font)
         self.account_label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.account_label.setObjectName("account_label")

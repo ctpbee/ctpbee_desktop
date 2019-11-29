@@ -241,4 +241,6 @@ class MarketWidget(QWidget, Ui_Market):
                 #     item = ''
                 else:
                     item = QTableWidgetItem(str(tick.get(col, "---")))
+                if item.text().isdigit():
+                    item.setText("%0.2f" % float(item.text()))
                 self.tableWidget.setItem(row, i, item)

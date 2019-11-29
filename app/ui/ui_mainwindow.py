@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'mainwindow.ui',
 # licensing of 'mainwindow.ui' applies.
 #
-# Created: Fri Nov 29 11:38:22 2019
+# Created: Fri Nov 29 19:10:16 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,7 +24,11 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 942, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 942, 36))
+        self.menubar.setMinimumSize(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
+        font.setPointSize(13)
+        self.menubar.setFont(font)
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
 

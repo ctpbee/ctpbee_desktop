@@ -76,10 +76,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.job = Job()
         self.kline_job = KInterfaceObject()
         self.record_job = RecordObject()
-        self.tick_thread = QThread()
-        self.record_job.moveToThread(self.tick_thread)
-        self.tick_thread.started.connect(self.record_job.record)
-        self.tick_thread.start()
         self.bee_ext = None
         self.log_dialog = None
         self.cfg_dialog = None

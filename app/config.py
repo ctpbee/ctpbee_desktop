@@ -3,7 +3,6 @@ from PySide2.QtWidgets import QMessageBox, QDialog
 from PySide2.QtCore import Qt, Slot
 
 from app.lib.global_var import G
-from app.lib.helper import QssHelper
 from app.ui.ui_config import Ui_Config
 from ctpbee import current_app as bee_current_app
 
@@ -16,13 +15,43 @@ keys = [
     "SLIPPAGE_SELL",
     "CLOSE_PATTERN",
     "SHARED_FUNC"]
+qss = """QWidget{
+background:#202020;
+color:#f0f0f0;
+margin:0px;
+}
 
+QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
+    color:#f0f0f0;
+    border:1px solid #b81d18;
+    border-radius:5px;
+}
+
+QPushButton{
+background:#f0f0f0;
+color:#202020;
+padding:10px
+
+}
+
+QPushButton:hover{
+    background:#b81d18;
+    color:#f0f0f0
+}
+
+QCheckBox{
+    border-radius:5px;
+}
+
+QCheckBox::indicator:checked {
+    color:#b81d18;
+ }"""
 
 class ConfigDialog(QDialog, Ui_Config):
     def __init__(self, mainwindow):
         super(ConfigDialog, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(QssHelper.read_config())
+        self.setStyleSheet(qss)
         self.mainwindow = mainwindow
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))
         self.SLIPPAGE_SHORT.setValue(float(bee_current_app.config['SLIPPAGE_SHORT']))

@@ -53,6 +53,7 @@ class G(dict):
     # order
     choice_local_symbol = None
     order_tick_row_map = []  # with tick ={}
+    order_position_row_map = []
 
     # kline
     kline_folder = "/static/kline.html"

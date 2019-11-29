@@ -4,19 +4,50 @@ from PySide2.QtCore import Slot
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QTableWidget, QHeaderView, \
     QFileDialog
 
-from app.lib.helper import QssHelper
 from app.ui.ui_strategy import Ui_Strategy
 from ctpbee import current_app as bee_current_app, dynamic_loading_api
 from app.lib.strategy_lib import check_code, strategy_template
 
 strategy_table_column = ("name", "status", "operator", "delete")
 
+qss = """
+QWidget{
+background:#202020;
+color:#f0f0f0;
+margin:0px;
+}
+
+QTableCornerButton::section,QHeaderView::section{
+background:#004687;
+color:#f0f0f0;
+}
+
+QPushButton{
+    padding:10px
+}
+QPushButton:hover{
+background:#b81d18;
+}
+
+
+#add_strategy_btn,#gen_strategy{
+background:#f0f0f0;
+color:#202020;
+}
+
+
+#add_strategy_btn:hover,#gen_strategy:hover{
+background:#b81d18;
+color:#f0f0f0;
+}
+"""
+
 
 class StrategyWidget(QWidget, Ui_Strategy):
     def __init__(self, mainwindow):
-        super(StrategyWidget, self).__init__()
+        super(StrategyWidget, self).__init__(parent=mainwindow)
         self.setupUi(self)
-        self.setStyleSheet(QssHelper.read_strategy())
+        self.setStyleSheet(qss)
         self.row = 0
         self.strategy_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.strategy_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch);  # 所有列自适应表格宽度

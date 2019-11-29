@@ -12,7 +12,6 @@ from ctpbee.constant import Exchange, TickData
 from ctpbee import current_app as bee_current_app
 
 from app.lib.global_var import G
-from app.lib.helper import QssHelper
 from app.ui.ui_order import Ui_Order
 
 tick_zn = {
@@ -48,12 +47,62 @@ activate_order_table_column = (
 order_table_column = ('symbol', 'direction', 'exchange', 'volume', 'price', 'status', 'time', 'type')
 trade_table_column = ('symbol', 'direction', 'exchange', 'volume', 'price', 'offset', 'time')
 
+qss = """
+QWidget{
+background:#202020;
+color:#f0f0f0;
+margin:0px;
+}
+
+
+QTableWidget,QTabWidget::pane{
+    border:none;
+}
+
+QHeaderView::section{
+background:#004687;
+color:#f0f0f0;
+}
+
+QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
+    color:#f0f0f0;
+    border:1px solid #b81d18;
+    border-radius:5px;
+}
+
+QTabBar::tab {
+     border:1px solid #b81d18;
+     border-radius:2px;
+     min-width: 60px;
+     padding: 2px;
+ }
+QTabBar::tab:selected{
+    background:#b81d18;
+}
+QTabBar::tab:!selected{
+    margin-top:5px;
+}
+
+QWebEngineView{
+background:#202020;
+}
+QPushButton{
+background:#f0f0f0;
+color:#202020;
+}
+
+QPushButton:hover{
+    background:#b81d18;
+    color:#f0f0f0
+}
+"""
+
 
 class OrderWidget(QWidget, Ui_Order):
     def __init__(self, mainwindow):
         super(OrderWidget, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(QssHelper.read_order())
+        self.setStyleSheet(qss)
         self.setWindowTitle("下单")
         #
         self.position_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
@@ -293,6 +342,7 @@ class OrderWidget(QWidget, Ui_Order):
     @Slot(list)
     def set_position_slot(self, positions: list):
         self.position_table.setRowCount(0)
+        barpos = self.position_table.verticalScrollBar().value()
         row = 0
         x = sorted(positions, key=operator.itemgetter('local_symbol'))
         for p in x:
@@ -313,12 +363,13 @@ class OrderWidget(QWidget, Ui_Order):
                     btn = QPushButton('平仓')
                     btn.clicked.connect(self.close_position)
                     self.position_table.setCellWidget(row, i, btn)
-            row += 1
+        self.position_table.verticalScrollBar().setValue(barpos)
 
     @Slot(list)
     def set_activate_slot(self, active_orders: list):
         self.activate_order_table.setRowCount(0)
         row = 0
+        barpos = self.activate_order_table.verticalScrollBar().value()
         x = sorted(active_orders, key=operator.itemgetter('local_symbol'))
         for o in x:
             self.activate_order_table.insertRow(row)
@@ -329,11 +380,12 @@ class OrderWidget(QWidget, Ui_Order):
                     btn = QPushButton('撤单')
                     btn.clicked.connect(self.cancel_order)
                     self.activate_order_table.setCellWidget(row, i, btn)
-            row += 1
+        self.activate_order_table.verticalScrollBar().setValue(barpos)
 
     @Slot(list)
     def set_order_slot(self, orders: list):
         self.order_table.setRowCount(0)
+        barpos = self.order_table.verticalScrollBar().value()
         row = 0
         x = sorted(orders, key=operator.itemgetter('local_symbol'))
         for o in x:
@@ -341,11 +393,12 @@ class OrderWidget(QWidget, Ui_Order):
             # 渲染
             for i, col in enumerate(order_table_column):
                 self.order_table.setItem(row, i, QTableWidgetItem(str(o[col])))
-            row += 1
+        self.order_table.verticalScrollBar().setValue(barpos)
 
     @Slot(list)
     def set_trade_slot(self, trades: list):
         self.trade_table.setRowCount(0)
+        barpos = self.trade_table.verticalScrollBar().value()
         row = 0
         x = sorted(trades, key=operator.itemgetter('local_symbol'))
         for t in x:
@@ -353,4 +406,4 @@ class OrderWidget(QWidget, Ui_Order):
 
             for i, col in enumerate(trade_table_column):
                 self.trade_table.setItem(row, i, QTableWidgetItem(str(t[col])))
-            row += 1
+        self.trade_table.verticalScrollBar().setValue(barpos)

@@ -5,20 +5,54 @@ from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QListWidgetItem, QTableWidget, \
     QHeaderView, QAbstractItemView
 
-from app.lib.helper import QssHelper
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
 from app.loading import LoadingDialog
 
 contract_space = " " * 2
 market_table_column = ['name', 'local_symbol', 'last_price', 'operator']
+qss = """
+        QWidget{
+background:#202020;
+color:#f0f0f0;
+margin:0px;
+}
 
+QTableWidget{
+    border:none;
+}
+
+QTableCornerButton::section,QHeaderView::section{
+background:#004687;
+color:#f0f0f0;
+}
+
+QComboBox{
+    color:#f0f0f0;
+    border:1px solid #b81d18;
+    border-radius:5px;
+}
+
+
+QPushButton{
+background:#f0f0f0;
+color:#202020;
+padding:10px
+
+}
+
+QPushButton:hover{
+    background:#b81d18;
+    color:#f0f0f0
+}
+
+"""
 
 class MarketWidget(QWidget, Ui_Market):
     def __init__(self, mainwindow):
         super(MarketWidget, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(QssHelper.read_market())
+        self.setStyleSheet(qss)
         self.setWindowTitle("行情")
         self.item_row = len(G.market_tick_row_map)
         self.bee_ext = mainwindow.bee_ext

@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'signin.ui',
 # licensing of 'signin.ui' applies.
 #
-# Created: Thu Nov 28 19:05:39 2019
+# Created: Fri Nov 29 13:32:59 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,7 +14,7 @@ class Ui_SignIn(object):
     def setupUi(self, SignIn):
         SignIn.setObjectName("SignIn")
         SignIn.setEnabled(True)
-        SignIn.resize(315, 384)
+        SignIn.resize(315, 405)
         SignIn.setMinimumSize(QtCore.QSize(315, 368))
         SignIn.setMaximumSize(QtCore.QSize(16777215, 16777215))
         icon = QtGui.QIcon()

@@ -1,8 +1,0 @@
-QWidget{
-color:#f0f0f0;
-}
-
-QTableWidget{
-background:#202020;
-border-radius: 5px;
-}

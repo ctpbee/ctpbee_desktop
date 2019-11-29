@@ -3,15 +3,25 @@ from PySide2.QtGui import QCloseEvent
 from PySide2.QtWidgets import QDialog
 
 from app.lib.global_var import G
-from app.lib.helper import QssHelper
 from app.ui.ui_log import Ui_Log
+
+qss = """
+QWidget{
+background:#202020;
+color:#f0f0f0;
+margin:0px;
+}
+
+QListWidget::item{
+margin:10px
+}"""
 
 
 class LogDialog(QDialog, Ui_Log):
     def __init__(self, mainwindow):
         super(LogDialog, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(QssHelper.read_log())
+        self.setStyleSheet(qss)
 
         # self.setWindowFlags(Qt.WindowStaysOnTopHint)#窗口置顶
         self.mainwindow = mainwindow

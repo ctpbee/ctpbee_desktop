@@ -3,14 +3,23 @@ from PySide2.QtGui import QCloseEvent, QBitmap, QPainter
 from PySide2.QtWidgets import QDialog, QDesktopWidget
 from app.ui.ui_loading import Ui_Loading
 
+qss = """
+#bb {
+    background: #002025;
+    border-radius: 10px;
+    opacity: 50;
+    border: 1px solid #ff2025;                   
+}
+"""
+
 
 class LoadingDialog(QDialog, Ui_Loading):
     def __init__(self):
         super(LoadingDialog, self).__init__()
         self.setupUi(self)
-
+        self.setStyleSheet(qss)
         self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏整个头部
-        self.setWindowOpacity(0.5)
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.do)
         self.timer.start(500)

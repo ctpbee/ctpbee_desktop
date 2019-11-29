@@ -11,7 +11,6 @@ from ctpbee import CtpBee, VLogger, current_app
 from app.lib.get_path import get_user_path, desktop_path, join_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
-from app.lib.helper import QssHelper
 
 
 class Vlog(VLogger):
@@ -42,6 +41,59 @@ simnow_24 = dict(
     appid="simnow_client_test",
     auth_code="0000000000000000",
 )
+qss = """
+        QWidget{
+background:#202020;
+color:#f0f0f0;
+margin:0px;
+}
+
+QTabWidget::pane{
+    border:1px solid #b81d18;
+
+}
+
+QToolButton:hover{
+background:#b81d18;
+}
+
+QTabBar::tab {
+     border:1px solid #b81d18;
+     border-radius:2px;
+     min-width: 60px;
+     padding: 2px;
+ }
+QTabBar::tab:selected{
+    background:#b81d18;
+}
+QTabBar::tab:!selected{
+    margin-top:5px;
+}
+QComboBox,QLineEdit{
+    color:#f0f0f0;
+    border:1px solid #b81d18;
+    border-radius:5px;
+}
+
+QPushButton{
+    background:#b81d18;
+    border-radius:2px;
+    padding:5px;
+}
+QPushButton:disabled{
+    background:#f0f0f0;
+    color:#b6b6b6;
+    border-radius:2px;
+}
+QPushButton:hover{
+    border-bottom:1px solid #f0f0f0;
+}
+
+QLabel#title{
+    color:#f0f0f0;
+    border-radius:5px;
+    padding:5px
+}"""
 
 
 class SignInWidget(QWidget, Ui_SignIn):
@@ -51,7 +103,7 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
         self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
-        self.setStyleSheet(QssHelper.read_signin())
+        self.setStyleSheet(qss)
         #
         self.close_btn.clicked.connect(self.close)
         self.min_btn.clicked.connect(self.showMinimized)

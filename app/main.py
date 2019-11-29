@@ -7,7 +7,6 @@ from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, 
     QSystemTrayIcon
 
 from app.lib.global_var import G
-from app.lib.helper import QssHelper
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
 from app.account import AccountWidget
@@ -57,13 +56,60 @@ class KInterfaceObject(QObject):
         return data
 
 
+qss = """
+QMainWindow{
+background:#202020;
+color:#f0f0f0;
+margin:0px;
+}
+
+QMessageBox{
+background:#202020;
+color:#f0f0f0;
+}
+
+
+QMenuBar{
+background:#b81d18;
+color:#f0f0f0;
+}
+QStatusBar{
+background:#b6b6b6;
+}
+QProgressBar {
+    border-radius: 5px;
+    text-align: center;
+}
+
+QProgressBar::chunk {
+    width: 2px;
+    margin: 0.5px;
+    background-color: #1B89CA;
+}
+QMenuBar::item:selected {
+    color: #b81d18;
+    background: #202020
+}
+
+QPushButton{
+    padding:10px;
+    background: #202020
+
+}
+
+
+QPushButton:hover{
+    background:#b81d18;
+}"""
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
         # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框 会导致闪屏异常
-        self.setStyleSheet(QssHelper.read_mainwindow())
+        self.setStyleSheet(qss)
         self.recovery_size = QSize(self.width(), self.height())
         G.mainwindow = self
         self.exit_ = False
@@ -79,11 +125,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.account_action.setText(a)
             self.menubar.addAction(self.account_action)
         self.menubar.triggered[QAction].connect(self.menu_triggered)
-        # self.menubar.mouseDoubleClickEvent = self.Menu_mouseDoubleClickEvent
-        # self.menubar.mousePressEvent = self.Menu_mousePressEvent
-        # self.menubar.mouseMoveEvent = self.Menu_mouseMoveEvent
-        # self.menubar.mouseReleaseEvent = self.Menu_mouseReleaseEvent
-        #
+        ##
         self.status_msg = QLabel("实时信息")
         self.market_msg = QLabel("最新行情")
         self.progressbar = QProgressBar()

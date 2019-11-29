@@ -70,12 +70,72 @@
      </column>
      <column>
       <property name="text">
-       <string>行情</string>
+       <string>最新</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>操作</string>
+       <string>买价</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>卖价</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>买量</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>卖量</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成交量</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>涨跌</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>涨幅</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>持仓量</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>日增仓</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>开盘</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>最高</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>现增仓</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>昨收</string>
       </property>
      </column>
     </widget>

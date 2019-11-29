@@ -10,9 +10,27 @@ from app.lib.global_var import G
 from app.loading import LoadingDialog
 
 contract_space = " " * 2
-market_table_column = ['name', 'local_symbol', 'last_price', 'operator']
+market_table_column = ['name',  # 中文名
+                       'local_symbol',  # 品种
+                       'last_price',  # 最新
+                       'ask_price_1',  # 买价
+                       'bid_price_1',  # 卖价
+                       'ask_volume_1',  # 买量
+                       'bid_volume_1',  # 卖量
+                       'volume',  # 成交量
+                       'limit',  # 涨跌  ====
+                       'limit1',  # 涨幅  =====
+                       'open_interest',  # 持仓量
+                       'inc_day_interest',  # 日增仓 open_interest-pre_open_interest
+                       'open_price',  # 开盘
+                       'high_price',  # 最高
+                       'inc_now_interest',  # 现增仓 =====
+                       'pre_close'  # 昨收
+                       ]
+
+yellow = ['local_symbol', 'ask_volume_1', 'bid_volume_1', 'volume', 'open_interest']
 qss = """
-        QWidget{
+QWidget{
 background:#202020;
 color:#f0f0f0;
 margin:0px;
@@ -23,8 +41,8 @@ QTableWidget{
 }
 
 QTableCornerButton::section,QHeaderView::section{
-background:#004687;
-color:#f0f0f0;
+background:#000000;
+color:#00c1c1;
 }
 
 QComboBox{
@@ -48,6 +66,7 @@ QPushButton:hover{
 
 """
 
+
 class MarketWidget(QWidget, Ui_Market):
     def __init__(self, mainwindow):
         super(MarketWidget, self).__init__()
@@ -68,6 +87,8 @@ class MarketWidget(QWidget, Ui_Market):
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tableWidget.cellDoubleClicked.connect(self.go_order)
+        #
         self.fill_table()
         self.load_time = time.time()
         self.tableWidget.setEnabled(False)
@@ -90,8 +111,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.timer.start(500)
 
     @Slot()
-    def go_order(self):
-        row = self.tableWidget.currentRow()
+    def go_order(self, row, col):
         name = self.tableWidget.item(row, 0).text()
         local_symbol = self.tableWidget.item(row, 1).text()
         msg = QMessageBox(QMessageBox.Question, "提示", f"您选择的是 {name} [ {local_symbol} ] 是否进入下单界面?",
@@ -155,16 +175,13 @@ class MarketWidget(QWidget, Ui_Market):
 
     def insert_(self, row, tick):
         for i, col in enumerate(market_table_column):
-            if col == 'operator':
-                btn = QPushButton('前往下单')
-                btn.clicked.connect(self.go_order)
-                self.tableWidget.setCellWidget(row, i, btn)
-            else:
-                self.tableWidget.setItem(row, i, QTableWidgetItem(str(tick[col])))
+            item = QTableWidgetItem(str(tick.get(col, "---")))
+            if col in yellow:
+                item.setTextColor(QColor(199, 199, 9))
+            self.tableWidget.setItem(row, i, item)
 
     def fill_table(self):
         """
-        必须按序填充
         :return:
         """
         self.load_status.setText("加载订阅合约...")
@@ -195,8 +212,6 @@ class MarketWidget(QWidget, Ui_Market):
         else:  # 已在table中 ,更新对应row
             row = G.market_tick_row_map.index(local_symbol)
             for i, col in enumerate(market_table_column):
-                if col == 'operator':  # 按钮无需更新
-                    continue
                 if col == "last_price":  # 对最新价动态颜色表示涨跌
                     old = self.tableWidget.item(row, i)
                     new = float(tick[col])
@@ -205,15 +220,25 @@ class MarketWidget(QWidget, Ui_Market):
                         old = float(old.text().split(space_)[0])
                         difference = new - old
                         if difference > 0:  # 涨
-                            it = QTableWidgetItem(f"{str(new)}{space_}↑≈{'%0.2f' % abs(difference)}")
-                            it.setTextColor(QColor('red'))
+                            item = QTableWidgetItem(f"{str(new)}{space_}↑≈{'%0.2f' % abs(difference)}")
+                            item.setTextColor(QColor('red'))
                         elif difference < 0:  # 跌
-                            it = QTableWidgetItem(f"{str(new)}{space_}↓≈{'%0.2f' % abs(difference)}")
-                            it.setTextColor(QColor('green'))
+                            item = QTableWidgetItem(f"{str(new)}{space_}↓≈{'%0.2f' % abs(difference)}")
+                            item.setTextColor(QColor('green'))
                         else:
                             continue
                     else:
-                        it = QTableWidgetItem(str(tick[col]))
-                    self.tableWidget.setItem(row, i, it)
+                        item = QTableWidgetItem(str(tick[col]))
+                elif col == "inc_day_interest":
+                    data = tick['open_interest'] - tick['pre_open_interest']
+                    item = QTableWidgetItem(str(data))
+                    # item.setTextColor()
+                # elif col == "inc_now_interest":
+                #     item = ''
+                # elif col == "limit":
+                #     item = ''
+                # elif col == "limit1":
+                #     item = ''
                 else:
-                    self.tableWidget.setItem(row, i, QTableWidgetItem(str(tick[col])))
+                    item = QTableWidgetItem(str(tick.get(col, "---")))
+                self.tableWidget.setItem(row, i, item)

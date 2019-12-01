@@ -43,54 +43,54 @@ simnow_24 = dict(
 )
 qss = """
         QWidget{
-background:#202020;
-color:#f0f0f0;
+background:#ffffff;
+color:#000000;
 margin:0px;
 }
 
 QTabWidget::pane{
-    border:1px solid #b81d18;
+    border:1px solid #1b89ca;
 
 }
 
 QToolButton:hover{
-background:#b81d18;
+background:#1b89ca;
 }
 
 QTabBar::tab {
-     border:1px solid #b81d18;
+     border:1px solid #1b89ca;
      border-radius:2px;
      min-width: 60px;
      padding: 2px;
  }
 QTabBar::tab:selected{
-    background:#b81d18;
+    background:#1b89ca;
 }
 QTabBar::tab:!selected{
     margin-top:5px;
 }
 QComboBox,QLineEdit{
-    color:#f0f0f0;
-    border:1px solid #b81d18;
+    color:#000000;
+    border:1px solid #1b89ca;
     border-radius:5px;
 }
 
-QPushButton{
-    background:#b81d18;
+QPushButton,QToolButton{
+    background:#1b89ca;
     border-radius:2px;
     padding:5px;
 }
 QPushButton:disabled{
-    background:#f0f0f0;
+    background:gray;
     color:#b6b6b6;
     border-radius:2px;
 }
-QPushButton:hover{
-    border-bottom:1px solid #f0f0f0;
+QPushButton:hover,QToolButton:hover{
+    border-bottom:1px solid #000000;
 }
 
 QLabel#title{
-    color:#f0f0f0;
+    color:#000000;
     border-radius:5px;
     padding:5px
 }"""

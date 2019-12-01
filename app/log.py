@@ -7,8 +7,8 @@ from app.ui.ui_log import Ui_Log
 
 qss = """
 QWidget{
-background:#202020;
-color:#f0f0f0;
+background:#ffffff;
+color:#000000;
 margin:0px;
 }
 

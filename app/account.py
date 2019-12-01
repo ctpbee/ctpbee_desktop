@@ -12,11 +12,12 @@ from app.lib.global_var import G
 
 qss = """
                 QWidget{
-                color:#f0f0f0;
+                color:#000000;
                 }
                 
                 QTableWidget{
-                background:#202020;
+                background:#ffffff;
+                color:#000000
                 border-radius: 5px;
                 }
                 """

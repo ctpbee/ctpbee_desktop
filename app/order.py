@@ -49,8 +49,8 @@ trade_table_column = ('symbol', 'direction', 'exchange', 'volume', 'price', 'off
 
 qss = """
 QWidget{
-background:#202020;
-color:#f0f0f0;
+background:#ffffff;
+color:#000000;
 margin:0px;
 }
 
@@ -60,24 +60,24 @@ QTableWidget,QTabWidget::pane{
 }
 
 QHeaderView::section{
-background:#004687;
-color:#f0f0f0;
+background:#ffffff;
+color:#000000;
 }
 
 QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
-    color:#f0f0f0;
-    border:1px solid #b81d18;
+    color:#000000;
+    border:1px solid #1b89ca;
     border-radius:5px;
 }
 
 QTabBar::tab {
-     border:1px solid #b81d18;
+     border:1px solid #1b89ca;
      border-radius:2px;
      min-width: 60px;
      padding: 2px;
  }
 QTabBar::tab:selected{
-    background:#b81d18;
+    background:#1b89ca;
 }
 QTabBar::tab:!selected{
     margin-top:5px;
@@ -87,17 +87,15 @@ QTabBar::tab:!selected{
 color:#00c1c1
 }
 
-QWebEngineView{
-background:#202020;
-}
+
 QPushButton{
-background:#f0f0f0;
-color:#202020;
+background:#1b89c0;
+color:#000000;
 }
 
 QPushButton:hover{
-    background:#b81d18;
-    color:#f0f0f0
+    background:#1b89ca;
+    color:#000000
 }
 """
 

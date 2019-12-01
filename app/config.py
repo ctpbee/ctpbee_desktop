@@ -16,27 +16,27 @@ keys = [
     "CLOSE_PATTERN",
     "SHARED_FUNC"]
 qss = """QWidget{
-background:#202020;
-color:#f0f0f0;
+background:#ffffff;
+color:#000000;
 margin:0px;
 }
 
 QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
-    color:#f0f0f0;
-    border:1px solid #b81d18;
+    color:#000000;
+    border:1px solid #1b89ca;
     border-radius:5px;
 }
 
 QPushButton{
-background:#f0f0f0;
-color:#202020;
+background:#ffffff;
+color:#000000;
 padding:10px
 
 }
 
 QPushButton:hover{
-    background:#b81d18;
-    color:#f0f0f0
+    background:#1b89ca;
+    color:#000000
 }
 
 QCheckBox{
@@ -44,7 +44,7 @@ QCheckBox{
 }
 
 QCheckBox::indicator:checked {
-    color:#b81d18;
+    color:#1b89ca;
  }"""
 
 class ConfigDialog(QDialog, Ui_Config):

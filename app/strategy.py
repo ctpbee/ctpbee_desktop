@@ -12,33 +12,33 @@ strategy_table_column = ("name", "status", "operator", "delete")
 
 qss = """
 QWidget{
-background:#202020;
-color:#f0f0f0;
+background:#ffffff;
+color:#000000;
 margin:0px;
 }
 
 QTableCornerButton::section,QHeaderView::section{
 background:#004687;
-color:#f0f0f0;
+color:#000000;
 }
 
 QPushButton{
     padding:10px
 }
 QPushButton:hover{
-background:#b81d18;
+background:#1b89ca;
 }
 
 
 #add_strategy_btn,#gen_strategy{
-background:#f0f0f0;
-color:#202020;
+background:#ffffff;
+color:#000000;
 }
 
 
 #add_strategy_btn:hover,#gen_strategy:hover{
-background:#b81d18;
-color:#f0f0f0;
+background:#1b89ca;
+color:#000000;
 }
 """
 
@@ -90,16 +90,16 @@ class StrategyWidget(QWidget, Ui_Strategy):
         for k, v in bee_current_app.extensions.items():
             if v.frozen:
                 status = "停止"
-                s_btn = QPushButton("▶开启")
-                s_btn.setStyleSheet("background-color:green;color:#f0f0f0;padding:10px")
+                s_btn = QPushButton("开启")
+                s_btn.setStyleSheet("background-color:green;color:#000000;padding:10px")
                 s_btn.clicked.connect(self.open_strategy_slot)
             else:
                 status = "运行中"
-                s_btn = QPushButton("🛑停止")
-                s_btn.setStyleSheet("background-color:red;color:#f0f0f0;padding:10px")
+                s_btn = QPushButton("停止")
+                s_btn.setStyleSheet("background-color:red;color:#000000;padding:10px")
                 s_btn.clicked.connect(self.close_strategy_slot)
 
-            d_btn = QPushButton("⚠删除")
+            d_btn = QPushButton("删除")
             d_btn.setStyleSheet("background-color:#e9bc1b;padding:10px")
             d_btn.clicked.connect(self.delete_strategy_slot)
             self.strategy_table.insertRow(self.row)

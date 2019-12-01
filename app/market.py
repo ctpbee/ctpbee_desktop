@@ -31,13 +31,15 @@ market_table_column = ['name',  # 中文名
 yellow = ['local_symbol', 'ask_volume_1', 'bid_volume_1', 'volume', 'open_interest']
 qss = """
 QWidget{
-background:#202020;
-color:#f0f0f0;
+background:#ffffff;
+color:#000000;
 margin:0px;
 }
 
 QTableWidget{
     border:none;
+    background:#000000;
+    color:#ffffff
 }
 
 QTableCornerButton::section,QHeaderView::section{
@@ -46,22 +48,22 @@ color:#00c1c1;
 }
 
 QComboBox{
-    color:#f0f0f0;
-    border:1px solid #b81d18;
+    color:#000000;
+    border:1px solid #1b89ca;
     border-radius:5px;
 }
 
 
 QPushButton{
-background:#f0f0f0;
-color:#202020;
-padding:10px
+background:#ffffff;
+color:#000000;
+padding:5px
 
 }
 
 QPushButton:hover{
-    background:#b81d18;
-    color:#f0f0f0
+    background:#1b89ca;
+    color:#ffffff
 }
 
 """
@@ -84,7 +86,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.progressBar.setMaximum(len(G.subscribes))
         #
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
+        # self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.cellDoubleClicked.connect(self.go_order)
@@ -114,13 +116,9 @@ class MarketWidget(QWidget, Ui_Market):
     def go_order(self, row, col):
         name = self.tableWidget.item(row, 0).text()
         local_symbol = self.tableWidget.item(row, 1).text()
-        msg = QMessageBox(QMessageBox.Question, "提示", f"您选择的是 {name} [ {local_symbol} ] 是否进入下单界面?",
-                          QMessageBox.NoButton,
-                          self)
-        yr_btn = msg.addButton(self.tr("是"), QMessageBox.YesRole)
-        msg.addButton(self.tr("否"), QMessageBox.NoRole)
-        msg.exec_()
-        if msg.clickedButton() == yr_btn:
+        replay = QMessageBox.question(self, "提示", f"您选择的是 {name} [ {local_symbol} ] 是否进入下单界面?", QMessageBox.Yes,
+                                      QMessageBox.Yes)
+        if replay == QMessageBox.Yes:
             G.choice_local_symbol = local_symbol
             self.mainwindow.order_handle()
         else:
@@ -243,4 +241,6 @@ class MarketWidget(QWidget, Ui_Market):
                     item = QTableWidgetItem(str(tick.get(col, "---")))
                 if item.text().isdigit():
                     item.setText("%0.2f" % float(item.text()))
+                if col in yellow:
+                    item.setTextColor(QColor(199, 199, 9))
                 self.tableWidget.setItem(row, i, item)

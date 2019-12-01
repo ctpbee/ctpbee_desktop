@@ -42,7 +42,7 @@ class KInterfaceObject(QObject):
 
 
 class RecordObject(QObject):
-    sig_bar_record = Signal([str, list])
+    sig_bar_record = Signal(str, list)
 
     def __init__(self):
         super(self.__class__, self).__init__()

@@ -6,20 +6,20 @@ import webbrowser
 
 qss = """
         QWidget{
-background:#202020;
+background:#ffffff;
     color: white;
 
 }
 QToolBox::tab{
 margin:0px;
 border-radius: 5px;
-color: #b81d18;
+color: #1b89ca;
 
 }
 
 QToolBox::tab:selected {
     color: white;
-    background:#b81d18;
+    background:#1b89ca;
 }"""
 
 

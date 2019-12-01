@@ -23,19 +23,17 @@ from app.home import HomeWidget
 
 qss = """
 QMainWindow{
-background:#202020;
-color:#f0f0f0;
+background:#ffffff;
+color:#000000;
 margin:0px;
 }
 
 
-QMenuBar{
-background:#b81d18;
-color:#f0f0f0;
+QMenuBar,QStatusBar{
+background:#1b89ca;
+color:#000000;
 }
-QStatusBar{
-background:#b6b6b6;
-}
+
 QProgressBar {
     border-radius: 5px;
     text-align: center;
@@ -48,18 +46,18 @@ QProgressBar::chunk {
 }
 
 QMenuBar::item:selected {
-    color: #b81d18;
-    background: #202020
+    color: #1b89ca;
+    background: #ffffff
 }
 
 QPushButton{
     padding:10px;
-    background: #202020
+    background: #ffffff
 
 }
 
 QPushButton:hover{
-    background:#b81d18;
+    background:#1b89ca;
 }"""
 
 
@@ -171,7 +169,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def order_handle(self):
         if not G.choice_local_symbol:
-            QMessageBox.information(self, "提示", "请在[行情]先订阅或选择一个合约", QMessageBox.Ok, QMessageBox.Ok)
+            replay = QMessageBox.information(self, "提示", "请在[行情]先订阅或选择一个合约", QMessageBox.Ok, QMessageBox.Ok)
         else:
             self.widget = OrderWidget(self)
             self.setCentralWidget(self.widget)
@@ -198,7 +196,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if bar.local_symbol == G.choice_local_symbol:
             self.kline_job.transfer_signal.emit({bar.local_symbol: info})
         # 存入文件
-        self.record_job.sig_bar_record[str, list].emit(bar.local_symbol, info)
+        self.record_job.sig_bar_record.emit(bar.local_symbol, info)
 
     def on_order(self, ext, order: OrderData) -> None:
         active_orders = []

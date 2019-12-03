@@ -4,7 +4,7 @@ ctpbee的桌面端实现
 #### 快速使用
 ```
 pip install -r requirement.txt
-python run.py
+python ctpbee_desktop.py
 ```
 
 > 关于打包[ubuntu]

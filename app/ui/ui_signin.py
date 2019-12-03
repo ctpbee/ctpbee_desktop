@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'signin.ui',
 # licensing of 'signin.ui' applies.
 #
-# Created: Fri Nov 29 13:32:59 2019
+# Created: Tue Dec  3 13:38:41 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

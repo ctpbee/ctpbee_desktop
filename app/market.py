@@ -43,7 +43,6 @@ QTableWidget{
 }
 
 QTableCornerButton::section,QHeaderView::section{
-background:#000000;
 color:#00c1c1;
 }
 
@@ -116,7 +115,8 @@ class MarketWidget(QWidget, Ui_Market):
     def go_order(self, row, col):
         name = self.tableWidget.item(row, 0).text()
         local_symbol = self.tableWidget.item(row, 1).text()
-        replay = QMessageBox.question(self, "提示", f"您选择的是 {name} [ {local_symbol} ] 是否进入下单界面?", QMessageBox.Yes,
+        replay = QMessageBox.question(self, "提示", f"您选择的是 {name} [ {local_symbol} ] 是否进入下单界面?",
+                                      QMessageBox.Yes | QMessageBox.No,
                                       QMessageBox.Yes)
         if replay == QMessageBox.Yes:
             G.choice_local_symbol = local_symbol

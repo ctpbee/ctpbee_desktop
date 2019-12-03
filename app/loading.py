@@ -5,10 +5,9 @@ from app.ui.ui_loading import Ui_Loading
 
 qss = """
 #bb {
-    background: #002025;
+    background: #000000;
     border-radius: 10px;
     opacity: 50;
-    border: 1px solid #ff2025;                   
 }
 """
 
@@ -35,3 +34,4 @@ class LoadingDialog(QDialog, Ui_Loading):
     def closeEvent(self, arg__1: QCloseEvent):
         self.timer.stop()
         arg__1.accept()
+

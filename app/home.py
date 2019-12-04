@@ -7,7 +7,7 @@ import webbrowser
 qss = """
         QWidget{
 background:#ffffff;
-    color: white;
+    color: #000000;
 
 }
 QToolBox::tab{

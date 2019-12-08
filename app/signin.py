@@ -2,7 +2,7 @@ import json
 import os
 from copy import deepcopy
 from PySide2.QtCore import QRegExp, Slot, QTimer, Qt
-from PySide2.QtGui import QRegExpValidator, QMovie, QCloseEvent
+from PySide2.QtGui import QRegExpValidator, QMovie, QCloseEvent, QBitmap, QPainter
 from PySide2.QtWidgets import QWidget, QMessageBox
 
 from app.lib.global_var import G
@@ -11,7 +11,7 @@ from ctpbee import CtpBee, VLogger, current_app
 from app.lib.get_path import get_user_path, desktop_path, join_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
-
+from app.ui import sign_in_qss
 
 class Vlog(VLogger):
     def handler_record(self, record):
@@ -41,59 +41,6 @@ simnow_24 = dict(
     appid="simnow_client_test",
     auth_code="0000000000000000",
 )
-qss = """
-        QWidget{
-background:#ffffff;
-color:#000000;
-margin:0px;
-}
-
-QTabWidget::pane{
-    border:1px solid #1b89ca;
-
-}
-
-QToolButton:hover{
-background:#1b89ca;
-}
-
-QTabBar::tab {
-     border:1px solid #1b89ca;
-     border-radius:2px;
-     min-width: 60px;
-     padding: 2px;
- }
-QTabBar::tab:selected{
-    background:#1b89ca;
-}
-QTabBar::tab:!selected{
-    margin-top:5px;
-}
-QComboBox,QLineEdit{
-    color:#000000;
-    border:1px solid #1b89ca;
-    border-radius:5px;
-}
-
-QPushButton,QToolButton{
-    background:#1b89ca;
-    border-radius:2px;
-    padding:5px;
-}
-QPushButton:disabled{
-    background:gray;
-    color:#b6b6b6;
-    border-radius:2px;
-}
-QPushButton:hover,QToolButton:hover{
-    border-bottom:1px solid #000000;
-}
-
-QLabel#title{
-    color:#000000;
-    border-radius:5px;
-    padding:5px
-}"""
 
 
 class SignInWidget(QWidget, Ui_SignIn):
@@ -103,13 +50,15 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
         self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
-        self.setStyleSheet(qss)
+        self.setStyleSheet(sign_in_qss)
+        self.submask()
         #
         self.close_btn.clicked.connect(self.close)
         self.min_btn.clicked.connect(self.showMinimized)
         self.load_remember()
         self.sign_in_btn_1.clicked.connect(self.common_sign_in)
         self.sign_in_btn_2.clicked.connect(self.detailed_sign_in)
+        self.sign_in_btn_1.hide()
         self.sign_in_btn_2.setEnabled(True)
         self.password_1.returnPressed.connect(self.common_sign_in)
         # 普通
@@ -119,13 +68,23 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.close_load)
 
+
+    def submask(self):
+        self.bmp = QBitmap(self.size())
+        self.bmp.fill()
+        self.p = QPainter(self.bmp)
+        self.p.setPen(Qt.black)
+        self.p.setBrush(Qt.black)
+        self.p.drawRoundedRect(self.bmp.rect(), 10, 10)
+        self.setMask(self.bmp)
+
     @Slot()
     def check_disable(self):
         if self.login_tab.currentIndex() == 0:
             if self.userid_1.text() and self.password_1.text():
-                self.sign_in_btn_1.setEnabled(True)
+                self.sign_in_btn_1.show()
             else:
-                self.sign_in_btn_1.setEnabled(False)
+                self.sign_in_btn_1.hide()
 
     def load_remember(self):
         path_list = os.listdir(desktop_path)

@@ -10,6 +10,7 @@
             margin: 0;
             overflow: hidden;
             padding: 2px 0 0 2px;
+            background-color: black;
         }
 
     </style>
@@ -25,7 +26,7 @@
 <script>
     var Data = [];
 
-    var kline = new Kline({theme:"light","width": window.innerWidth-20, "height": window.innerHeight-20},);
+    var kline = new Kline({"width": window.innerWidth-20, "height": window.innerHeight-20},);
 
     window.onresize = () => {
         kline.resize(window.innerWidth-20, window.innerHeight-20);

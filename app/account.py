@@ -9,18 +9,7 @@ from ctpbee import current_app
 from app.lib.get_path import desktop_path
 from app.ui.ui_account import Ui_Account
 from app.lib.global_var import G
-
-qss = """
-                QWidget{
-                color:#000000;
-                }
-                
-                QTableWidget{
-                background:#ffffff;
-                color:#000000
-                border-radius: 5px;
-                }
-                """
+from app.ui import account_qss
 
 
 def key_zn(key):
@@ -40,7 +29,7 @@ class AccountWidget(QWidget, Ui_Account):
         super(AccountWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("账户")
-        self.setStyleSheet(qss)
+        self.setStyleSheet(account_qss)
         self.row = 0
         self.tableWidget.horizontalHeader().setVisible(False)
         self.tableWidget.verticalHeader().setVisible(False)

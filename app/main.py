@@ -1,6 +1,8 @@
 import json
 import os
 import sys
+
+from PySide2 import QtGui
 from PySide2.QtCore import Signal, QObject, Slot, Qt, QSize, QThread
 from PySide2.QtGui import QCloseEvent, QIcon, QPixmap, QBitmap, QPainter
 from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, QMessageBox, QLabel, QMenu, \
@@ -8,6 +10,7 @@ from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, 
 
 from app.lib.global_var import G
 from app.lib.helper import Job, KInterfaceObject, RecordObject
+from app.ui import main_qss
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
 from app.account import AccountWidget
@@ -21,45 +24,6 @@ from ctpbee import current_app
 from app.log import LogDialog
 from app.home import HomeWidget
 
-qss = """
-QMainWindow{
-background:#ffffff;
-color:#000000;
-margin:0px;
-}
-
-
-QMenuBar,QStatusBar{
-background:#1b89ca;
-color:#000000;
-}
-
-QProgressBar {
-    border-radius: 5px;
-    text-align: center;
-}
-
-QProgressBar::chunk {
-    width: 2px;
-    margin: 0.5px;
-    background-color: #1B89CA;
-}
-
-QMenuBar::item:selected {
-    color: #1b89ca;
-    background: #ffffff
-}
-
-QPushButton{
-    padding:10px;
-    background: #ffffff
-
-}
-
-QPushButton:hover{
-    background:#1b89ca;
-}"""
-
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -67,7 +31,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
         # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框 可能会导致闪屏异常
-        self.setStyleSheet(qss)
+        self.setStyleSheet(main_qss)
         #
         G.mainwindow = self
         self.exit_ = False
@@ -75,15 +39,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.kline_job = KInterfaceObject()
         self.record_job = RecordObject()
         self.bee_ext = None
-        self.log_dialog = None
-        self.cfg_dialog = None
         self.tray_init()
-        # designer 不支持将action加入菜单栏 只能手撸
-        for a in ["首页", "账户", "行情", "下单", "策略", "回测", "配置", "日志"]:
-            self.account_action = QAction(self)
-            self.account_action.setText(a)
-            self.menubar.addAction(self.account_action)
-        self.menubar.triggered[QAction].connect(self.menu_triggered)
         ##
         self.status_msg = QLabel("实时信息")
         self.market_msg = QLabel("最新行情")
@@ -94,6 +50,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.addPermanentWidget(self.progressbar, stretch=1)
         self.statusbar.addPermanentWidget(self.status_msg, stretch=5)
         self.statusbar.addPermanentWidget(self.market_msg, stretch=5)
+        # btn
+        self.home_btn.clicked.connect(self.home_handle)
+        self.account_btn.clicked.connect(self.account_handle)
+        self.market_btn.clicked.connect(self.market_handle)
+        self.order_btn.clicked.connect(self.order_handle)
+        self.strategy_btn.clicked.connect(self.strategy_handle)
+        self.setting_btn.clicked.connect(self.config_handle)
+        self.log_btn.clicked.connect(self.log_handle)
+        self.order_btn.clicked.connect(self.order_handle)
+        # self.backtrack_btn.clicked.connect(self.home_handle)
+        # widgets
+        self.map_ = []
+        self.home_widget = None
+        self.strategy_widget = None
+        self.account_widget = None
+        self.market_widget = None
+        self.order_widget = None
+        self.log_dialog = None
+        self.cfg_dialog = None
 
     def sign_in_success(self):
         self.bee_ext = CtpbeeApi('default_setting', current_app)
@@ -110,55 +85,48 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         contracts = {contract.local_symbol: contract.name for contract in
                      self.bee_ext.app.recorder.get_all_contracts()}
         G.all_contracts = contracts
-        # 默认打开
-        self.widget = HomeWidget(self)
-        self.setCentralWidget(self.widget)
+        self.home_handle()
 
-    def submask(self):
-        self.bmp = QBitmap(self.size())
-        self.bmp.fill()
-        self.p = QPainter(self.bmp)
-        self.p.setPen(Qt.black)
-        self.p.setBrush(Qt.black)
-        self.p.drawRoundedRect(self.bmp.rect(), 10, 10)
-        self.setMask(self.bmp)
-
-    def menu_triggered(self, q):
-        action = q.text()
-        if action == "首页":
-            self.home_handle()
-        elif action == "账户":
-            self.account_handle()
-        elif action == "回测":
-            return
-        elif action == "行情":
-            self.market_handle()
-        elif action == "策略":
-            self.strategy_handle()
-        elif action == "配置":
-            self.config_handle()
-        elif action == "下单":
-            self.order_handle()
-        elif action == "注销":
-            self.logout_handle()
-        elif action == '日志':
-            self.log_handle()
+    def page_map(self, w):
+        name = w.__class__.__name__
+        if name not in self.map_:
+            self.map_.append(name)
+        return self.map_.index(name)
 
     def home_handle(self):
-        self.widget = HomeWidget(self)
-        self.setCentralWidget(self.widget)
+        if self.home_widget is None:
+            self.home_widget = HomeWidget(self)
+            self.stackedWidget.addWidget(self.home_widget)
+        self.stackedWidget.setCurrentIndex(self.page_map(self.home_widget))
 
     def strategy_handle(self):
-        self.widget = StrategyWidget(self)
-        self.setCentralWidget(self.widget)
+        if self.strategy_widget is None:
+            self.strategy_widget = StrategyWidget(self)
+            self.stackedWidget.addWidget(self.strategy_widget)
+        self.stackedWidget.setCurrentIndex(self.page_map(self.strategy_widget))
 
     def account_handle(self):
-        self.widget = AccountWidget(self)
-        self.setCentralWidget(self.widget)
+        if self.account_widget is None:
+            self.account_widget = AccountWidget(self)
+            self.stackedWidget.addWidget(self.account_widget)
+        self.stackedWidget.setCurrentIndex(self.page_map(self.account_widget))
 
     def market_handle(self):
-        self.widget = MarketWidget(self)
-        self.setCentralWidget(self.widget)
+        if self.market_widget is None:
+            self.market_widget = MarketWidget(self)
+            self.stackedWidget.addWidget(self.market_widget)
+        self.stackedWidget.setCurrentIndex(self.page_map(self.market_widget))
+
+    def order_handle(self):
+        if not G.choice_local_symbol:
+            replay = QMessageBox.information(self, "提示", "请在[行情]先订阅或选择一个合约", QMessageBox.Ok | QMessageBox.Ok,
+                                             QMessageBox.Ok)
+            return
+        else:
+            if self.order_widget is None:
+                self.order_widget = OrderWidget(self)
+                self.stackedWidget.addWidget(self.order_widget)
+            self.stackedWidget.setCurrentIndex(self.page_map(self.order_widget))
 
     def config_handle(self):
         if self.cfg_dialog is None:
@@ -166,13 +134,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.cfg_dialog.show()
         else:
             self.cfg_dialog.raise_()
-
-    def order_handle(self):
-        if not G.choice_local_symbol:
-            replay = QMessageBox.information(self, "提示", "请在[行情]先订阅或选择一个合约", QMessageBox.Ok, QMessageBox.Ok)
-        else:
-            self.widget = OrderWidget(self)
-            self.setCentralWidget(self.widget)
 
     def log_handle(self):
         if self.log_dialog is None:

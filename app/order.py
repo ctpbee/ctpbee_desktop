@@ -12,6 +12,7 @@ from ctpbee.constant import Exchange, TickData
 from ctpbee import current_app as bee_current_app
 
 from app.lib.global_var import G
+from app.ui import order_qss
 from app.ui.ui_order import Ui_Order
 
 tick_zn = {
@@ -47,64 +48,14 @@ activate_order_table_column = (
 order_table_column = ('symbol', 'direction', 'exchange', 'volume', 'price', 'status', 'time', 'type')
 trade_table_column = ('symbol', 'direction', 'exchange', 'volume', 'price', 'offset', 'time')
 
-qss = """
-QWidget{
-background:#ffffff;
-color:#000000;
-margin:0px;
-}
 
-
-QTableWidget,QTabWidget::pane{
-    border:none;
-}
-
-QHeaderView::section{
-background:#ffffff;
-color:#000000;
-}
-
-QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
-    color:#000000;
-    border:1px solid #1b89ca;
-    border-radius:5px;
-}
-
-QTabBar::tab {
-     border:1px solid #1b89ca;
-     border-radius:2px;
-     min-width: 60px;
-     padding: 2px;
- }
-QTabBar::tab:selected{
-    background:#1b89ca;
-}
-QTabBar::tab:!selected{
-    margin-top:5px;
-}
-
-#local_symbol_zn{
-color:#00c1c1
-}
-
-
-QPushButton{
-background:#1b89c0;
-color:#000000;
-}
-
-QPushButton:hover{
-    background:#1b89ca;
-    color:#000000
-}
-"""
 
 
 class OrderWidget(QWidget, Ui_Order):
     def __init__(self, mainwindow):
         super(OrderWidget, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(qss)
+        self.setStyleSheet(order_qss)
         self.setWindowTitle("下单")
         #
         self.position_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑

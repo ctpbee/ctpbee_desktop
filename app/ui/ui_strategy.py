@@ -1,9 +1,13 @@
+0
+1
+2
+3
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'strategy.ui',
 # licensing of 'strategy.ui' applies.
 #
-# Created: Thu Nov 28 13:27:22 2019
+# Created: Sun Dec  8 15:52:12 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,16 +42,10 @@ class Ui_Strategy(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.add_strategy_btn = QtWidgets.QPushButton(Strategy)
         self.add_strategy_btn.setMaximumSize(QtCore.QSize(200, 16777215))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/menu/icon/添加.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.add_strategy_btn.setIcon(icon)
         self.add_strategy_btn.setObjectName("add_strategy_btn")
         self.horizontalLayout.addWidget(self.add_strategy_btn)
         self.gen_strategy = QtWidgets.QPushButton(Strategy)
         self.gen_strategy.setMaximumSize(QtCore.QSize(200, 16777215))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/menu/icon/生成支付单.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.gen_strategy.setIcon(icon1)
         self.gen_strategy.setObjectName("gen_strategy")
         self.horizontalLayout.addWidget(self.gen_strategy)
         self.horizontalLayout.setStretch(1, 2)
@@ -65,4 +63,3 @@ class Ui_Strategy(object):
         self.add_strategy_btn.setText(QtWidgets.QApplication.translate("Strategy", "添加策略", None, -1))
         self.gen_strategy.setText(QtWidgets.QApplication.translate("Strategy", "生成策略模板", None, -1))
 
-import app.resource.mainwindow_rc

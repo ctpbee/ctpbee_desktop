@@ -7,8 +7,7 @@ from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBo
 
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
-from app.loading import LoadingDialog
-
+from app.ui import market_qss
 contract_space = " " * 2
 market_table_column = ['name',  # 中文名
                        'local_symbol',  # 品种
@@ -29,50 +28,13 @@ market_table_column = ['name',  # 中文名
                        ]
 
 yellow = ['local_symbol', 'ask_volume_1', 'bid_volume_1', 'volume', 'open_interest']
-qss = """
-QWidget{
-background:#ffffff;
-color:#000000;
-margin:0px;
-}
-
-QTableWidget{
-    border:none;
-    background:#000000;
-    color:#ffffff
-}
-
-QTableCornerButton::section,QHeaderView::section{
-color:#00c1c1;
-}
-
-QComboBox{
-    color:#000000;
-    border:1px solid #1b89ca;
-    border-radius:5px;
-}
-
-
-QPushButton{
-background:#ffffff;
-color:#000000;
-padding:5px
-
-}
-
-QPushButton:hover{
-    background:#1b89ca;
-    color:#ffffff
-}
-
-"""
 
 
 class MarketWidget(QWidget, Ui_Market):
     def __init__(self, mainwindow):
         super(MarketWidget, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(qss)
+        self.setStyleSheet(market_qss)
         self.setWindowTitle("行情")
         self.item_row = len(G.market_tick_row_map)
         self.bee_ext = mainwindow.bee_ext
@@ -93,10 +55,6 @@ class MarketWidget(QWidget, Ui_Market):
         self.fill_table()
         self.load_time = time.time()
         self.tableWidget.setEnabled(False)
-        # load动画
-        self.loading = LoadingDialog()
-        self.loading.msg.setText('正在加载合约列表...')
-        self.loading.show()
         # 渲染table
         self.obj = self.mainwindow.job
         self.obj.market_signal.connect(self.set_item_slot)
@@ -115,14 +73,14 @@ class MarketWidget(QWidget, Ui_Market):
     def go_order(self, row, col):
         name = self.tableWidget.item(row, 0).text()
         local_symbol = self.tableWidget.item(row, 1).text()
-        replay = QMessageBox.question(self, "提示", f"您选择的是 {name} [ {local_symbol} ] 是否进入下单界面?",
-                                      QMessageBox.Yes | QMessageBox.No,
-                                      QMessageBox.Yes)
-        if replay == QMessageBox.Yes:
-            G.choice_local_symbol = local_symbol
-            self.mainwindow.order_handle()
-        else:
-            return
+        # replay = QMessageBox.question(self, "提示", f"您选择的是 {name} [ {local_symbol} ] 是否进入下单界面?",
+        #                               QMessageBox.Yes | QMessageBox.No,
+        #                               QMessageBox.Yes)
+        # if replay == QMessageBox.Yes:
+        G.choice_local_symbol = local_symbol
+        self.mainwindow.order_handle()
+        # else:
+        #     return
 
     @Slot()
     def timer_slot(self):
@@ -130,7 +88,6 @@ class MarketWidget(QWidget, Ui_Market):
             self.progressBar.setValue(len(G.subscribes))
             self.load_status.setText("订阅合约列表加载完成")
             self.timer.stop()
-            self.loading.close()
             self.tableWidget.setEnabled(True)
 
     @Slot()

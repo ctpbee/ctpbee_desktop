@@ -57,10 +57,6 @@
        <property name="text">
         <string>添加策略</string>
        </property>
-       <property name="icon">
-        <iconset resource="../resource/mainwindow.qrc">
-         <normaloff>:/menu/icon/添加.png</normaloff>:/menu/icon/添加.png</iconset>
-       </property>
       </widget>
      </item>
      <item>
@@ -74,18 +70,12 @@
        <property name="text">
         <string>生成策略模板</string>
        </property>
-       <property name="icon">
-        <iconset resource="../resource/mainwindow.qrc">
-         <normaloff>:/menu/icon/生成支付单.png</normaloff>:/menu/icon/生成支付单.png</iconset>
-       </property>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../resource/mainwindow.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

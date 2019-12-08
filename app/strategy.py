@@ -4,50 +4,19 @@ from PySide2.QtCore import Slot
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QTableWidget, QHeaderView, \
     QFileDialog
 
+from app.ui import strategy_qss
 from app.ui.ui_strategy import Ui_Strategy
 from ctpbee import current_app as bee_current_app, dynamic_loading_api
 from app.lib.strategy_lib import check_code, strategy_template
 
 strategy_table_column = ("name", "status", "operator", "delete")
 
-qss = """
-QWidget{
-background:#ffffff;
-color:#000000;
-margin:0px;
-}
-
-QTableCornerButton::section,QHeaderView::section{
-background:#004687;
-color:#000000;
-}
-
-QPushButton{
-    padding:10px
-}
-QPushButton:hover{
-background:#1b89ca;
-}
-
-
-#add_strategy_btn,#gen_strategy{
-background:#ffffff;
-color:#000000;
-}
-
-
-#add_strategy_btn:hover,#gen_strategy:hover{
-background:#1b89ca;
-color:#000000;
-}
-"""
-
 
 class StrategyWidget(QWidget, Ui_Strategy):
     def __init__(self, mainwindow):
         super(StrategyWidget, self).__init__(parent=mainwindow)
         self.setupUi(self)
-        self.setStyleSheet(qss)
+        self.setStyleSheet(strategy_qss)
         self.row = 0
         self.strategy_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.strategy_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch);  # 所有列自适应表格宽度
@@ -91,12 +60,12 @@ class StrategyWidget(QWidget, Ui_Strategy):
             if v.frozen:
                 status = "停止"
                 s_btn = QPushButton("开启")
-                s_btn.setStyleSheet("background-color:green;color:#000000;padding:10px")
+                s_btn.setStyleSheet("background-color:green;padding:10px")
                 s_btn.clicked.connect(self.open_strategy_slot)
             else:
                 status = "运行中"
                 s_btn = QPushButton("停止")
-                s_btn.setStyleSheet("background-color:red;color:#000000;padding:10px")
+                s_btn.setStyleSheet("background-color:red;padding:10px")
                 s_btn.clicked.connect(self.close_strategy_slot)
 
             d_btn = QPushButton("删除")

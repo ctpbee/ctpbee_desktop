@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>675</width>
-    <height>212</height>
+    <width>749</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -31,7 +31,32 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="kw">
+       <property name="placeholderText">
+        <string>Search...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>搜索结果</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="search_list"/>
+       </item>
+      </layout>
+     </item>
      <item>
       <widget class="QListWidget" name="log_list"/>
      </item>

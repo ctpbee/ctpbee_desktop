@@ -3,13 +3,12 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Thu Nov 28 13:27:06 2019
+# Created: Sun Dec  8 16:08:48 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide2 import QtCore, QtGui, QtWidgets
-
 
 class Ui_Config(object):
     def setupUi(self, Config):
@@ -98,11 +97,11 @@ class Ui_Config(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.pushButton = QtWidgets.QPushButton(Config)
-        self.pushButton.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.pushButton.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout.addWidget(self.pushButton)
+        self.submit_btn = QtWidgets.QPushButton(Config)
+        self.submit_btn.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.submit_btn.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.submit_btn.setObjectName("submit_btn")
+        self.horizontalLayout.addWidget(self.submit_btn)
         self.formLayout_2.setLayout(3, QtWidgets.QFormLayout.SpanningRole, self.horizontalLayout)
         self.line = QtWidgets.QFrame(Config)
         self.line.setMinimumSize(QtCore.QSize(0, 10))
@@ -127,7 +126,6 @@ class Ui_Config(object):
         self.label_8.setText(QtWidgets.QApplication.translate("Config", "SHARED_FUNC/分时图数据", None, -1))
         self.CLOSE_PATTERN.setItemText(0, QtWidgets.QApplication.translate("Config", "today", None, -1))
         self.CLOSE_PATTERN.setItemText(1, QtWidgets.QApplication.translate("Config", "yesterday", None, -1))
-        self.pushButton.setText(QtWidgets.QApplication.translate("Config", "提交更改", None, -1))
-
+        self.submit_btn.setText(QtWidgets.QApplication.translate("Config", "提交更改", None, -1))
 
 import app.resource.mainwindow_rc

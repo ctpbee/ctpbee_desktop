@@ -5,6 +5,7 @@ from PySide2.QtCore import Qt, Slot
 from app.lib.global_var import G
 from app.ui.ui_config import Ui_Config
 from ctpbee import current_app as bee_current_app
+from app.ui import config_qss
 
 keys = [
     "REFRESH_INTERVAL",
@@ -15,43 +16,13 @@ keys = [
     "SLIPPAGE_SELL",
     "CLOSE_PATTERN",
     "SHARED_FUNC"]
-qss = """QWidget{
-background:#ffffff;
-color:#000000;
-margin:0px;
-}
 
-QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
-    color:#000000;
-    border:1px solid #1b89ca;
-    border-radius:5px;
-}
-
-QPushButton{
-background:#ffffff;
-color:#000000;
-padding:10px
-
-}
-
-QPushButton:hover{
-    background:#1b89ca;
-    color:#000000
-}
-
-QCheckBox{
-    border-radius:5px;
-}
-
-QCheckBox::indicator:checked {
-    color:#1b89ca;
- }"""
 
 class ConfigDialog(QDialog, Ui_Config):
     def __init__(self, mainwindow):
         super(ConfigDialog, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(qss)
+        self.setStyleSheet(config_qss)
         self.mainwindow = mainwindow
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))
         self.SLIPPAGE_SHORT.setValue(float(bee_current_app.config['SLIPPAGE_SHORT']))
@@ -64,7 +35,7 @@ class ConfigDialog(QDialog, Ui_Config):
             Qt.Checked if bee_current_app.config["SHARED_FUNC"] else Qt.Unchecked)
         self.CLOSE_PATTERN.setCurrentText(bee_current_app.config["CLOSE_PATTERN"])
 
-        self.pushButton.clicked.connect(self.update_config)
+        self.submit_btn.clicked.connect(self.update_config)
 
     @Slot()
     def update_config(self):
@@ -83,3 +54,4 @@ class ConfigDialog(QDialog, Ui_Config):
     def closeEvent(self, arg__1: QCloseEvent):
         self.mainwindow.cfg_dialog = None
         arg__1.accept()
+

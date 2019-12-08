@@ -53,7 +53,6 @@ class KlineWidget(QWidget, Ui_Form):
             self.kline_layout.removeWidget(self.browser)
         # kline 信号
         self.kline_job = self.mainwindow.kline_job
-        self.kline_job.transfer_signal.connect(self.to_js_slot)
         # 增加一个通信中需要用到的频道
         self.channel = QWebChannel()
         self.channel.registerObject("bee_signal", self.kline_job)
@@ -75,10 +74,6 @@ class KlineWidget(QWidget, Ui_Form):
             return self.search_path(dir)
         return p
 
-    @Slot(dict)
-    def to_js_slot(self, data: dict):
-        """发送单条bar到js: 只能str """
-        self.kline_job.qt_to_js.emit(json.dumps(data))
 
     @Slot(dict)
     def set_tick_slot(self, tick: dict):

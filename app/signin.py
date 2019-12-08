@@ -19,7 +19,7 @@ class Vlog(VLogger):
               f"  {record['levelname']}   {record['owner']}   {record['message']}"
         G.log_history.append(msg)
         if G.mainwindow:
-            G.mainwindow.job.order_log_signal.emit(msg)
+            G.mainwindow.job.log_signal.emit(msg)
         if G.loading:
             G.loading.msg.setText(record['message'])
 

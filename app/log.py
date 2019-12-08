@@ -15,7 +15,7 @@ class LogDialog(QDialog, Ui_Log):
 
         # self.setWindowFlags(Qt.WindowStaysOnTopHint)#窗口置顶
         self.mainwindow = mainwindow
-        self.mainwindow.job.order_log_signal.connect(self.set_log_slot)
+        self.mainwindow.job.log_signal.connect(self.set_log_slot)
         self.search_list.hide()
         self.label.hide()
         self.fill_log()

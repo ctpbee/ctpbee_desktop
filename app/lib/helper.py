@@ -15,23 +15,22 @@ class Job(QObject):
     order_activate_signal = Signal(list)
     order_order_signal = Signal(list)
     order_trade_signal = Signal(list)
-    order_log_signal = Signal(str)
+    log_signal = Signal(str)
 
     def __init__(self):
         super(self.__class__, self).__init__()
 
 
 class KInterfaceObject(QObject):
-    qt_to_js = Signal(str)  # channel only str
+    qt_to_js = Signal(str)  # channel only str  在js中connect
     js_to_qt = Signal(str)
-    transfer_signal = Signal(dict)
 
     def __init__(self):
         super(self.__class__, self).__init__()
 
     @Slot(result=str)
     def get_history_data(self):
-        """js传数据通过调用此函数"""
+        """js通过调用此函数获取数据"""
         try:
             file_path = tick_path + f"/{str(G.choice_local_symbol)}.json"
             with open(file_path, 'r') as f:

@@ -1,3 +1,5 @@
+import json
+
 from PySide2.QtGui import QCloseEvent, QIcon
 from PySide2.QtWidgets import QMainWindow, QProgressBar, QMessageBox, QLabel, QMenu, \
     QSystemTrayIcon
@@ -146,7 +148,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         info = [timestamp, bar.open_price, bar.high_price, bar.low_price,
                 bar.close_price, bar.volume]
         if bar.local_symbol == G.choice_local_symbol:
-            self.kline_job.transfer_signal.emit({bar.local_symbol: info})
+            data = {bar.local_symbol: info}
+            self.kline_job.qt_to_js.emit(json.dumps(data))
         # 存入文件
         self.record_job.sig_bar_record.emit(bar.local_symbol, info)
 

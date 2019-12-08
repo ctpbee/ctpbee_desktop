@@ -18,20 +18,13 @@
     <normaloff>:/menu/images/bee_temp_grey.png</normaloff>:/menu/images/bee_temp_grey.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,9">
+   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,9">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QPushButton" name="home_btn">
         <property name="text">
          <string>首页</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="account_btn">
-        <property name="text">
-         <string>账户</string>
         </property>
        </widget>
       </item>
@@ -91,6 +84,13 @@
        </spacer>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QStackedWidget" name="stackedWidget"/>

@@ -13,7 +13,6 @@ from app.lib.helper import Job, KInterfaceObject, RecordObject
 from app.ui import main_qss
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
-from app.account import AccountWidget
 from app.market import MarketWidget
 from app.order import OrderWidget
 from app.strategy import StrategyWidget
@@ -52,7 +51,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.addPermanentWidget(self.market_msg, stretch=5)
         # btn
         self.home_btn.clicked.connect(self.home_handle)
-        self.account_btn.clicked.connect(self.account_handle)
         self.market_btn.clicked.connect(self.market_handle)
         self.order_btn.clicked.connect(self.order_handle)
         self.strategy_btn.clicked.connect(self.strategy_handle)
@@ -105,11 +103,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.stackedWidget.addWidget(self.strategy_widget)
         self.stackedWidget.setCurrentIndex(self.page_map(self.strategy_widget))
 
-    def account_handle(self):
-        if self.account_widget is None:
-            self.account_widget = AccountWidget(self)
-            self.stackedWidget.addWidget(self.account_widget)
-        self.stackedWidget.setCurrentIndex(self.page_map(self.account_widget))
 
     def market_handle(self):
         if self.market_widget is None:

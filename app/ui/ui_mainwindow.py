@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'mainwindow.ui',
 # licensing of 'mainwindow.ui' applies.
 #
-# Created: Sun Dec  8 14:59:21 2019
+# Created: Sun Dec  8 20:42:29 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,9 +26,6 @@ class Ui_MainWindow(object):
         self.home_btn = QtWidgets.QPushButton(self.centralwidget)
         self.home_btn.setObjectName("home_btn")
         self.verticalLayout.addWidget(self.home_btn)
-        self.account_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.account_btn.setObjectName("account_btn")
-        self.verticalLayout.addWidget(self.account_btn)
         self.market_btn = QtWidgets.QPushButton(self.centralwidget)
         self.market_btn.setObjectName("market_btn")
         self.verticalLayout.addWidget(self.market_btn)
@@ -50,10 +47,15 @@ class Ui_MainWindow(object):
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
+        self.line = QtWidgets.QFrame(self.centralwidget)
+        self.line.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.horizontalLayout_2.addWidget(self.line)
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         self.stackedWidget.setObjectName("stackedWidget")
         self.horizontalLayout_2.addWidget(self.stackedWidget)
-        self.horizontalLayout_2.setStretch(1, 9)
+        self.horizontalLayout_2.setStretch(2, 9)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -65,7 +67,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
         self.home_btn.setText(QtWidgets.QApplication.translate("MainWindow", "首页", None, -1))
-        self.account_btn.setText(QtWidgets.QApplication.translate("MainWindow", "账户", None, -1))
         self.market_btn.setText(QtWidgets.QApplication.translate("MainWindow", "行情", None, -1))
         self.order_btn.setText(QtWidgets.QApplication.translate("MainWindow", "下单", None, -1))
         self.strategy_btn.setText(QtWidgets.QApplication.translate("MainWindow", "策略", None, -1))

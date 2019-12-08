@@ -4,11 +4,11 @@ block_cipher = None
 
 
 a = Analysis(['ctpbee_desktop.py'],
-             pathex=['D:\\GIT\\ctpbee_desktop\\venv\\Lib\\site-packages\\shiboken2'],
+             pathex=['C:\\GIT\\ctpbee_desktop\\venv\\Lib\\site-packages\\shiboken2'],
              binaries=[],
              datas=[("app/static","static"),
-             ('venv/Lib/site-packages/ctpbee','ctpbee'),
-             ('venv/Lib/site-packages/PySide2','PySide2')],
+             ('venv/Lib/site-packages/PySide2','PySide2'),
+             ],
              hiddenimports=['PySide2.QtPrintSupport'],
              hookspath=[],
              runtime_hooks=[],
@@ -29,7 +29,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=False,
-           icon='D:\\GIT\\ctpbee_desktop\\bee64.ico')
+           icon='C:\\GIT\\ctpbee_desktop\\bee64.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,

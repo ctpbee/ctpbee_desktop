@@ -1,6 +1,6 @@
 from PySide2.QtCore import Qt, QTimer, Slot
 from PySide2.QtGui import QCloseEvent
-from PySide2.QtWidgets import QDialog
+from PySide2.QtWidgets import QDialog, QAbstractItemView
 
 from app.lib.global_var import G
 from app.ui.ui_log import Ui_Log
@@ -35,6 +35,7 @@ class LogDialog(QDialog, Ui_Log):
     @Slot(str)
     def set_log_slot(self, record: str):
         self.log_list.insertItem(0, record)
+
         # if self.log_list.count() > 500:
         #     self.log_list.clear()
 

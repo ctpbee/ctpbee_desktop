@@ -1,11 +1,5 @@
-import json
-import os
-import sys
-
-from PySide2 import QtGui
-from PySide2.QtCore import Signal, QObject, Slot, Qt, QSize, QThread
-from PySide2.QtGui import QCloseEvent, QIcon, QPixmap, QBitmap, QPainter
-from PySide2.QtWidgets import QMainWindow, QAction, QApplication, QProgressBar, QMessageBox, QLabel, QMenu, \
+from PySide2.QtGui import QCloseEvent, QIcon
+from PySide2.QtWidgets import QMainWindow, QProgressBar, QMessageBox, QLabel, QMenu, \
     QSystemTrayIcon
 
 from app.lib.global_var import G
@@ -22,6 +16,7 @@ from ctpbee.event_engine.engine import EVENT_TIMER
 from ctpbee import current_app
 from app.log import LogDialog
 from app.home import HomeWidget
+from app.k_line import KlineWidget
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -65,6 +60,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.account_widget = None
         self.market_widget = None
         self.order_widget = None
+        self.kline_widget = None
         self.log_dialog = None
         self.cfg_dialog = None
 
@@ -103,7 +99,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.stackedWidget.addWidget(self.strategy_widget)
         self.stackedWidget.setCurrentIndex(self.page_map(self.strategy_widget))
 
-
     def market_handle(self):
         if self.market_widget is None:
             self.market_widget = MarketWidget(self)
@@ -111,15 +106,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentIndex(self.page_map(self.market_widget))
 
     def order_handle(self):
-        if not G.choice_local_symbol:
-            replay = QMessageBox.information(self, "提示", "请在[行情]先订阅或选择一个合约", QMessageBox.Ok | QMessageBox.Ok,
-                                             QMessageBox.Ok)
-            return
+        if self.order_widget is None:
+            self.order_widget = OrderWidget(self)
+            self.order_widget.show()
         else:
-            if self.order_widget is None:
-                self.order_widget = OrderWidget(self)
-                self.stackedWidget.addWidget(self.order_widget)
-            self.stackedWidget.setCurrentIndex(self.page_map(self.order_widget))
+            self.order_widget.raise_()
+
+    def kline_handle(self):
+        if self.kline_widget is None:
+            self.kline_widget = KlineWidget(self)
+            self.stackedWidget.addWidget(self.kline_widget)
+        self.stackedWidget.setCurrentIndex(self.page_map(self.kline_widget))
+        self.kline_widget.k_line_init()
 
     def config_handle(self):
         if self.cfg_dialog is None:

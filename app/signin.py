@@ -58,7 +58,7 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.load_remember()
         self.sign_in_btn_1.clicked.connect(self.common_sign_in)
         self.sign_in_btn_2.clicked.connect(self.detailed_sign_in)
-        self.sign_in_btn_1.hide()
+        self.sign_in_btn_1.setDisabled(True)
         self.sign_in_btn_2.setEnabled(True)
         self.password_1.returnPressed.connect(self.common_sign_in)
         # 普通
@@ -82,9 +82,9 @@ class SignInWidget(QWidget, Ui_SignIn):
     def check_disable(self):
         if self.login_tab.currentIndex() == 0:
             if self.userid_1.text() and self.password_1.text():
-                self.sign_in_btn_1.show()
+                self.sign_in_btn_1.setEnabled(True)
             else:
-                self.sign_in_btn_1.hide()
+                self.sign_in_btn_1.setDisabled(True)
 
     def load_remember(self):
         path_list = os.listdir(desktop_path)

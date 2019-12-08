@@ -8,6 +8,7 @@ from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBo
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
 from app.ui import market_qss
+
 contract_space = " " * 2
 market_table_column = ['name',  # 中文名
                        'local_symbol',  # 品种
@@ -52,7 +53,6 @@ class MarketWidget(QWidget, Ui_Market):
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.cellDoubleClicked.connect(self.go_order)
         #
-        self.fill_table()
         self.load_time = time.time()
         self.tableWidget.setEnabled(False)
         # 渲染table
@@ -73,14 +73,8 @@ class MarketWidget(QWidget, Ui_Market):
     def go_order(self, row, col):
         name = self.tableWidget.item(row, 0).text()
         local_symbol = self.tableWidget.item(row, 1).text()
-        # replay = QMessageBox.question(self, "提示", f"您选择的是 {name} [ {local_symbol} ] 是否进入下单界面?",
-        #                               QMessageBox.Yes | QMessageBox.No,
-        #                               QMessageBox.Yes)
-        # if replay == QMessageBox.Yes:
         G.choice_local_symbol = local_symbol
-        self.mainwindow.order_handle()
-        # else:
-        #     return
+        self.mainwindow.kline_handle()
 
     @Slot()
     def timer_slot(self):
@@ -135,23 +129,6 @@ class MarketWidget(QWidget, Ui_Market):
                 item.setTextColor(QColor(199, 199, 9))
             self.tableWidget.setItem(row, i, item)
 
-    def fill_table(self):
-        """
-        :return:
-        """
-        self.load_status.setText("加载订阅合约...")
-        d = G.market_tick_row_map
-        count = len(d)
-        for index, local_symbol in enumerate(d):
-            row = index
-            self.tableWidget.insertRow(row)
-            tick = G.market_tick[local_symbol]
-            self.insert_(row, tick)
-            # 反馈
-            self.progressBar.setValue((index + 1 // count))
-            self.load_status.setText("加载中...")
-
-    #
     @Slot()
     def set_item_slot(self, tick: dict):
         local_symbol = tick['local_symbol']
@@ -171,14 +148,13 @@ class MarketWidget(QWidget, Ui_Market):
                     old = self.tableWidget.item(row, i)
                     new = float(tick[col])
                     if old:  # 非空表
-                        space_ = " " * 3
-                        old = float(old.text().split(space_)[0])
+                        old = float(old.text())
                         difference = new - old
                         if difference > 0:  # 涨
-                            item = QTableWidgetItem(f"{str(new)}{space_}↑≈{'%0.2f' % abs(difference)}")
+                            item = QTableWidgetItem(f"{str(new)}")
                             item.setTextColor(QColor('red'))
                         elif difference < 0:  # 跌
-                            item = QTableWidgetItem(f"{str(new)}{space_}↓≈{'%0.2f' % abs(difference)}")
+                            item = QTableWidgetItem(f"{str(new)}")
                             item.setTextColor(QColor('green'))
                         else:
                             continue

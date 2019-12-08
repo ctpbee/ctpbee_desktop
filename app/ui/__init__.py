@@ -82,9 +82,9 @@ QScrollBar::add-page:horizontal,QScrollBar::sub-page:horizontal {
 }
 """
 
-sign_in_qss = qss = """
+sign_in_qss = """
 QWidget{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 margin:0px;
 }
@@ -130,27 +130,27 @@ QPushButton:hover,QToolButton:hover{
 }
 
 QLabel#title{
-    color:#ffffff;
+    color:#1b89ca;
     border-radius:5px;
     padding:5px
 }"""
 
 market_qss = """
 QWidget{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 margin:0px;
 }
 
 QTableWidget{
     border:none;
-    background:#000000;
+    background:#2B2B2B;
     color:#ffffff
 }
 
 QTableCornerButton::section,QHeaderView::section{
 color:#00c1c1;
-background:#000000;
+background:#2B2B2B;
 }
 
 QComboBox{
@@ -161,7 +161,7 @@ QComboBox{
 
 
 QPushButton{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 padding:5px
 
@@ -169,14 +169,14 @@ padding:5px
 
 QPushButton:hover{
     background:#1b89ca;
-    color:#000000
+    color:#2B2B2B
 }
 
 
 """ + scroll_bar
 
 config_qss = """QWidget{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 margin:0px;
 }
@@ -188,7 +188,7 @@ QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
 }
 
 QPushButton{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 padding:10px;
 border:1px solid #1b89ca;
@@ -210,7 +210,7 @@ QCheckBox::indicator:checked {
 
 home_qss = """
 QWidget,QTextEdit{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 border-radius: 5px;
 
@@ -218,7 +218,7 @@ border-radius: 5px;
 }
 QPushButton{
     padding:10px;
-    background: #000000;
+    background: #2B2B2B;
     color:#ffffff;
     border-radius:5px;
     border:1px solid #1b89ca;
@@ -229,22 +229,22 @@ QPushButton:hover{
     color:#ffffff
 }
 
-"""+scroll_bar
+""" + scroll_bar
 
 main_qss = """
 QMainWindow{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 margin:0px;
 }
 
-Line{
+#line{
 background:#1b89ca;
 }
 
 QStatusBar{
 background:#1b89ca;
-color:#000000;
+color:#ffffff;
 }
 
 QProgressBar {
@@ -260,7 +260,7 @@ QProgressBar::chunk {
 
 QPushButton{
     padding:10px;
-    background: #000000;
+    background: #2B2B2B;
     color:#ffffff;
     border-radius:5px;
     border:1px solid #1b89ca;
@@ -270,11 +270,11 @@ QPushButton{
 QPushButton:hover{
     background:#1b89ca;
     color:#ffffff
-}"""+scroll_bar
+}""" + scroll_bar
 
 order_qss = """
 QWidget{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 margin:0px;
 }
@@ -284,11 +284,16 @@ QTableWidget,QTabWidget::pane{
     border:none;
 }
 
-QHeaderView::section{
-background:#000000;
+QTableCornerButton::section,QHeaderView::section{
+background:#004687;
 color:#ffffff;
 }
 
+QPushButton:disabled{
+    background:gray;
+    color:#b6b6b6;
+    border-radius:2px;
+}
 QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
     color:#ffffff;
     border:1px solid #1b89ca;
@@ -314,7 +319,7 @@ color:#00c1c1
 
 
 QPushButton{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 border:1px solid #1b89ca;
 
@@ -324,11 +329,33 @@ QPushButton:hover{
     background:#1b89ca;
     color:#ffffff
 }
-"""+scroll_bar
+""" + scroll_bar
+
+kline_qss = """
+QWidget{
+background:#2B2B2B;
+color:#ffffff;
+margin:0px;
+}
+
+
+QTableWidget,QTabWidget::pane{
+    border:none;
+}
+
+QTableCornerButton::section,QHeaderView::section{
+background:#004687;
+color:#ffffff;
+}
+
+#symbol{
+color:#1b89ca;
+}
+"""
 
 strategy_qss = """
 QWidget{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 margin:0px;
 }
@@ -347,7 +374,7 @@ background:#1b89ca;
 
 
 #add_strategy_btn,#gen_strategy{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 }
 
@@ -360,7 +387,7 @@ color:#ffffff;
 
 log_qss = """
 QWidget{
-background:#000000;
+background:#2B2B2B;
 color:#ffffff;
 margin:0px;
 }
@@ -371,7 +398,7 @@ margin:10px
 
 QListWidget#search_list{
 background:#ffffff;
-color:#000000
+color:#2B2B2B
 }
 
-"""+scroll_bar
+""" + scroll_bar

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1613</width>
-    <height>804</height>
+    <width>1157</width>
+    <height>445</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,9 +23,13 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>下单</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,6,4,0,0">
+  <property name="windowIcon">
+   <iconset resource="../resource/mainwindow.qrc">
+    <normaloff>:/menu/images/bee_temp_grey.png</normaloff>:/menu/images/bee_temp_grey.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
      <item>
@@ -49,80 +53,6 @@
    </item>
    <item>
     <widget class="Line" name="line_4">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="8,0,2">
-     <item>
-      <layout class="QVBoxLayout" name="kline_layout"/>
-     </item>
-     <item>
-      <widget class="Line" name="line_2">
-       <property name="minimumSize">
-        <size>
-         <width>10</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTableWidget" name="tick_table">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>100</horstretch>
-         <verstretch>255</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>400</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>400</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-        <bool>true</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>key</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>value</string>
-        </property>
-       </column>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>10</height>
-      </size>
-     </property>
-     <property name="lineWidth">
-      <number>2</number>
-     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -510,26 +440,36 @@
        <property name="styleSheet">
         <string notr="true">font: 75 12pt &quot;Arial&quot;;</string>
        </property>
-       <layout class="QFormLayout" name="formLayout">
-        <property name="horizontalSpacing">
-         <number>7</number>
-        </property>
-        <property name="verticalSpacing">
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <property name="spacing">
          <number>15</number>
         </property>
         <property name="leftMargin">
-         <number>0</number>
+         <number>3</number>
         </property>
         <property name="topMargin">
-         <number>0</number>
+         <number>3</number>
         </property>
         <property name="rightMargin">
-         <number>0</number>
+         <number>3</number>
         </property>
         <property name="bottomMargin">
-         <number>0</number>
+         <number>3</number>
         </property>
-        <item row="0" column="0" colspan="2">
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,9">
           <property name="spacing">
            <number>0</number>
@@ -562,7 +502,7 @@
           </item>
          </layout>
         </item>
-        <item row="1" column="0" colspan="2">
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,9">
           <property name="spacing">
            <number>0</number>
@@ -583,7 +523,7 @@
           </item>
          </layout>
         </item>
-        <item row="2" column="0" colspan="2">
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,9">
           <property name="spacing">
            <number>0</number>
@@ -611,7 +551,7 @@
           </item>
          </layout>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,9">
           <property name="spacing">
            <number>0</number>
@@ -632,7 +572,7 @@
           </item>
          </layout>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,9">
           <property name="spacing">
            <number>0</number>
@@ -656,7 +596,7 @@
           </item>
          </layout>
         </item>
-        <item row="5" column="0" colspan="2">
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <property name="spacing">
            <number>0</number>
@@ -692,6 +632,19 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>

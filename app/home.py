@@ -25,8 +25,11 @@ class HomeWidget(QWidget, Ui_Home):
         super(HomeWidget, self).__init__()
         self.setupUi(self)
         self.setStyleSheet(home_qss)
-        self.beebtn.clicked.connect(self.open_url)
-        self.issues_btn.clicked.connect(self.open_url2)
+        # btn
+        self.beebtn.clicked.connect(self.bee_slot)
+        self.issues_btn.clicked.connect(self.issues_slot)
+        self.doc_btn.clicked.connect(self.doc_slot)
+        self.community_btn.clicked.connect(self.community_slot)
         # account
         self.row = 0
         self.tableWidget.horizontalHeader().setVisible(False)
@@ -68,15 +71,24 @@ class HomeWidget(QWidget, Ui_Home):
             self.tableWidget.setItem(row, 0, QTableWidgetItem(key))
             self.tableWidget.setItem(row, 1, QTableWidgetItem(str(v)))
 
-    def open_url(self):
-        url = self.ctpbeeurl.text()
-        try:
-            webbrowser.get('chrome').open_new_tab(url)
-        except Exception as e:
-            webbrowser.open_new_tab(url)
+    def bee_slot(self):
+        url = "https://github.com/ctpbee"
+        self.open_url(url)
 
-    def open_url2(self):
-        url = self.desktop_url.text()
+
+    def doc_slot(self):
+        url = "https://docs.ctpbee.com/"
+        self.open_url(url)
+
+    def community_slot(self):
+        url = "http://community.ctpbee.com"
+        self.open_url(url)
+
+    def issues_slot(self):
+        url = "https://github.com/ctpbee/ctpbee_desktop/issues"
+        self.open_url(url)
+
+    def open_url(self, url):
         try:
             webbrowser.get('chrome').open_new_tab(url)
         except Exception as e:

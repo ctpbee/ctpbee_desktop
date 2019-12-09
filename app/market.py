@@ -59,7 +59,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.subscribe_singel.clicked.connect(self.subscribe_slot)
         self.subscribe_type.clicked.connect(self.subscribe_type_slot)
         self.subscribe_all.clicked.connect(self.subscribe_all_slot)
-        # self.unsubscribe.clicked.connect(self.unsubscribe_all_slot)
+        self.unsubscribe.clicked.connect(self.unsubscribe_all_slot)
         # 右键菜单
         self.tableWidget.setContextMenuPolicy(Qt.CustomContextMenu)  ######允许右键产生子菜单
         self.tableWidget.customContextMenuRequested.connect(self.generate_menu)  ####右键菜单
@@ -78,7 +78,7 @@ class MarketWidget(QWidget, Ui_Market):
         if action == item1:
             local_symbol = self.tableWidget.item(row_num, market_table_column.index('local_symbol')).text()
             # 取消订阅
-
+            self.bee_ext.app.market.unsubscribe(local_symbol)
             # 事后处理
             G.market_tick_row_map.remove(local_symbol)
             G.subscribes.pop(local_symbol, None)
@@ -102,18 +102,16 @@ class MarketWidget(QWidget, Ui_Market):
             self.tableWidget.setEnabled(True)
 
     def fresh_(self):
+        self.item_row = 0
         self.tableWidget.setRowCount(0)
-
-    @Slot()
-    def unsubscribe_slot(self):
-        pass
+        G.subscribes.clear()
+        G.market_tick_row_map.clear()
 
     @Slot()
     def unsubscribe_all_slot(self):
         for i in G.subscribes:
-            G.subscribes.clear()
             self.bee_ext.app.market.unsubscribe(i.split('.')[0])
-        # self.fresh_()
+        self.fresh_()
 
     @Slot()
     def subscribe_slot(self):

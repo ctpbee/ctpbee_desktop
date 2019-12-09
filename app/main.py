@@ -74,6 +74,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.kline_widget = None
         self.log_dialog = None
         self.cfg_dialog = None
+        self.backtrack_widget = None
 
     def sign_in_success(self):
         self.bee_ext = CtpbeeApi('default_setting', current_app)
@@ -123,7 +124,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentIndex(self.page_map(self.strategy_widget))
 
     def backtrack_handle(self):
-        return
         if self.backtrack_widget is None:
             self.backtrack_widget = BacktrackWidget(self)
             self.stackedWidget.addWidget(self.backtrack_widget)

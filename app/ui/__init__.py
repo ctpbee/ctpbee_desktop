@@ -121,7 +121,7 @@ QPushButton,QToolButton{
     padding:5px;
 }
 QPushButton:disabled{
-    background:gray;
+    background:#2B2B2B;
     color:#b6b6b6;
     border-radius:2px;
 }
@@ -195,6 +195,7 @@ QPushButton{
 background:#2B2B2B;
 color:#ffffff;
 padding:10px;
+border-radius:5px;
 border:1px solid #1b89ca;
 
 }
@@ -426,4 +427,20 @@ background:#ffffff;
 color:#2B2B2B
 }
 
+""" + scroll_bar
+
+backtrack_qss = """
+QWidget{
+background:#2B2B2B;
+color:#ffffff;
+margin:0px;
+}
+
+QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
+    color:#ffffff;
+    background:#2B2B2B;
+    padding:10px;
+    border:1px solid #1b89ca;
+    border-radius:5px;
+}
 """ + scroll_bar

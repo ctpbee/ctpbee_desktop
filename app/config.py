@@ -67,8 +67,9 @@ class ConfigDialog(QDialog, Ui_Config):
 
     def default_sc_slot(self):
         G.config.back_default()
-        self.init_shortcut()
+        self.mainwindow.update_shortcut()
         QMessageBox.information(self, "提示", '成功')
+        self.close()
 
     @Slot()
     def update_config(self):

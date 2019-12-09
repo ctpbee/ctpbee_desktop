@@ -436,6 +436,13 @@ color:#ffffff;
 margin:0px;
 }
 
+QPushButton{
+    padding:10px
+}
+QPushButton:hover{
+background:#1b89ca;
+}
+
 QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
     color:#ffffff;
     background:#2B2B2B;

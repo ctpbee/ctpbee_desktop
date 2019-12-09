@@ -1,6 +1,6 @@
 from PySide2 import QtGui
 from PySide2.QtGui import QCloseEvent
-from PySide2.QtWidgets import QMessageBox, QDialog, QLineEdit, QVBoxLayout
+from PySide2.QtWidgets import QMessageBox, QDialog, QLineEdit, QVBoxLayout, QHBoxLayout, QLabel
 from PySide2.QtCore import Qt, Slot
 
 from app.lib.global_var import G
@@ -17,6 +17,16 @@ keys = [
     "SLIPPAGE_SELL",
     "CLOSE_PATTERN",
     "SHARED_FUNC"]
+
+zn = {
+    "home": "首页",
+    "market": "行情",
+    "order": "下单",
+    "strategy": "策略",
+    "backtrack": "回测",
+    "log": "日志",
+    "config": "设置",
+}
 
 
 class ConfigDialog(QDialog, Ui_Config):
@@ -43,10 +53,16 @@ class ConfigDialog(QDialog, Ui_Config):
         self.CLOSE_PATTERN.setCurrentText(bee_current_app.config["CLOSE_PATTERN"])
 
     def init_shortcut(self):
-        self.s_layout = QVBoxLayout(self)
-        self.order_sc = ShortCutEdit(self)
-        self.s_layout.addWidget(self.order_sc)
-        self.short_tab.setLayout(self.s_layout)
+        self.v_layout = QVBoxLayout(self)
+        for name, sc in G.config.shortcut.items():
+            h_layout = QHBoxLayout(self)
+            label = QLabel(self)
+            label.setText(zn[name])
+            shortcut = ShortCutEdit(self, name, sc)
+            h_layout.addWidget(label)
+            h_layout.addWidget(shortcut)
+            self.v_layout.addLayout(h_layout)
+        self.short_tab.setLayout(self.v_layout)
 
     @Slot()
     def update_config(self):
@@ -60,6 +76,7 @@ class ConfigDialog(QDialog, Ui_Config):
         G.config.SHARED_FUNC = bee_current_app.config[
             'SHARED_FUNC'] = True if self.SHARED_FUNC.isChecked() else False
         G.config.CLOSE_PATTERN = bee_current_app.config['CLOSE_PATTERN'] = str(self.CLOSE_PATTERN.currentText())
+        G.config.to_file()
         QMessageBox.information(self, '提示', '修改成功', QMessageBox.Ok, QMessageBox.Ok)
 
     def closeEvent(self, arg__1: QCloseEvent):
@@ -67,11 +84,38 @@ class ConfigDialog(QDialog, Ui_Config):
         arg__1.accept()
 
 
+modmap = {
+    Qt.ControlModifier: "Ctrl",
+    Qt.AltModifier: "Alt",
+    Qt.ShiftModifier: "Shift",
+}
+
+
 class ShortCutEdit(QLineEdit):
-    def __init__(self, parent):
-        super(self.__class__, self).__init__(parent)
+    def __init__(self, parent_widget, name, sc):
+        super(self.__class__, self).__init__(parent_widget)
+        self.parent_widget=parent_widget
+        self.setText(sc)
+        self.name = name
 
     def keyPressEvent(self, event: QtGui.QKeyEvent):
-        key = event.key()
-        
+        if event.key() == Qt.Key_Backspace:
+            self.setText("空")
+            return
+        sequence = []
+        for modifier, text in modmap.items():
+            if event.modifiers() & modifier:
+                sequence.append(text)
+        if Qt.Key_A <= event.key() <= Qt.Key_Z:
+            sequence.append(chr(event.key()))
+        self.setText("+".join(sequence))
 
+    def keyReleaseEvent(self, event: QtGui.QKeyEvent):
+        sp = self.text().split("+")[-1]
+        if len(sp) != 1:
+            self.setText("空")
+        else:
+            G.config.shortcut.update({self.name: self.text()})
+            G.config.to_file()
+            self.parent_widget.mainwindow.shortcut_init()
+            self.setStyleSheet("background:#")

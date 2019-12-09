@@ -45,5 +45,8 @@ def join_path(rootdir, *args):
 
 desktop_path = str(get_folder_path('ctpbee_desktop'))
 tick_path = os.path.join(desktop_path, 'ticks')
+config_path = os.path.join(desktop_path, ".config.json")
 if not os.path.exists(tick_path):
     os.mkdir(tick_path)
+if not os.path.exists(config_path):
+    open(config_path, 'w')

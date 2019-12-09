@@ -5,7 +5,7 @@ from copy import deepcopy
 from PySide2 import QtGui
 from PySide2.QtCore import QRegExp, Slot, QTimer, Qt
 from PySide2.QtGui import QRegExpValidator, QMovie, QCloseEvent, QBitmap, QPainter, QKeySequence
-from PySide2.QtWidgets import QWidget, QMessageBox
+from PySide2.QtWidgets import QWidget, QMessageBox, QLineEdit
 
 from app.lib.global_var import G
 from app.ui.ui_signin import Ui_SignIn
@@ -64,6 +64,11 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.sign_in_btn_1.setDisabled(True)
         self.sign_in_btn_2.setEnabled(True)
         self.password_1.returnPressed.connect(self.common_sign_in)
+        #
+        for i in self.__dict__.values():
+            if isinstance(i, QLineEdit):
+                i.setContextMenuPolicy(Qt.NoContextMenu)  ######不允许右键产生子菜单
+
         # 普通
         self.userid_1.textChanged[str].connect(self.check_disable)
         self.password_1.textChanged[str].connect(self.check_disable)
@@ -239,8 +244,4 @@ class SignInWidget(QWidget, Ui_SignIn):
                 QMouseEvent.accept()
         except:
             pass
-
-    def keyPressEvent(self, event: QtGui.QKeyEvent):
-        key = event.key()
-        print(QKeySequence(key).toString(QKeySequence.NativeText))
 

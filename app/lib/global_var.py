@@ -1,6 +1,7 @@
 import json
 import os
 from queue import Queue
+from app.lib.get_path import config_path
 
 
 class Config:
@@ -12,10 +13,23 @@ class Config:
     SLIPPAGE_SELL = None
     CLOSE_PATTERN = None
     SHARED_FUNC = None
+    #
+    shortcut = {
+        "home": "",
+        "market": "",
+        "order": "",
+        "strategy": "",
+        "backtrack": "",
+        "log": "",
+        "config": "",
+    }
 
-    def __setattr__(self, key, value):
-        self.__dict__[key] = value
-        self.to_file()
+    def __init__(self):
+        self.path = config_path
+        with open(self.path, 'r')as fp:
+            data = fp.read()
+            if data:
+                self.update(json.loads(data))
 
     def update(self, data: dict):
         for k, v in data.items():
@@ -31,8 +45,7 @@ class Config:
         return pr
 
     def to_file(self):
-        config_path = os.path.join(G.user_path, ".config.json")
-        with open(config_path, 'w')as f:
+        with open(self.path, 'w')as f:
             json.dump(self.to_dict(), f)
 
 

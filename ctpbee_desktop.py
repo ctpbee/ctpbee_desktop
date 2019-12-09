@@ -21,5 +21,6 @@ if __name__ == '__main__':
 
     signinwindow = SignInWidget()
     signinwindow.show()
+    signinwindow.raise_()
 
     sys.exit(app.exec_())

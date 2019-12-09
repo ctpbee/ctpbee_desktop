@@ -2,10 +2,11 @@ import json
 
 from PySide2 import QtGui
 from PySide2.QtCore import QThread, Qt
-from PySide2.QtGui import QCloseEvent, QIcon
+from PySide2.QtGui import QCloseEvent, QIcon, QKeySequence
 from PySide2.QtWidgets import QMainWindow, QProgressBar, QMessageBox, QLabel, QMenu, \
-    QSystemTrayIcon
+    QSystemTrayIcon, QShortcut
 
+from app.backtrack import BacktrackWidget
 from app.lib.global_var import G
 from app.lib.helper import Job, KInterfaceObject, RecordWorker
 from app.ui import main_qss
@@ -14,7 +15,7 @@ from ctpbee import CtpbeeApi
 from app.market import MarketWidget
 from app.order import OrderWidget
 from app.strategy import StrategyWidget
-from app.config import ConfigDialog
+from app.config import ConfigDialog, modmap
 from ctpbee.constant import *
 from ctpbee.event_engine.engine import EVENT_TIMER
 from ctpbee import current_app
@@ -42,6 +43,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.r_thread.start()
         self.bee_ext = None
         self.tray_init()
+        self.shortcut_init()
         ##
         self.status_msg = QLabel("实时信息")
         self.market_msg = QLabel("最新行情")
@@ -60,7 +62,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setting_btn.clicked.connect(self.config_handle)
         self.log_btn.clicked.connect(self.log_handle)
         self.order_btn.clicked.connect(self.order_handle)
-        # self.backtrack_btn.clicked.connect(self.home_handle)
+        self.backtrack_btn.clicked.connect(self.backtrack_handle)
         # widgets
         self.map_ = []
         self.home_widget = None
@@ -89,6 +91,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         G.all_contracts = contracts
         self.home_handle()
 
+    def shortcut_init(self):
+        sc = G.config.shortcut
+        for name, sho in sc.items():
+            temp = QShortcut(QKeySequence(self.tr(sho)), self)
+            temp.activated.connect(getattr(self, f"{name}_handle"))
+            setattr(self, f"{name}_sc", temp)
+
     def page_map(self, w):
         name = w.__class__.__name__
         if name not in self.map_:
@@ -107,6 +116,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.stackedWidget.addWidget(self.strategy_widget)
         self.stackedWidget.setCurrentIndex(self.page_map(self.strategy_widget))
 
+    def backtrack_handle(self):
+        return
+        if self.backtrack_widget is None:
+            self.backtrack_widget = BacktrackWidget(self)
+            self.stackedWidget.addWidget(self.backtrack_widget)
+        self.stackedWidget.setCurrentIndex(self.page_map(self.backtrack_widget))
+
     def market_handle(self):
         if self.market_widget is None:
             self.market_widget = MarketWidget(self)
@@ -124,23 +140,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def order_handle(self):
         if self.order_widget is None:
             self.order_widget = OrderWidget(self)
-            self.order_widget.show()
-        else:
-            self.order_widget.raise_()
+        self.order_widget.show()
+        self.order_widget.raise_()
 
     def config_handle(self):
         if self.cfg_dialog is None:
             self.cfg_dialog = ConfigDialog(self)
-            self.cfg_dialog.show()
-        else:
-            self.cfg_dialog.raise_()
+        self.cfg_dialog.show()
+        self.cfg_dialog.raise_()
 
     def log_handle(self):
         if self.log_dialog is None:
             self.log_dialog = LogDialog(self)
-            self.log_dialog.show()
-        else:
-            self.log_dialog.raise_()
+        self.log_dialog.show()
+        self.log_dialog.raise_()
 
     def on_account(self, ext, account: AccountData) -> None:
         account = account._to_dict()

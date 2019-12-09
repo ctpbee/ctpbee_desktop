@@ -1,5 +1,6 @@
+from PySide2 import QtGui
 from PySide2.QtGui import QCloseEvent
-from PySide2.QtWidgets import QMessageBox, QDialog
+from PySide2.QtWidgets import QMessageBox, QDialog, QLineEdit, QVBoxLayout
 from PySide2.QtCore import Qt, Slot
 
 from app.lib.global_var import G
@@ -24,6 +25,12 @@ class ConfigDialog(QDialog, Ui_Config):
         self.setupUi(self)
         self.setStyleSheet(config_qss)
         self.mainwindow = mainwindow
+        # btn
+        self.submit_btn.clicked.connect(self.update_config)
+        self.init_config()
+        self.init_shortcut()
+
+    def init_config(self):
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))
         self.SLIPPAGE_SHORT.setValue(float(bee_current_app.config['SLIPPAGE_SHORT']))
         self.SLIPPAGE_BUY.setValue(float(bee_current_app.config['SLIPPAGE_BUY']))
@@ -35,7 +42,11 @@ class ConfigDialog(QDialog, Ui_Config):
             Qt.Checked if bee_current_app.config["SHARED_FUNC"] else Qt.Unchecked)
         self.CLOSE_PATTERN.setCurrentText(bee_current_app.config["CLOSE_PATTERN"])
 
-        self.submit_btn.clicked.connect(self.update_config)
+    def init_shortcut(self):
+        self.s_layout = QVBoxLayout(self)
+        self.order_sc = ShortCutEdit(self)
+        self.s_layout.addWidget(self.order_sc)
+        self.short_tab.setLayout(self.s_layout)
 
     @Slot()
     def update_config(self):
@@ -54,4 +65,13 @@ class ConfigDialog(QDialog, Ui_Config):
     def closeEvent(self, arg__1: QCloseEvent):
         self.mainwindow.cfg_dialog = None
         arg__1.accept()
+
+
+class ShortCutEdit(QLineEdit):
+    def __init__(self, parent):
+        super(self.__class__, self).__init__(parent)
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent):
+        key = event.key()
+        
 

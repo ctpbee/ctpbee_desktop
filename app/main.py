@@ -1,11 +1,13 @@
 import json
 
+from PySide2 import QtGui
+from PySide2.QtCore import QThread, Qt
 from PySide2.QtGui import QCloseEvent, QIcon
 from PySide2.QtWidgets import QMainWindow, QProgressBar, QMessageBox, QLabel, QMenu, \
     QSystemTrayIcon
 
 from app.lib.global_var import G
-from app.lib.helper import Job, KInterfaceObject, RecordObject
+from app.lib.helper import Job, KInterfaceObject, RecordWorker
 from app.ui import main_qss
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
@@ -33,7 +35,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.exit_ = False
         self.job = Job()
         self.kline_job = KInterfaceObject()
-        self.record_job = RecordObject()
+        self.record_work = RecordWorker()
+        self.r_thread = QThread()
+        self.record_work.moveToThread(self.r_thread)
+        self.r_thread.started.connect(self.record_work.record)
+        self.r_thread.start()
         self.bee_ext = None
         self.tray_init()
         ##
@@ -106,13 +112,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.market_widget = MarketWidget(self)
             self.stackedWidget.addWidget(self.market_widget)
         self.stackedWidget.setCurrentIndex(self.page_map(self.market_widget))
-
-    def order_handle(self):
-        if self.order_widget is None:
-            self.order_widget = OrderWidget(self)
-            self.order_widget.show()
-        else:
-            self.order_widget.raise_()
+        G.current_page = "market"
 
     def kline_handle(self):
         if self.kline_widget is None:
@@ -120,6 +120,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.stackedWidget.addWidget(self.kline_widget)
         self.stackedWidget.setCurrentIndex(self.page_map(self.kline_widget))
         self.kline_widget.k_line_init()
+
+    def order_handle(self):
+        if self.order_widget is None:
+            self.order_widget = OrderWidget(self)
+            self.order_widget.show()
+        else:
+            self.order_widget.raise_()
 
     def config_handle(self):
         if self.cfg_dialog is None:
@@ -151,7 +158,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             data = {bar.local_symbol: info}
             self.kline_job.qt_to_js.emit(json.dumps(data))
         # 存入文件
-        self.record_job.sig_bar_record.emit(bar.local_symbol, info)
+        G.tick_queue.put([bar.local_symbol, info])
+        print('bar', G.tick_queue.qsize())
 
     def on_order(self, ext, order: OrderData) -> None:
         active_orders = []
@@ -179,8 +187,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         tick = tick._to_dict()
         local_symbol = tick['local_symbol']
         G.market_tick[local_symbol] = tick
-
-        self.job.market_signal.emit(tick)
+        if G.current_page == "market":
+            self.job.market_signal.emit(tick)
         self.job.order_tick_signal.emit(tick)
 
     def on_shared(self, ext, shared: SharedData) -> None:
@@ -218,13 +226,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if reason in (QSystemTrayIcon.Trigger, QSystemTrayIcon.DoubleClick):
             if self.isHidden():
                 self.show()
-            else:
-                self.hide()
 
     def closeEvent(self, event: QCloseEvent):
         if self.exit_:
-            event.accept()
-            self.tray.hide()
+            G.pool_done = True
+            self.tray.deleteLater()
             try:
                 current_app.release()
             except:
@@ -233,8 +239,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.cfg_dialog.close()
             if self.log_dialog:
                 self.log_dialog.close()
+            if self.order_widget:
+                self.order_widget.close()
+            event.accept()
         else:
-            self.tray.showMessage("ctpbee", "以最小化隐藏在托盘", msecs=2)
+            self.tray.showMessage("ctpbee", "以最小化隐藏在托盘", msecs=1)
             self.hide()
             event.ignore()
 

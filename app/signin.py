@@ -1,8 +1,10 @@
 import json
 import os
 from copy import deepcopy
+
+from PySide2 import QtGui
 from PySide2.QtCore import QRegExp, Slot, QTimer, Qt
-from PySide2.QtGui import QRegExpValidator, QMovie, QCloseEvent, QBitmap, QPainter
+from PySide2.QtGui import QRegExpValidator, QMovie, QCloseEvent, QBitmap, QPainter, QKeySequence
 from PySide2.QtWidgets import QWidget, QMessageBox
 
 from app.lib.global_var import G
@@ -12,6 +14,7 @@ from app.lib.get_path import get_user_path, desktop_path, join_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
 from app.ui import sign_in_qss
+
 
 class Vlog(VLogger):
     def handler_record(self, record):
@@ -67,7 +70,6 @@ class SignInWidget(QWidget, Ui_SignIn):
         # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.close_load)
-
 
     def submask(self):
         self.bmp = QBitmap(self.size())
@@ -237,3 +239,8 @@ class SignInWidget(QWidget, Ui_SignIn):
                 QMouseEvent.accept()
         except:
             pass
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent):
+        key = event.key()
+        print(QKeySequence(key).toString(QKeySequence.NativeText))
+

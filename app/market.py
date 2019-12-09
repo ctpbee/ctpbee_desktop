@@ -1,9 +1,9 @@
 import time
 
-from PySide2.QtCore import Slot, QTimer
+from PySide2.QtCore import Slot, QTimer, Qt
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QListWidgetItem, QTableWidget, \
-    QHeaderView, QAbstractItemView
+    QHeaderView, QAbstractItemView, QMenu
 
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
@@ -52,9 +52,6 @@ class MarketWidget(QWidget, Ui_Market):
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.cellDoubleClicked.connect(self.go_order)
-        #
-        self.load_time = time.time()
-        self.tableWidget.setEnabled(False)
         # 渲染table
         self.obj = self.mainwindow.job
         self.obj.market_signal.connect(self.set_item_slot)
@@ -62,12 +59,31 @@ class MarketWidget(QWidget, Ui_Market):
         self.subscribe_singel.clicked.connect(self.subscribe_slot)
         self.subscribe_type.clicked.connect(self.subscribe_type_slot)
         self.subscribe_all.clicked.connect(self.subscribe_all_slot)
-        # self.unsubscribe.clicked.connect(self.unsubscribe_slot)
+        # self.unsubscribe.clicked.connect(self.unsubscribe_all_slot)
+        # 右键菜单
+        self.tableWidget.setContextMenuPolicy(Qt.CustomContextMenu)  ######允许右键产生子菜单
+        self.tableWidget.customContextMenuRequested.connect(self.generate_menu)  ####右键菜单
 
         # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.timer_slot)
-        self.timer.start(500)
+
+    def generate_menu(self, pos):
+        row_num = -1
+        for i in self.tableWidget.selectionModel().selection().indexes():
+            row_num = i.row()
+        menu = QMenu()
+        item1 = menu.addAction("取消订阅")
+        action = menu.exec_(self.tableWidget.mapToGlobal(pos))
+        if action == item1:
+            local_symbol = self.tableWidget.item(row_num, market_table_column.index('local_symbol')).text()
+            # 取消订阅
+
+            # 事后处理
+            G.market_tick_row_map.remove(local_symbol)
+            G.subscribes.pop(local_symbol, None)
+            self.tableWidget.removeRow(row_num)
+            self.item_row -= 1
 
     @Slot()
     def go_order(self, row, col):
@@ -78,17 +94,26 @@ class MarketWidget(QWidget, Ui_Market):
 
     @Slot()
     def timer_slot(self):
+        self.load_status.setText("正在加载...")
         if time.time() - self.load_time > 0.5:
             self.progressBar.setValue(len(G.subscribes))
             self.load_status.setText("订阅合约列表加载完成")
             self.timer.stop()
             self.tableWidget.setEnabled(True)
 
+    def fresh_(self):
+        self.tableWidget.setRowCount(0)
+
     @Slot()
     def unsubscribe_slot(self):
+        pass
+
+    @Slot()
+    def unsubscribe_all_slot(self):
         for i in G.subscribes:
+            G.subscribes.clear()
             self.bee_ext.app.market.unsubscribe(i.split('.')[0])
-        self.mainwindow.market_handle()
+        # self.fresh_()
 
     @Slot()
     def subscribe_slot(self):
@@ -113,14 +138,16 @@ class MarketWidget(QWidget, Ui_Market):
                 if res == 0:
                     G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})
                     self.progressBar.setMaximum(len(G.subscribes))  # 更新进度条
-        self.mainwindow.market_handle()
 
     @Slot()
     def subscribe_all_slot(self):
+        self.load_time = time.time()
+        self.timer.start(500)
+        self.tableWidget.setDisabled(True)
         for local_symbol in sorted(G.all_contracts):
-            self.bee_ext.app.subscribe(local_symbol)  # 订阅
-            G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})  # 更新订阅列表
-        self.mainwindow.market_handle()
+            res = self.bee_ext.app.subscribe(local_symbol)  # 订阅
+            if res == 0:
+                G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})  # 更新订阅列表
 
     def insert_(self, row, tick):
         for i, col in enumerate(market_table_column):
@@ -133,8 +160,9 @@ class MarketWidget(QWidget, Ui_Market):
     def set_item_slot(self, tick: dict):
         local_symbol = tick['local_symbol']
         if local_symbol not in G.market_tick_row_map:  # 不在table ,插入row
-            row = self.item_row
             G.market_tick_row_map.append(local_symbol)
+
+            row = self.item_row
             self.tableWidget.insertRow(row)
             self.item_row += 1
             # 渲染
@@ -147,18 +175,17 @@ class MarketWidget(QWidget, Ui_Market):
                 if col == "last_price":  # 对最新价动态颜色表示涨跌
                     old = self.tableWidget.item(row, i)
                     new = float(tick[col])
-                    if old:  # 非空表
+                    if old:  # 非空
                         old = float(old.text())
                         difference = new - old
+                        item = QTableWidgetItem(str(new))
                         if difference > 0:  # 涨
-                            item = QTableWidgetItem(f"{str(new)}")
                             item.setTextColor(QColor('red'))
                         elif difference < 0:  # 跌
-                            item = QTableWidgetItem(f"{str(new)}")
                             item.setTextColor(QColor('green'))
                         else:
                             continue
-                    else:
+                    else:  # None
                         item = QTableWidgetItem(str(tick[col]))
                 elif col == "inc_day_interest":
                     data = tick['open_interest'] - tick['pre_open_interest']

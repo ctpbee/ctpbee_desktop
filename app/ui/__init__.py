@@ -148,6 +148,10 @@ QTableWidget{
     color:#ffffff
 }
 
+QTableWidget:disabled{
+    background:gray;
+}
+
 QTableCornerButton::section,QHeaderView::section{
 color:#00c1c1;
 background:#2B2B2B;
@@ -200,6 +204,24 @@ QPushButton:hover{
     color:#ffffff;
 }
 
+QTabWidget::pane{
+    border:none;
+}
+
+
+QTabBar::tab {
+     border:1px solid #1b89ca;
+     border-radius:2px; 
+     min-width: 60px;
+     padding: 2px;
+ }
+QTabBar::tab:selected{
+    background:#1b89ca;
+}
+QTabBar::tab:!selected{
+    margin-top:5px;
+}
+
 QCheckBox{
     border-radius:5px;
 }
@@ -244,6 +266,9 @@ background:#1b89ca;
 
 QStatusBar{
 background:#1b89ca;
+color:#ffffff;
+}
+QLabel{
 color:#ffffff;
 }
 

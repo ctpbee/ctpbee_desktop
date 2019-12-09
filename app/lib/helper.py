@@ -1,5 +1,7 @@
 import json
 import os
+import time
+from queue import Queue
 
 from PySide2.QtCore import QObject, Signal, Slot
 
@@ -16,6 +18,8 @@ class Job(QObject):
     order_order_signal = Signal(list)
     order_trade_signal = Signal(list)
     log_signal = Signal(str)
+    #
+    sig_bar_record = Signal(str, list)
 
     def __init__(self):
         super(self.__class__, self).__init__()
@@ -40,24 +44,28 @@ class KInterfaceObject(QObject):
         return data
 
 
-class RecordObject(QObject):
-    sig_bar_record = Signal(str, list)
-
+class RecordWorker(QObject):
     def __init__(self):
         super(self.__class__, self).__init__()
-        self.sig_bar_record.connect(self.record)
 
-    def record(self, local_symbol, info):
-        file_path = os.path.join(tick_path, f"{str(local_symbol)}.json")
-        old = {}
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as f:
-                data = f.read()
-                if data:
-                    old = json.loads(data)
-        with open(file_path, 'w') as f:
-            if not old.get(local_symbol):
-                old.setdefault(local_symbol, []).append(info)
-            else:
-                old[local_symbol].append(info)
-            json.dump(old, f)
+    def record(self):
+        while True:
+            if G.tick_queue.empty():
+                if G.pool_done:
+                    break
+                time.sleep(0.5)
+                continue
+            local_symbol, info = G.tick_queue.get()
+            file_path = os.path.join(tick_path, f"{str(local_symbol)}.json")
+            old = {}
+            if os.path.exists(file_path):
+                with open(file_path, 'r') as f:
+                    data = f.read()
+                    if data:
+                        old = json.loads(data)
+            with open(file_path, 'w') as f:
+                if not old.get(local_symbol):
+                    old.setdefault(local_symbol, []).append(info)
+                else:
+                    old[local_symbol].append(info)
+                json.dump(old, f)

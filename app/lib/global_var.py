@@ -1,5 +1,6 @@
 import json
 import os
+from queue import Queue
 
 
 class Config:
@@ -38,6 +39,9 @@ class Config:
 class G(dict):
     mainwindow = None
     user_path = None
+    #
+    current_page = None
+    #
     config = Config()
     # log
     log_history = []
@@ -57,3 +61,5 @@ class G(dict):
 
     # kline
     kline_folder = "/static/kline.html"
+    pool_done = False
+    tick_queue = Queue()

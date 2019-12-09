@@ -15,7 +15,7 @@ from ctpbee import CtpbeeApi
 from app.market import MarketWidget
 from app.order import OrderWidget
 from app.strategy import StrategyWidget
-from app.config import ConfigDialog, modmap
+from app.config import ConfigDialog
 from ctpbee.constant import *
 from ctpbee.event_engine.engine import EVENT_TIMER
 from ctpbee import current_app
@@ -34,6 +34,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #
         G.mainwindow = self
         self.exit_ = False
+        self.page_history = []
         self.job = Job()
         self.kline_job = KInterfaceObject()
         self.record_work = RecordWorker()
@@ -97,6 +98,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             temp = QShortcut(QKeySequence(self.tr(sho)), self)
             temp.activated.connect(getattr(self, f"{name}_handle"))
             setattr(self, f"{name}_sc", temp)
+
+    def update_shortcut(self):
+        sc = G.config.shortcut
+        for name, sho in sc.items():
+            getattr(self, f"{name}_sc").setKey(QKeySequence(self.tr(sho)))
 
     def page_map(self, w):
         name = w.__class__.__name__

@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Mon Dec  9 11:27:28 2019
+# Created: Mon Dec  9 18:07:43 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -175,6 +175,21 @@ class Ui_Config(object):
         self.tabWidget.addTab(self.comm_tab, "")
         self.short_tab = QtWidgets.QWidget()
         self.short_tab.setObjectName("short_tab")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.short_tab)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.sc_layout = QtWidgets.QVBoxLayout()
+        self.sc_layout.setSpacing(15)
+        self.sc_layout.setObjectName("sc_layout")
+        self.verticalLayout_4.addLayout(self.sc_layout)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem1)
+        self.default_btn = QtWidgets.QPushButton(self.short_tab)
+        self.default_btn.setObjectName("default_btn")
+        self.horizontalLayout_2.addWidget(self.default_btn)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_4.setStretch(0, 9)
         self.tabWidget.addTab(self.short_tab, "")
         self.verticalLayout_2.addWidget(self.tabWidget)
 
@@ -196,6 +211,7 @@ class Ui_Config(object):
         self.label_8.setText(QtWidgets.QApplication.translate("Config", "SHARED_FUNC/分时图数据", None, -1))
         self.submit_btn.setText(QtWidgets.QApplication.translate("Config", "提交更改", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.comm_tab), QtWidgets.QApplication.translate("Config", "常规", None, -1))
+        self.default_btn.setText(QtWidgets.QApplication.translate("Config", "恢复默认", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.short_tab), QtWidgets.QApplication.translate("Config", "快捷键", None, -1))
 
 import app.resource.mainwindow_rc

@@ -14,15 +14,20 @@ class Config:
     CLOSE_PATTERN = None
     SHARED_FUNC = None
     #
-    shortcut = {
-        "home": "",
-        "market": "",
-        "order": "",
-        "strategy": "",
-        "backtrack": "",
-        "log": "",
-        "config": "",
+    __default_shortcut = {
+        "home": "Ctrl+H",
+        "market": "Ctrl+Q",
+        "order": "Ctrl+X",
+        "strategy": "Ctrl+S",
+        "backtrack": "Ctrl+B",
+        "log": "Ctrl+L",
+        "config": "Ctrl+C",
     }
+    shortcut = __default_shortcut
+
+    def back_default(self):
+        self.shortcut = self.__default_shortcut
+        self.to_file()
 
     def __init__(self):
         self.path = config_path

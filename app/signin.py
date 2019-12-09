@@ -191,6 +191,7 @@ class SignInWidget(QWidget, Ui_SignIn):
             reply = QMessageBox.question(self, '登录出现错误', "是否尝试" + msg,
                                          QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
             if reply == QMessageBox.Yes:
+                self.interface_1.setCurrentText(msg)
                 if not self.sign_in(info):
                     QMessageBox.information(self, "提示", "登录失败")
 

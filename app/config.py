@@ -36,6 +36,7 @@ class ConfigDialog(QDialog, Ui_Config):
         self.setStyleSheet(config_qss)
         self.mainwindow = mainwindow
         # btn
+        self.default_btn.clicked.connect(self.default_sc_slot)
         self.submit_btn.clicked.connect(self.update_config)
         self.init_config()
         self.init_shortcut()
@@ -53,16 +54,21 @@ class ConfigDialog(QDialog, Ui_Config):
         self.CLOSE_PATTERN.setCurrentText(bee_current_app.config["CLOSE_PATTERN"])
 
     def init_shortcut(self):
-        self.v_layout = QVBoxLayout(self)
         for name, sc in G.config.shortcut.items():
             h_layout = QHBoxLayout(self)
             label = QLabel(self)
+            label.setStyleSheet("font: 9pt")
             label.setText(zn[name])
             shortcut = ShortCutEdit(self, name, sc)
+            shortcut.setStyleSheet("font: 9pt")
             h_layout.addWidget(label)
             h_layout.addWidget(shortcut)
-            self.v_layout.addLayout(h_layout)
-        self.short_tab.setLayout(self.v_layout)
+            self.sc_layout.addLayout(h_layout)
+
+    def default_sc_slot(self):
+        G.config.back_default()
+        self.init_shortcut()
+        QMessageBox.information(self, "提示", '成功')
 
     @Slot()
     def update_config(self):
@@ -94,7 +100,7 @@ modmap = {
 class ShortCutEdit(QLineEdit):
     def __init__(self, parent_widget, name, sc):
         super(self.__class__, self).__init__(parent_widget)
-        self.parent_widget=parent_widget
+        self.parent_widget = parent_widget
         self.setText(sc)
         self.name = name
 
@@ -114,8 +120,7 @@ class ShortCutEdit(QLineEdit):
         sp = self.text().split("+")[-1]
         if len(sp) != 1:
             self.setText("空")
-        else:
-            G.config.shortcut.update({self.name: self.text()})
-            G.config.to_file()
-            self.parent_widget.mainwindow.shortcut_init()
-            self.setStyleSheet("background:#")
+        G.config.shortcut.update({self.name: self.text()})
+        G.config.to_file()
+        self.parent_widget.mainwindow.update_shortcut()
+        QMessageBox.information(self, "提示", '修改成功')

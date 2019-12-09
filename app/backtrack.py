@@ -9,7 +9,7 @@ from app.ui import backtrack_qss
 from app.ui.ui_backtrack import Ui_Form
 from app.lib.global_var import G
 from ctpbee import Vessel, LooperApi
-from pandas
+
 
 
 class BacktrackrWorker(QRunnable):

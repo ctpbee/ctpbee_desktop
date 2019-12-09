@@ -83,6 +83,13 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QPushButton" name="pre_page_btn">
+        <property name="text">
+         <string>←</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>

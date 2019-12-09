@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'mainwindow.ui',
 # licensing of 'mainwindow.ui' applies.
 #
-# Created: Sun Dec  8 20:42:29 2019
+# Created: Mon Dec  9 23:17:39 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,6 +46,9 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.log_btn)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
+        self.pre_page_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.pre_page_btn.setObjectName("pre_page_btn")
+        self.verticalLayout.addWidget(self.pre_page_btn)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
         self.line = QtWidgets.QFrame(self.centralwidget)
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
@@ -73,5 +76,6 @@ class Ui_MainWindow(object):
         self.backtrack_btn.setText(QtWidgets.QApplication.translate("MainWindow", "回测", None, -1))
         self.setting_btn.setText(QtWidgets.QApplication.translate("MainWindow", "设置", None, -1))
         self.log_btn.setText(QtWidgets.QApplication.translate("MainWindow", "日志", None, -1))
+        self.pre_page_btn.setText(QtWidgets.QApplication.translate("MainWindow", "←", None, -1))
 
 import app.resource.mainwindow_rc

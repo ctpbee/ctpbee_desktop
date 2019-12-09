@@ -56,6 +56,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.addPermanentWidget(self.status_msg, stretch=5)
         self.statusbar.addPermanentWidget(self.market_msg, stretch=5)
         # btn
+        self.pre_page_btn.clicked.connect(self.pre_page_slot)
         self.home_btn.clicked.connect(self.home_handle)
         self.market_btn.clicked.connect(self.market_handle)
         self.order_btn.clicked.connect(self.order_handle)
@@ -93,6 +94,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         G.all_contracts = contracts
         self.home_handle()
 
+    def pre_page_slot(self):
+        try:
+            i = self.page_history.pop()
+            self.stackedWidget.setCurrentIndex(i)
+        except IndexError:
+            pass
+
     def shortcut_init(self):
         sc = G.config.shortcut
         for name, sho in sc.items():
@@ -109,7 +117,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         name = w.__class__.__name__
         if name not in self.map_:
             self.map_.append(name)
-        return self.map_.index(name)
+        i = self.map_.index(name)
+        self.page_history.append(i)
+        return i
 
     def home_handle(self):
         if self.home_widget is None:

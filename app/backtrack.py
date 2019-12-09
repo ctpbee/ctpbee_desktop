@@ -1,5 +1,7 @@
+import json
 import webbrowser
 
+import pandas
 from PySide2.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot
 from PySide2.QtWidgets import QWidget, QFileDialog, QMessageBox, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
 
@@ -7,6 +9,7 @@ from app.ui import backtrack_qss
 from app.ui.ui_backtrack import Ui_Form
 from app.lib.global_var import G
 from ctpbee import Vessel, LooperApi
+from pandas
 
 
 class BacktrackrWorker(QRunnable):
@@ -74,7 +77,23 @@ class BacktrackWidget(QWidget, Ui_Form):
             self.local_symbol_box.addItem(local_symbol)
 
     def add_data_slot(self):
-        filename, _ = QFileDialog.getOpenFileName(self, '选择数据文件', '', 'Text files(*.json);;Text files(*.csv)')
+        filetypes = ["Text files(*.json)", "Text files(*.csv)"]
+        filename, ft = QFileDialog.getOpenFileName(self, '选择数据文件', '', ";;".join(filetypes))
+        i = filetypes.index(ft)
+        if i == 0:  # json
+            try:
+                with open(filename, 'r') as fp:
+                    data = json.load(fp)
+                    self.data = data['data']
+            except Exception as e:
+                QMessageBox.information(self, '提示', str(e))
+        elif i == 1:  # csv
+            try:
+                with open(filename, 'r') as fp:
+                    data = pandas.read_csv(fp)
+                    self.data = data.to_dict("index")
+            except Exception as e:
+                QMessageBox.information(self, '提示', str(e))
 
     def add_backtrack_slot(self):
         filename, _ = QFileDialog.getOpenFileName(self, '选择回测API', '', 'Python files(*.py)')
@@ -82,13 +101,19 @@ class BacktrackWidget(QWidget, Ui_Form):
         try:
             with open(filename, 'r') as fp:
                 self.ext = dynamic_loading_api(fp)
+                if not isinstance(self.ext, LooperApi):
+                    raise Exception(f"你的回测API类型出错,期望LooperApi,你的{type(self.ext)}")
         except Exception as e:
             QMessageBox.information(self, '提示', str(e))
 
     def run_slot(self):
+        if not self.data:
+            QMessageBox.information(self, '提示', "还未传入数据")
+        if not self.ext:
+            QMessageBox.information(self, '提示', "还未传入回测API")
         symbol = self.local_symbol_box.currentText()
         self.name = f"回测{self.counter}_{symbol}"
-        self.thread_pool.start(BacktrackrWorker(sig=self.sig, data=self.data, strategy=self.ext))
+        self.thread_pool.start(BacktrackrWorker(name=self.name, sig=self.sig, data=self.data, strategy=self.ext))
         self.counter += 1
 
     @Slot(dict)

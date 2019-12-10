@@ -1,11 +1,9 @@
-0
-1
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'home.ui',
 # licensing of 'home.ui' applies.
 #
-# Created: Sun Dec  8 21:50:36 2019
+# Created: Tue Dec 10 11:43:03 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -100,12 +98,15 @@ class Ui_Home(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\'; font-size:12pt; font-weight:600;\">.行情</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\';\">双击进入下单界面</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\'; color:#6a8759;\">双击进入下单界面</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\';\"><br /></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\'; font-size:12pt; font-weight:600;\">.策略</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\';\">参见文档</span><a href=\"https://docs.ctpbee.com/module/strategy\"><span style=\" font-family:\'SimSun\'; text-decoration: underline; color:#0000ff;\">https://docs.ctpbee.com/module/strategy</span></a></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\';\"><br /></span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\';\">文档</span><a href=\"https://docs.ctpbee.com/module/strategy\"><span style=\" font-family:\'SimSun\'; text-decoration: underline; color:#00aa00;\">https://docs.ctpbee.com/module/strategy</span></a></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\';\"><br /></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\'; font-size:12pt; font-weight:600;\">.快捷键</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">首页</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#a9b7c6;\">: </span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">&quot;Ctrl+H&quot;</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#cc7832;\"><br /></span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">行情</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#a9b7c6;\">: </span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">&quot;Ctrl+Q&quot;</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#cc7832;\"><br /></span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">下单</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#a9b7c6;\">: </span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">&quot;Ctrl+X&quot;</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#cc7832;\"><br /></span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">策略</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#a9b7c6;\">: </span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">&quot;Ctrl+S&quot;</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#cc7832;\"><br /></span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">回测</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#a9b7c6;\">: </span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">&quot;Ctrl+B&quot;</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#cc7832;\"><br /></span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">日志</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#a9b7c6;\">: </span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">&quot;Ctrl+L&quot;</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#cc7832;\"><br /></span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">设置</span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#a9b7c6;\">: </span><span style=\" font-family:\'Consolas\'; font-size:12pt; color:#6a8759;\">&quot;Ctrl+C&quot;</span><span style=\" font-family:\'SimSun\';\"><br /></span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\';\"><br /></span></p></body></html>", None, -1))
+
         self.label.setText(QtWidgets.QApplication.translate("Home", "💡 Tip", None, -1))
         self.tableWidget.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Home", "key", None, -1))
         self.tableWidget.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Home", "value", None, -1))

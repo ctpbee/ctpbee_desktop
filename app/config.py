@@ -69,7 +69,7 @@ class ConfigDialog(QDialog, Ui_Config):
     def default_sc_slot(self):
         G.config.back_default()
         self.mainwindow.update_shortcut()
-        QMessageBox.information(self, "提示", '成功')
+        TipDialog('成功')
         self.close()
 
     @Slot()
@@ -85,7 +85,7 @@ class ConfigDialog(QDialog, Ui_Config):
             'SHARED_FUNC'] = True if self.SHARED_FUNC.isChecked() else False
         G.config.CLOSE_PATTERN = bee_current_app.config['CLOSE_PATTERN'] = str(self.CLOSE_PATTERN.currentText())
         G.config.to_file()
-        QMessageBox.information(self, '提示', '修改成功', QMessageBox.Ok, QMessageBox.Ok)
+        TipDialog('修改成功')
 
     def closeEvent(self, arg__1: QCloseEvent):
         self.mainwindow.cfg_dialog = None
@@ -108,7 +108,7 @@ class ShortCutEdit(QLineEdit):
 
     def keyPressEvent(self, event: QtGui.QKeyEvent):
         if event.key() == Qt.Key_Backspace:
-            self.setText("空")
+            self.setText("--")
             return
         sequence = []
         for modifier, text in modmap.items():
@@ -121,9 +121,8 @@ class ShortCutEdit(QLineEdit):
     def keyReleaseEvent(self, event: QtGui.QKeyEvent):
         sp = self.text().split("+")[-1]
         if len(sp) != 1:
-            self.setText("空")
+            self.setText("--")
         G.config.shortcut.update({self.name: self.text()})
         G.config.to_file()
         self.parent_widget.mainwindow.update_shortcut()
-        tip = TipDialog("修改成功")
-        tip.exec_()
+        TipDialog("修改成功")

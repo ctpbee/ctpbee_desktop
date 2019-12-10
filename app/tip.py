@@ -30,6 +30,7 @@ class TipDialog(QDialog, Ui_Tip):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.do)
         self.timer.start(50)
+        self.exec_()
 
     def do(self):
         try:

@@ -284,6 +284,16 @@ QProgressBar::chunk {
     background-color: #1B89CA;
 }
 
+QToolButton{
+    background:#1b89ca;
+    border-radius:2px;
+    padding:5px;
+}
+
+QToolButton:hover{
+background:#1b8900;
+}
+
 QPushButton{
     padding:10px;
     background: #2B2B2B;
@@ -424,7 +434,7 @@ margin:10px
 
 QListWidget#search_list{
 background:#3C3F41;
-color:#2B2B2B
+color:#1b89ca
 }
 
 """ + scroll_bar

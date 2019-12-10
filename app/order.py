@@ -12,6 +12,7 @@ from ctpbee.constant import Exchange, TickData
 from ctpbee import current_app as bee_current_app
 
 from app.lib.global_var import G
+from app.tip import TipDialog
 from app.ui import order_qss
 from app.ui.ui_order import Ui_Order
 
@@ -94,6 +95,8 @@ class OrderWidget(QWidget, Ui_Order):
         if G.choice_local_symbol != symbol:
             G.choice_local_symbol = symbol
             self.local_symbol_zn.setText(G.subscribes.get(G.choice_local_symbol))
+            if G.market_tick.get(symbol):
+                self.price.setValue(G.market_tick[symbol].get('last_price', 0))
 
     def fill_other(self):
         ##acount
@@ -133,14 +136,14 @@ class OrderWidget(QWidget, Ui_Order):
         try:
             price = self.bee_ext.app.recorder.get_tick(local_symbol).last_price
         except AttributeError:
-            QMessageBox().warning(self, "提示", "未订阅此合约行情", QMessageBox.Ok, QMessageBox.Ok)
+            TipDialog("未订阅此合约行情")
         else:
             try:
                 if direction == "long":
                     self.bee_ext.app.action.cover(price=float(price), volume=float(volume), origin=tick)
                 if direction == "short":
                     self.bee_ext.app.action.sell(price=float(price), volume=float(volume), origin=tick)
-                QMessageBox().information(self, "提示", "平仓请求发送成功", QMessageBox.Ok, QMessageBox.Ok)
+                TipDialog("平仓请求发送成功")
             except Exception as e:
                 print(e)
                 QMessageBox().warning(self, "提示", "平仓请求发送失败" + str(e), QMessageBox.Ok, QMessageBox.Ok)
@@ -156,7 +159,7 @@ class OrderWidget(QWidget, Ui_Order):
         req = helper.generate_cancel_req_by_str(symbol=local_symbol, exchange=exchange, order_id=order_id)
         try:
             bee_current_app.cancel_order(req)
-            QMessageBox().information(self, "提示", "撤单请求发送成功", QMessageBox.Ok, QMessageBox.Ok)
+            TipDialog("撤单请求发送成功")
         except Exception as e:
             QMessageBox().warning(self, "提示", "撤单请求发送失败" + str(e), QMessageBox.Ok, QMessageBox.Ok)
 
@@ -182,8 +185,7 @@ class OrderWidget(QWidget, Ui_Order):
                 msg = self.bee_ext.app.recorder.get_new_error()['data']['ErrorMsg']
                 QMessageBox().warning(self, "提示", str(msg), QMessageBox.Ok, QMessageBox.Ok)
             else:
-                msg = "下单请求发送成功"
-                QMessageBox().information(self, "提示", str(msg), QMessageBox.Ok, QMessageBox.Ok)
+                TipDialog("下单请求发送成功")
         except Exception as e:
             QMessageBox().warning(self, "提示", "下单请求发送失败" + str(e), QMessageBox.Ok, QMessageBox.Ok)
 

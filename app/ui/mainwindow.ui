@@ -36,13 +36,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="order_btn">
-        <property name="text">
-         <string>下单</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="strategy_btn">
         <property name="text">
          <string>策略</string>
@@ -53,6 +46,13 @@
        <widget class="QPushButton" name="backtrack_btn">
         <property name="text">
          <string>回测</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="order_btn">
+        <property name="text">
+         <string>下单</string>
         </property>
        </widget>
       </item>

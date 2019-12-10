@@ -1,5 +1,4 @@
 import json
-
 from PySide2 import QtGui
 from PySide2.QtCore import QThread, Qt
 from PySide2.QtGui import QCloseEvent, QIcon, QKeySequence
@@ -9,6 +8,7 @@ from PySide2.QtWidgets import QMainWindow, QProgressBar, QMessageBox, QLabel, QM
 from app.backtrack import BacktrackWidget
 from app.lib.global_var import G
 from app.lib.helper import Job, KInterfaceObject, RecordWorker
+from app.tip import TipDialog
 from app.ui import main_qss
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
@@ -34,7 +34,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #
         G.mainwindow = self
         self.exit_ = False
-        self.page_history = []
+        self._page_history = []
+        self._page_maxsize = 10
         self.job = Job()
         self.kline_job = KInterfaceObject()
         self.record_work = RecordWorker()
@@ -94,16 +95,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         G.all_contracts = contracts
         self.home_handle()
 
+    @property
+    def page_history(self):
+        return self._page_history
+
+    @page_history.setter
+    def page_history(self, val):
+        if len(self._page_history) == self._page_maxsize:  # 达到最大容量
+            self._page_history.pop(0)  # 弹出第一项
+        self._page_history.append(val)
+
     def pre_page_slot(self):
         try:
             i = self.page_history.pop()
+            while i == self.stackedWidget.currentIndex():
+                i = self.page_history.pop()
             self.stackedWidget.setCurrentIndex(i)
         except IndexError:
-            pass
+            TipDialog("到底啦~")
 
     def shortcut_init(self):
         sc = G.config.shortcut
         for name, sho in sc.items():
+            if sho == '--':
+                continue
             temp = QShortcut(QKeySequence(self.tr(sho)), self)
             temp.activated.connect(getattr(self, f"{name}_handle"))
             setattr(self, f"{name}_sc", temp)
@@ -118,7 +133,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if name not in self.map_:
             self.map_.append(name)
         i = self.map_.index(name)
-        self.page_history.append(i)
+        self.page_history = i
         return i
 
     def home_handle(self):
@@ -188,7 +203,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.kline_job.qt_to_js.emit(json.dumps(data))
         # 存入文件
         G.tick_queue.put([bar.local_symbol, info])
-        print('bar', G.tick_queue.qsize())
 
     def on_order(self, ext, order: OrderData) -> None:
         active_orders = []
@@ -301,4 +315,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     #     else:
     #         self.showFullScreen()
     #     event.accept()
-

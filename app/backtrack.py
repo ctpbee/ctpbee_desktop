@@ -24,16 +24,20 @@ class BacktrackrWorker(QRunnable):
         self.params = params
 
     def run(self):
-        vessel = Vessel()
-        vessel.add_data(self.data)
-        vessel.add_strategy(self.strategy)
-        vessel.set_params({"looper": self.params,
-                           "strategy": {}
-                           })
-        vessel.run()
-        result = vessel.get_result(report=True)
-
-        self.sig.emit({"name": self.name, "url": result})
+        try:
+            vessel = Vessel()
+            vessel.add_data(self.data)
+            vessel.add_strategy(self.strategy)
+            vessel.set_params({"looper": self.params,
+                               "strategy": {}
+                               })
+            vessel.run()
+            result = vessel.get_result(report=True)
+            error = ""
+        except Exception as e:
+            result = ""
+            error = str(e)
+        self.sig.emit({"name": self.name, "url": result, "error": error})
 
 
 class BacktrackSig(QObject):
@@ -70,7 +74,6 @@ class BacktrackWidget(QWidget, Ui_Form):
         self.data = None
         #
 
-
     def init_ui(self):
         for local_symbol, _ in G.all_contracts.items():
             self.local_symbol_box.addItem(local_symbol)
@@ -103,7 +106,7 @@ class BacktrackWidget(QWidget, Ui_Form):
             except Exception as e:
                 QMessageBox.information(self, '提示', str(e))
                 return
-        QMessageBox.information(self, '提示', "传入数据成功")
+        TipDialog("传入数据成功")
 
     def add_backtrack_slot(self):
         filename, _ = QFileDialog.getOpenFileName(self, '选择回测API', '', 'Python files(*.py)')
@@ -119,7 +122,7 @@ class BacktrackWidget(QWidget, Ui_Form):
         except Exception as e:
             QMessageBox.information(self, '提示', str(e))
             return
-        QMessageBox.information(self, '提示', "传入回测API成功")
+        TipDialog("传入回测API成功")
 
     def get_params(self):
         par = {"initial_capital": float(self.initial_capital.text()),
@@ -139,10 +142,10 @@ class BacktrackWidget(QWidget, Ui_Form):
 
     def run_slot(self):
         if not self.data:
-            QMessageBox.information(self, '提示', "还未传入数据")
+            TipDialog("还未传入数据")
             return
         if not self.ext:
-            QMessageBox.information(self, '提示', "还未传入回测API")
+            TipDialog("还未传入回测API")
             return
         symbol = self.local_symbol_box.currentText()
         self.name = f"回测{self.counter}_{symbol}"
@@ -153,11 +156,14 @@ class BacktrackWidget(QWidget, Ui_Form):
 
     @Slot(dict)
     def report_slot(self, res: dict):
-        h_layout = QHBoxLayout(self)
-        open_btn = QsPushButton(self, res['url'])
-        open_btn.setText(res['name'])
-        h_layout.addWidget(open_btn)
-        self.res_layout.addLayout(h_layout)
+        if res['error']:
+            QMessageBox.information(self, '错误', res['error'])
+        else:
+            h_layout = QHBoxLayout(self)
+            open_btn = QsPushButton(self, res['url'])
+            open_btn.setText(res['name'])
+            h_layout.addWidget(open_btn)
+            self.res_layout.insertLayout(self.counter-1, h_layout)
 
 
 class QsPushButton(QPushButton):

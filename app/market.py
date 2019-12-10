@@ -5,6 +5,7 @@ from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QListWidgetItem, QTableWidget, \
     QHeaderView, QAbstractItemView, QMenu
 
+from app.tip import TipDialog
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
 from app.ui import market_qss
@@ -78,7 +79,7 @@ class MarketWidget(QWidget, Ui_Market):
         if action == item1:
             local_symbol = self.tableWidget.item(row_num, market_table_column.index('local_symbol')).text()
             # 取消订阅
-            self.bee_ext.app.market.unsubscribe(local_symbol)
+            self.bee_ext.app.market.unsubscribe(local_symbol.split('.')[0])
             # 事后处理
             G.market_tick_row_map.remove(local_symbol)
             G.subscribes.pop(local_symbol, None)
@@ -122,9 +123,9 @@ class MarketWidget(QWidget, Ui_Market):
             if res == 0:
                 G.subscribes.update({local_symbol: name})
                 self.progressBar.setMaximum(len(G.subscribes))  # 更新进度条
-                QMessageBox().information(self, "提示", "订阅成功", QMessageBox.Ok, QMessageBox.Ok)
+                TipDialog("订阅成功")
             else:
-                QMessageBox().warning(self, "提示", "订阅失败", QMessageBox.Ok, QMessageBox.Ok)
+                TipDialog("订阅失败")
 
     @Slot()
     def subscribe_type_slot(self):

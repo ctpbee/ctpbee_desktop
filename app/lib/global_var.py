@@ -77,7 +77,7 @@ class G(dict):
     account_row_map = []
     # order
     choice_local_symbol = None
-    order_tick_row_map = []  # with tick ={}
+    order_tick_row_map = []  # with market_tick ={}
     order_position_row_map = []
 
     # kline

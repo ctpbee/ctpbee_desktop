@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'mainwindow.ui',
 # licensing of 'mainwindow.ui' applies.
 #
-# Created: Mon Dec  9 23:17:39 2019
+# Created: Tue Dec 10 11:24:25 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,15 +29,15 @@ class Ui_MainWindow(object):
         self.market_btn = QtWidgets.QPushButton(self.centralwidget)
         self.market_btn.setObjectName("market_btn")
         self.verticalLayout.addWidget(self.market_btn)
-        self.order_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.order_btn.setObjectName("order_btn")
-        self.verticalLayout.addWidget(self.order_btn)
         self.strategy_btn = QtWidgets.QPushButton(self.centralwidget)
         self.strategy_btn.setObjectName("strategy_btn")
         self.verticalLayout.addWidget(self.strategy_btn)
         self.backtrack_btn = QtWidgets.QPushButton(self.centralwidget)
         self.backtrack_btn.setObjectName("backtrack_btn")
         self.verticalLayout.addWidget(self.backtrack_btn)
+        self.order_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.order_btn.setObjectName("order_btn")
+        self.verticalLayout.addWidget(self.order_btn)
         self.setting_btn = QtWidgets.QPushButton(self.centralwidget)
         self.setting_btn.setObjectName("setting_btn")
         self.verticalLayout.addWidget(self.setting_btn)
@@ -71,9 +71,9 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
         self.home_btn.setText(QtWidgets.QApplication.translate("MainWindow", "首页", None, -1))
         self.market_btn.setText(QtWidgets.QApplication.translate("MainWindow", "行情", None, -1))
-        self.order_btn.setText(QtWidgets.QApplication.translate("MainWindow", "下单", None, -1))
         self.strategy_btn.setText(QtWidgets.QApplication.translate("MainWindow", "策略", None, -1))
         self.backtrack_btn.setText(QtWidgets.QApplication.translate("MainWindow", "回测", None, -1))
+        self.order_btn.setText(QtWidgets.QApplication.translate("MainWindow", "下单", None, -1))
         self.setting_btn.setText(QtWidgets.QApplication.translate("MainWindow", "设置", None, -1))
         self.log_btn.setText(QtWidgets.QApplication.translate("MainWindow", "日志", None, -1))
         self.pre_page_btn.setText(QtWidgets.QApplication.translate("MainWindow", "←", None, -1))

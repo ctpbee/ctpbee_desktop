@@ -1,4 +1,3 @@
-import json
 import os
 
 from PySide2.QtCore import QUrl, Slot
@@ -32,8 +31,11 @@ class KlineWidget(QWidget, Ui_Form):
         self.setStyleSheet(kline_qss)
         self.mainwindow = mainwindow
         # k-line
-        self.browser = None
         self.k_line_init()
+        #
+        for local_symbol in sorted(G.all_contracts):
+            self.symbol_list.addItem(local_symbol)  # 添加下拉框
+        self.symbol_list.currentIndexChanged.connect(self.symbol_change_slot)
         # table
         self.tick_table.setRowCount(0)
         self.tick_row = len(G.order_tick_row_map)
@@ -46,11 +48,7 @@ class KlineWidget(QWidget, Ui_Form):
         self.mainwindow.job.order_tick_signal.connect(self.set_tick_slot)
 
     def k_line_init(self):
-        self.symbol.setText(f"{G.choice_local_symbol}")
-        if self.browser is None:
-            self.browser = QWebEngineView(self)
-        else:
-            self.kline_layout.removeWidget(self.browser)
+        self.browser = QWebEngineView(self)
         # kline 信号
         self.kline_job = self.mainwindow.kline_job
         # 增加一个通信中需要用到的频道
@@ -64,16 +62,22 @@ class KlineWidget(QWidget, Ui_Form):
         self.browser.show()
         self.kline_layout.addWidget(self.browser)
 
+    def k_line_reload(self):
+        self.browser.reload()
+
+    def symbol_change_slot(self):
+        symbol = self.symbol_list.currentText()
+        G.choice_local_symbol = symbol
+        self.k_line_reload()
+
     def search_path(self, dir):
         p = os.path.split(dir)[0] + G.kline_folder
-        # print(p)
         self.t -= 1
         if not os.path.exists(p):
             if self.t < 0:  # 防止超过递归深度
                 return os.path.split(__file__)[0] + G.kline_folder
             return self.search_path(dir)
         return p
-
 
     @Slot(dict)
     def set_tick_slot(self, tick: dict):

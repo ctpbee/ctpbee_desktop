@@ -83,8 +83,8 @@ class BacktrackWidget(QWidget, Ui_Form):
 
     def init_ui(self):
         self.params_zn()
-        for local_symbol, _ in G.all_contracts.items():
-            self.local_symbol_box.addItem(local_symbol)
+        for local_symbol in sorted(G.all_contracts):
+            self.local_symbol_box.addItem(local_symbol)  # 添加下拉框
 
     def add_data_slot(self):
         filetypes = ["Text files(*.json)", "Text files(*.csv)"]

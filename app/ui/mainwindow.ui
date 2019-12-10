@@ -36,6 +36,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="kline_btn">
+        <property name="text">
+         <string>K线</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="strategy_btn">
         <property name="text">
          <string>策略</string>

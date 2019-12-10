@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'mainwindow.ui',
 # licensing of 'mainwindow.ui' applies.
 #
-# Created: Tue Dec 10 11:24:25 2019
+# Created: Tue Dec 10 17:17:47 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,6 +29,9 @@ class Ui_MainWindow(object):
         self.market_btn = QtWidgets.QPushButton(self.centralwidget)
         self.market_btn.setObjectName("market_btn")
         self.verticalLayout.addWidget(self.market_btn)
+        self.kline_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.kline_btn.setObjectName("kline_btn")
+        self.verticalLayout.addWidget(self.kline_btn)
         self.strategy_btn = QtWidgets.QPushButton(self.centralwidget)
         self.strategy_btn.setObjectName("strategy_btn")
         self.verticalLayout.addWidget(self.strategy_btn)
@@ -71,6 +74,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
         self.home_btn.setText(QtWidgets.QApplication.translate("MainWindow", "首页", None, -1))
         self.market_btn.setText(QtWidgets.QApplication.translate("MainWindow", "行情", None, -1))
+        self.kline_btn.setText(QtWidgets.QApplication.translate("MainWindow", "K线", None, -1))
         self.strategy_btn.setText(QtWidgets.QApplication.translate("MainWindow", "策略", None, -1))
         self.backtrack_btn.setText(QtWidgets.QApplication.translate("MainWindow", "回测", None, -1))
         self.order_btn.setText(QtWidgets.QApplication.translate("MainWindow", "下单", None, -1))

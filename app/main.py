@@ -61,6 +61,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.log_btn.clicked.connect(self.log_handle)
         self.order_btn.clicked.connect(self.order_handle)
         self.backtrack_btn.clicked.connect(self.backtrack_handle)
+        self.kline_btn.clicked.connect(self.kline_handle)
         # widgets
         self.map_ = []
         self.home_widget = None
@@ -89,6 +90,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                      self.bee_ext.app.recorder.get_all_contracts()}
         G.all_contracts = contracts
         self.home_handle()
+        TipDialog("登录成功~")
 
     @property
     def page_history(self):
@@ -161,7 +163,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.kline_widget = KlineWidget(self)
             self.stackedWidget.addWidget(self.kline_widget)
         self.stackedWidget.setCurrentIndex(self.page_map(self.kline_widget))
-        self.kline_widget.k_line_init()
+        self.kline_widget.k_line_reload()
 
     def order_handle(self):
         if self.order_widget is None:

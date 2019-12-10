@@ -23,6 +23,7 @@ zn = {
     "home": "首页",
     "market": "行情",
     "order": "下单",
+    "kline": "K线",
     "strategy": "策略",
     "backtrack": "回测",
     "log": "日志",
@@ -58,10 +59,10 @@ class ConfigDialog(QDialog, Ui_Config):
         for name, sc in G.config.shortcut.items():
             h_layout = QHBoxLayout(self)
             label = QLabel(self)
-            label.setStyleSheet("font: 9pt")
+            label.setStyleSheet("font: 12pt")
             label.setText(zn[name])
             shortcut = ShortCutEdit(self, name, sc)
-            shortcut.setStyleSheet("font: 9pt")
+            shortcut.setStyleSheet("font: 12pt")
             h_layout.addWidget(label)
             h_layout.addWidget(shortcut)
             self.sc_layout.addLayout(h_layout)
@@ -71,7 +72,6 @@ class ConfigDialog(QDialog, Ui_Config):
         self.mainwindow.update_shortcut()
         self.close()
         TipDialog('已恢复')
-
 
     @Slot()
     def update_config(self):

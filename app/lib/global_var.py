@@ -8,6 +8,7 @@ default_shortcut = {
     "home": "Ctrl+H",
     "market": "Ctrl+Q",
     "order": "Ctrl+X",
+    "kline": "Ctrl+K",
     "strategy": "Ctrl+S",
     "backtrack": "Ctrl+B",
     "log": "Ctrl+L",

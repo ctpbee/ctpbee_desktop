@@ -11,7 +11,8 @@ qss = """
 }
 
 #msg{
-    color:#ffffff
+    color:#ffffff;
+    font: 16pt;
 }
 """
 

@@ -45,6 +45,8 @@ class KlineWidget(QWidget, Ui_Form):
         self.tick_table.horizontalHeader().setVisible(False)  # 水平表头不可见
         self.tick_table.verticalHeader().setVisible(False)  # 垂直表头不可见
         #
+        self.hide_btn.clicked.connect(self.hide_btn_slot)
+        self.hide_btn_slot()  # 默认隐藏
         self.mainwindow.job.order_tick_signal.connect(self.set_tick_slot)
 
     def k_line_init(self):
@@ -78,6 +80,14 @@ class KlineWidget(QWidget, Ui_Form):
                 return os.path.split(__file__)[0] + G.kline_folder
             return self.search_path(dir)
         return p
+
+    def hide_btn_slot(self):
+        if self.tick_table.isHidden():
+            self.tick_table.show()
+            self.hide_btn.setText("隐藏")
+        else:
+            self.tick_table.hide()
+            self.hide_btn.setText("显示")
 
     @Slot(dict)
     def set_tick_slot(self, tick: dict):

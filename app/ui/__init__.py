@@ -384,6 +384,25 @@ QTableCornerButton::section,QHeaderView::section{
 background:#004687;
 color:#ffffff;
 }
+QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
+    color:#ffffff;
+    border:1px solid #1b89ca;
+    border-radius:5px;
+    padding:5px
+}
+
+QPushButton{
+background:#2B2B2B;
+color:#ffffff;
+border:1px solid #1b89ca;
+border-radius:5px; 
+
+}
+
+QPushButton:hover{
+    background:#1b89ca;
+    color:#ffffff
+}
 
 #symbol{
 color:#1b89ca;

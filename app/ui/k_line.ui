@@ -13,8 +13,25 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" columnstretch="9,0">
-   <item row="1" column="1">
+  <layout class="QGridLayout" name="gridLayout" columnstretch="9,0,0">
+   <item row="0" column="0">
+    <widget class="QComboBox" name="symbol_list">
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" rowspan="2" colspan="2">
+    <layout class="QVBoxLayout" name="kline_layout"/>
+   </item>
+   <item row="0" column="1">
+    <widget class="QPushButton" name="hide_btn">
+     <property name="text">
+      <string>隐藏</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" rowspan="3">
     <widget class="QTableWidget" name="tick_table">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -48,16 +65,6 @@
       </property>
      </column>
     </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QComboBox" name="symbol_list">
-     <property name="editable">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" rowspan="2">
-    <layout class="QVBoxLayout" name="kline_layout"/>
    </item>
   </layout>
  </widget>

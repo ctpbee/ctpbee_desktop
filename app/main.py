@@ -298,7 +298,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             event.accept()
         else:
             self.tray.showMessage("ctpbee", "以最小化隐藏在托盘", msecs=1)
-            self.showMinimized()
+            self.hide()
             event.ignore()
 
     # def mousePressEvent(self, event):
@@ -326,4 +326,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     #     else:
     #         self.showFullScreen()
     #     event.accept()
-

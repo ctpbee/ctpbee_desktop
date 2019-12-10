@@ -265,7 +265,7 @@ margin:0px;
 background:#1b89ca;
 }
 
-QStatusBar{
+QStatusBar,QMenuBar{
 background:#1b89ca;
 color:#ffffff;
 }

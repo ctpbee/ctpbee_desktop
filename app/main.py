@@ -1,6 +1,6 @@
 import json
 from PySide2 import QtGui
-from PySide2.QtCore import QThread, Qt
+from PySide2.QtCore import QThread, Qt, QPropertyAnimation
 from PySide2.QtGui import QCloseEvent, QIcon, QKeySequence
 from PySide2.QtWidgets import QMainWindow, QProgressBar, QMessageBox, QLabel, QMenu, \
     QSystemTrayIcon, QShortcut
@@ -31,6 +31,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("ctpbee桌面端")
         # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框 可能会导致闪屏异常
         self.setStyleSheet(main_qss)
+        self.animation = QPropertyAnimation(self, b'windowOpacity')
+        self.animation.stop()
+        self.animation.setDuration(500)
+        self.animation.setStartValue(0)
+        self.animation.setEndValue(1)
+        self.animation.start()
         #
         G.mainwindow = self
         self.exit_ = False
@@ -62,6 +68,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.order_btn.clicked.connect(self.order_handle)
         self.backtrack_btn.clicked.connect(self.backtrack_handle)
         self.kline_btn.clicked.connect(self.kline_handle)
+        #
+        self.menuBar.triggered.connect(self.menu_triggered)
         # widgets
         self.map_ = []
         self.home_widget = None
@@ -90,7 +98,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                      self.bee_ext.app.recorder.get_all_contracts()}
         G.all_contracts = contracts
         self.home_handle()
-        TipDialog("登录成功~")
+
+    def menu_triggered(self, q):
+        q = q.text()
+        if q == "退出应用":
+            self.quit()
 
     @property
     def page_history(self):
@@ -286,7 +298,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             event.accept()
         else:
             self.tray.showMessage("ctpbee", "以最小化隐藏在托盘", msecs=1)
-            self.hide()
+            self.showMinimized()
             event.ignore()
 
     # def mousePressEvent(self, event):
@@ -314,3 +326,4 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     #     else:
     #         self.showFullScreen()
     #     event.accept()
+

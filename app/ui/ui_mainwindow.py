@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'mainwindow.ui',
 # licensing of 'mainwindow.ui' applies.
 #
-# Created: Tue Dec 10 17:17:47 2019
+# Created: Tue Dec 10 17:38:57 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -66,6 +66,19 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.menuBar = QtWidgets.QMenuBar(MainWindow)
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1016, 27))
+        self.menuBar.setObjectName("menuBar")
+        self.menux = QtWidgets.QMenu(self.menuBar)
+        self.menux.setObjectName("menux")
+        MainWindow.setMenuBar(self.menuBar)
+        self.quit_action = QtWidgets.QAction(MainWindow)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/menu/icon/16-登出.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.quit_action.setIcon(icon1)
+        self.quit_action.setObjectName("quit_action")
+        self.menux.addAction(self.quit_action)
+        self.menuBar.addAction(self.menux.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -81,5 +94,7 @@ class Ui_MainWindow(object):
         self.setting_btn.setText(QtWidgets.QApplication.translate("MainWindow", "设置", None, -1))
         self.log_btn.setText(QtWidgets.QApplication.translate("MainWindow", "日志", None, -1))
         self.pre_page_btn.setText(QtWidgets.QApplication.translate("MainWindow", "←", None, -1))
+        self.menux.setTitle(QtWidgets.QApplication.translate("MainWindow", "🎈", None, -1))
+        self.quit_action.setText(QtWidgets.QApplication.translate("MainWindow", "退出应用", None, -1))
 
 import app.resource.mainwindow_rc

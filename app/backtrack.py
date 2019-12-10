@@ -3,9 +3,11 @@ import webbrowser
 from datetime import datetime
 
 import pandas
-from PySide2.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot
+from PySide2.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot, QRegExp
+from PySide2.QtGui import QRegExpValidator
 from PySide2.QtWidgets import QWidget, QFileDialog, QMessageBox, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
 
+from app.tip import TipDialog
 from app.ui import backtrack_qss
 from app.ui.ui_backtrack import Ui_Form
 from app.lib.global_var import G
@@ -13,31 +15,19 @@ from ctpbee import Vessel, LooperApi
 
 
 class BacktrackrWorker(QRunnable):
-    def __init__(self, name, sig, data, strategy):
+    def __init__(self, name, sig, data, strategy, params):
         super(self.__class__, self).__init__()
         self.name = name
         self.sig = sig
         self.data = data
         self.strategy = strategy
+        self.params = params
 
     def run(self):
         vessel = Vessel()
         vessel.add_data(self.data)
         vessel.add_strategy(self.strategy)
-        vessel.set_params({"looper":
-                               {"initial_capital": 100000,
-                                "commission": 0.005,
-                                "deal_pattern": "price",
-                                "size_map": {"ag1912.SHFE": 15},
-                                "today_commission": 0.005,
-                                "yesterday_commission": 0.02,
-                                "close_commission": 0.005,
-                                "slippage_sell": 0,
-                                "slippage_cover": 0,
-                                "slippage_buy": 0,
-                                "slippage_short": 0,
-                                "close_pattern": "yesterday",
-                                },
+        vessel.set_params({"looper": self.params,
                            "strategy": {}
                            })
         vessel.run()
@@ -62,6 +52,13 @@ class BacktrackWidget(QWidget, Ui_Form):
         self.init_ui()
         self.sig = BacktrackSig()
         self.sig.report_sig.connect(self.report_slot)
+        # validate
+        rx = QRegExp(r"[0-9]{1,7}\.[0-9]{1,6}")
+        self.commission.setValidator(QRegExpValidator(rx, self))
+        self.close_commission.setValidator(QRegExpValidator(rx, self))
+        self.yesterday_commission.setValidator(QRegExpValidator(rx, self))
+        self.today_commission.setValidator(QRegExpValidator(rx, self))
+
         # btn
         self.add_data_btn.clicked.connect(self.add_data_slot)
         self.add_backtrack_btn.clicked.connect(self.add_backtrack_slot)
@@ -71,6 +68,8 @@ class BacktrackWidget(QWidget, Ui_Form):
         self.name = None
         self.ext = None
         self.data = None
+        #
+
 
     def init_ui(self):
         for local_symbol, _ in G.all_contracts.items():
@@ -122,6 +121,22 @@ class BacktrackWidget(QWidget, Ui_Form):
             return
         QMessageBox.information(self, '提示', "传入回测API成功")
 
+    def get_params(self):
+        par = {"initial_capital": float(self.initial_capital.text()),
+               "size_map": {self.local_symbol_box.currentText(): int(self.size_map.text())},
+               "deal_pattern": self.deal_pattern.currentText(),
+               "close_pattern": self.close_pattern.currentText(),
+               "commission": float(self.commission.text()),
+               "today_commission": float(self.today_commission.text()),
+               "yesterday_commission": float(self.yesterday_commission.text()),
+               "close_commission": float(self.close_commission.text()),
+               "slippage_sell": float(self.slippage_sell.text()),
+               "slippage_cover": float(self.slippage_cover.text()),
+               "slippage_buy": float(self.slippage_buy.text()),
+               "slippage_short": float(self.slippage_short.text()),
+               }
+        return par
+
     def run_slot(self):
         if not self.data:
             QMessageBox.information(self, '提示', "还未传入数据")
@@ -130,20 +145,17 @@ class BacktrackWidget(QWidget, Ui_Form):
             QMessageBox.information(self, '提示', "还未传入回测API")
             return
         symbol = self.local_symbol_box.currentText()
-        symbol = "ag1912.SHFE"
         self.name = f"回测{self.counter}_{symbol}"
         self.thread_pool.start(
-            BacktrackrWorker(name=self.name, sig=self.sig.report_sig, data=self.data, strategy=self.ext))
+            BacktrackrWorker(name=self.name, sig=self.sig.report_sig, data=self.data, strategy=self.ext,
+                             params=self.get_params()))
         self.counter += 1
 
     @Slot(dict)
     def report_slot(self, res: dict):
         h_layout = QHBoxLayout(self)
-        label = QLabel(self)
-        label.setText(res['name'])
         open_btn = QsPushButton(self, res['url'])
-        open_btn.setText("打开回测报告")
-        h_layout.addWidget(label)
+        open_btn.setText(res['name'])
         h_layout.addWidget(open_btn)
         self.res_layout.addLayout(h_layout)
 

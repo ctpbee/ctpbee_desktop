@@ -4,6 +4,7 @@ from PySide2.QtWidgets import QMessageBox, QDialog, QLineEdit, QVBoxLayout, QHBo
 from PySide2.QtCore import Qt, Slot
 
 from app.lib.global_var import G
+from app.tip import TipDialog
 from app.ui.ui_config import Ui_Config
 from ctpbee import current_app as bee_current_app
 from app.ui import config_qss
@@ -124,4 +125,5 @@ class ShortCutEdit(QLineEdit):
         G.config.shortcut.update({self.name: self.text()})
         G.config.to_file()
         self.parent_widget.mainwindow.update_shortcut()
-        QMessageBox.information(self, "提示", '修改成功')
+        tip = TipDialog("修改成功")
+        tip.exec_()

@@ -423,7 +423,7 @@ margin:10px
 }
 
 QListWidget#search_list{
-background:#ffffff;
+background:#3C3F41;
 color:#2B2B2B
 }
 
@@ -437,7 +437,7 @@ margin:0px;
 }
 
 QPushButton{
-    padding:10px
+    padding:5px
 }
 QPushButton:hover{
 background:#1b89ca;
@@ -446,8 +446,9 @@ background:#1b89ca;
 QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
     color:#ffffff;
     background:#2B2B2B;
-    padding:10px;
+    padding:3px;
     border:1px solid #1b89ca;
     border-radius:5px;
 }
+
 """ + scroll_bar

@@ -301,3 +301,4 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     #     else:
     #         self.showFullScreen()
     #     event.accept()
+

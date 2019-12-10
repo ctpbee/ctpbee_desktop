@@ -21,7 +21,7 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="6" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,5,0,0,4">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,5,0,0,4,0">
      <item>
       <widget class="QComboBox" name="symbol_list">
        <property name="sizePolicy">
@@ -83,6 +83,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="unsubscribe">
+       <property name="text">
+        <string>取消所有订阅</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -205,30 +212,6 @@
       </property>
      </column>
     </widget>
-   </item>
-   <item row="11" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="unsubscribe">
-       <property name="text">
-        <string>取消订阅所有</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

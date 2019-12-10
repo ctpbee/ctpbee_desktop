@@ -41,12 +41,10 @@ class MarketWidget(QWidget, Ui_Market):
         self.item_row = len(G.market_tick_row_map)
         self.bee_ext = mainwindow.bee_ext
         self.mainwindow = mainwindow
-        self.progressBar = self.mainwindow.progressbar
         self.load_status = self.mainwindow.status_msg
         # ctpbee
         for local_symbol in sorted(G.all_contracts):
             self.symbol_list.addItem(local_symbol + contract_space + G.all_contracts[local_symbol])  # 添加下拉框
-        self.progressBar.setMaximum(len(G.subscribes))
         #
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         # self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
@@ -97,7 +95,6 @@ class MarketWidget(QWidget, Ui_Market):
     def timer_slot(self):
         self.load_status.setText("正在加载...")
         if time.time() - self.load_time > 0.5:
-            self.progressBar.setValue(len(G.subscribes))
             self.load_status.setText("订阅合约列表加载完成")
             self.timer.stop()
             self.tableWidget.setEnabled(True)
@@ -122,7 +119,6 @@ class MarketWidget(QWidget, Ui_Market):
             res = self.bee_ext.app.subscribe(local_symbol)
             if res == 0:
                 G.subscribes.update({local_symbol: name})
-                self.progressBar.setMaximum(len(G.subscribes))  # 更新进度条
                 TipDialog("订阅成功")
             else:
                 TipDialog("订阅失败")
@@ -132,11 +128,10 @@ class MarketWidget(QWidget, Ui_Market):
         local_symbol_ = self.symbol_list.currentText().split(contract_space)[0]
         symbol = ''.join([x for x in local_symbol_.split('.')[0] if x.isalpha()])  # AP
         for local_symbol in G.all_contracts:
-            if symbol in local_symbol:
+            if local_symbol.startswith(symbol):
                 res = self.bee_ext.app.subscribe(local_symbol)
                 if res == 0:
                     G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})
-                    self.progressBar.setMaximum(len(G.subscribes))  # 更新进度条
 
     @Slot()
     def subscribe_all_slot(self):
@@ -166,7 +161,6 @@ class MarketWidget(QWidget, Ui_Market):
             self.item_row += 1
             # 渲染
             self.load_time = time.time()  # 刷新关闭渲染动画计时
-            self.progressBar.setValue(row)
             self.insert_(row, tick)
         else:  # 已在table中 ,更新对应row
             row = G.market_tick_row_map.index(local_symbol)

@@ -1,4 +1,6 @@
-from PySide2.QtCore import Slot
+from datetime import time, datetime, timedelta
+
+from PySide2.QtCore import Slot, QTimer
 from PySide2.QtWidgets import QWidget, QTableWidget, QTableWidgetItem
 from ctpbee import current_app
 
@@ -74,7 +76,6 @@ class HomeWidget(QWidget, Ui_Home):
     def bee_slot(self):
         url = "https://github.com/ctpbee"
         self.open_url(url)
-
 
     def doc_slot(self):
         url = "https://docs.ctpbee.com/"

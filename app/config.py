@@ -69,8 +69,9 @@ class ConfigDialog(QDialog, Ui_Config):
     def default_sc_slot(self):
         G.config.back_default()
         self.mainwindow.update_shortcut()
-        TipDialog('成功')
         self.close()
+        TipDialog('已恢复')
+
 
     @Slot()
     def update_config(self):

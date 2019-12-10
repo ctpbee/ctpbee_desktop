@@ -25,8 +25,9 @@ class Config:
     CLOSE_PATTERN = None
     SHARED_FUNC = None
     #
-
     shortcut = deepcopy(default_shortcut)
+    #
+    strategys = {}
 
     def back_default(self):
         self.shortcut = deepcopy(default_shortcut)

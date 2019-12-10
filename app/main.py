@@ -49,11 +49,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ##
         self.status_msg = QLabel("实时信息")
         self.market_msg = QLabel("最新行情")
-        self.progressbar = QProgressBar()
-        self.progressbar.setFixedHeight(10)
-        self.progressbar.setRange(0, 0)
-        self.progressbar.setTextVisible(False)
-        self.statusbar.addPermanentWidget(self.progressbar, stretch=1)
         self.statusbar.addPermanentWidget(self.status_msg, stretch=5)
         self.statusbar.addPermanentWidget(self.market_msg, stretch=5)
         # btn
@@ -275,6 +270,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             G.pool_done = True
             self.tray.deleteLater()
             try:
+                for k, v in current_app.extensions.items():
+                    current_app.suspend_extension(k)
                 current_app.release()
             except:
                 pass

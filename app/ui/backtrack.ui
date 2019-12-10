@@ -13,11 +13,20 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0,8">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,9">
    <item>
-    <layout class="QGridLayout" name="gridLayout" columnstretch="3,0,0,0">
+    <widget class="QTableWidget" name="tableWidget">
+     <column>
+      <property name="text">
+       <string>回测结果</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout" columnstretch="3,3,3,3">
      <property name="spacing">
-      <number>15</number>
+      <number>10</number>
      </property>
      <item row="0" column="1">
       <widget class="QSpinBox" name="initial_capital">
@@ -51,7 +60,7 @@
       </widget>
      </item>
      <item row="3" column="2">
-      <widget class="QLabel" name="label_8">
+      <widget class="QLabel" name="slippage_sell_label">
        <property name="text">
         <string>slippage_sell</string>
        </property>
@@ -89,14 +98,14 @@
       </widget>
      </item>
      <item row="6" column="2">
-      <widget class="QLabel" name="label_11">
+      <widget class="QLabel" name="slippage_short_label">
        <property name="text">
         <string>slippage_short</string>
        </property>
       </widget>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="close_commission_label">
        <property name="text">
         <string>close_commission</string>
        </property>
@@ -113,21 +122,21 @@
       <widget class="QSpinBox" name="slippage_sell"/>
      </item>
      <item row="0" column="2">
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="deal_pattern_label">
        <property name="text">
         <string>deal_pattern</string>
        </property>
       </widget>
      </item>
      <item row="6" column="0">
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="yesterday_commission_label">
        <property name="text">
         <string>yesterday_commission</string>
        </property>
       </widget>
      </item>
      <item row="4" column="2">
-      <widget class="QLabel" name="label_9">
+      <widget class="QLabel" name="slippage_cover_label">
        <property name="text">
         <string>slippage_cover</string>
        </property>
@@ -143,7 +152,7 @@
      <item row="8" column="3">
       <widget class="QPushButton" name="run_btn">
        <property name="text">
-        <string>Run</string>
+        <string>🚀 Run</string>
        </property>
       </widget>
      </item>
@@ -158,7 +167,7 @@
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="commission_label">
        <property name="text">
         <string>commission</string>
        </property>
@@ -168,7 +177,7 @@
       <widget class="QSpinBox" name="slippage_buy"/>
      </item>
      <item row="5" column="2">
-      <widget class="QLabel" name="label_10">
+      <widget class="QLabel" name="slippage_buy_label">
        <property name="text">
         <string>slippage_buy</string>
        </property>
@@ -182,7 +191,7 @@
       </widget>
      </item>
      <item row="5" column="0">
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="today_commission_label">
        <property name="text">
         <string>today_commission</string>
        </property>
@@ -199,14 +208,14 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="size_map_label">
        <property name="text">
         <string>size_map</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="initial_capital_label">
        <property name="text">
         <string>initial_capital</string>
        </property>
@@ -216,7 +225,7 @@
       <widget class="QSpinBox" name="slippage_short"/>
      </item>
      <item row="1" column="2">
-      <widget class="QLabel" name="label_12">
+      <widget class="QLabel" name="close_pattern_label">
        <property name="text">
         <string>close_pattern</string>
        </property>
@@ -231,33 +240,6 @@
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="lineWidth">
-      <number>2</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="res_layout">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>

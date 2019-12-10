@@ -91,6 +91,8 @@ class OrderWidget(QWidget, Ui_Order):
         self.fill_other()
 
     def symbol_change_slot(self):
+        self.short_btn.setEnabled(True)
+        self.buy_btn.setEnabled(True)
         symbol = self.symbol_name_list.currentText()
         if G.choice_local_symbol != symbol:
             G.choice_local_symbol = symbol

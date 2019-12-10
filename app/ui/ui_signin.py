@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'signin.ui',
 # licensing of 'signin.ui' applies.
 #
-# Created: Sun Dec  8 16:06:32 2019
+# Created: Tue Dec 10 15:27:52 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -345,7 +345,7 @@ class Ui_SignIn(object):
 
     def retranslateUi(self, SignIn):
         SignIn.setWindowTitle(QtWidgets.QApplication.translate("SignIn", "Form", None, -1))
-        self.title.setText(QtWidgets.QApplication.translate("SignIn", "ctpbee桌面端", None, -1))
+        self.title.setText(QtWidgets.QApplication.translate("SignIn", "🌈ctpbee桌面端", None, -1))
         self.min_btn.setText(QtWidgets.QApplication.translate("SignIn", "—", None, -1))
         self.close_btn.setText(QtWidgets.QApplication.translate("SignIn", "×", None, -1))
         self.label_2.setText(QtWidgets.QApplication.translate("SignIn", "用户名", None, -1))

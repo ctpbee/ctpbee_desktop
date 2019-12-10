@@ -358,6 +358,7 @@ QPushButton{
 background:#2B2B2B;
 color:#ffffff;
 border:1px solid #1b89ca;
+     border-radius:5px; 
 
 }
 
@@ -451,6 +452,11 @@ QPushButton{
 }
 QPushButton:hover{
 background:#1b89ca;
+}
+
+QTableCornerButton::section,QHeaderView::section{
+background:#004687;
+color:#ffffff;
 }
 
 QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{

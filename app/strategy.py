@@ -1,9 +1,13 @@
+import os
 import re
 
-from PySide2.QtCore import Slot
+from PySide2.QtCore import Slot, QUrl
+from PySide2.QtGui import QDesktopServices
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QTableWidget, QHeaderView, \
     QFileDialog
 
+from app.lib.global_var import G
+from app.tip import TipDialog
 from app.ui import strategy_qss
 from app.ui.ui_strategy import Ui_Strategy
 from ctpbee import current_app as bee_current_app, dynamic_loading_api
@@ -21,9 +25,22 @@ class StrategyWidget(QWidget, Ui_Strategy):
         self.strategy_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.strategy_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch);  # 所有列自适应表格宽度
         self.strategy_table.verticalHeader().setVisible(False)  # 所有列自适应表格宽度
-        self.fill_table()
+        self.load_strategy()
         self.add_strategy_btn.clicked.connect(self.add_strategy_slot)
         self.gen_strategy.clicked.connect(self.gen_strategy_slot)
+
+    def load_strategy(self):
+        for name, path in G.config.strategys.items():
+            if os.path.exists(path):
+                with open(path, 'r') as f:
+                    try:
+                        ext = dynamic_loading_api(f)
+                        bee_current_app.add_extension(ext)
+                        bee_current_app.suspend_extension(ext.extension_name)  # 停止
+                        # bee_current_app.suspend_extension(path)  # 停止
+                    except Exception as e:
+                        pass
+        self.fill_table()
 
     @Slot()
     def add_strategy_slot(self):
@@ -31,14 +48,13 @@ class StrategyWidget(QWidget, Ui_Strategy):
         filename, _ = QFileDialog.getOpenFileName(self, '选择文件', '', 'Python files(*.py)')
         if not filename:
             return
-        # msg = check_code(filename)
-        # if msg:
-        # return QMessageBox.warning(self, 'CtpBee策略', msg, QMessageBox.Ok, QMessageBox.Ok)
         with open(filename, 'r') as f:
             try:
                 ext = dynamic_loading_api(f)
                 bee_current_app.add_extension(ext)
-                QMessageBox.information(self, 'ctpbee策略', "策略添加成功", QMessageBox.Ok, QMessageBox.Ok)
+                G.config.strategys.update({ext.extension_name: filename})
+                G.config.to_file()
+                TipDialog("策略添加成功")
                 self.fill_table()
             except Exception as e:
                 print("添加更新策略文件：", e)
@@ -51,7 +67,8 @@ class StrategyWidget(QWidget, Ui_Strategy):
             filename = filename if filename.endswith('.py') else filename + '.py'
             with open(filename, 'w') as f:
                 f.write(strategy_template)
-            return QMessageBox.information(self, 'CtpBee策略', "策略模板已生成", QMessageBox.Ok, QMessageBox.Ok)
+            TipDialog(f"策略模板已生成")
+            QDesktopServices.openUrl(QUrl(os.path.dirname(filename)))
 
     def fill_table(self):
         self.strategy_table.setRowCount(0)
@@ -60,16 +77,16 @@ class StrategyWidget(QWidget, Ui_Strategy):
             if v.frozen:
                 status = "停止"
                 s_btn = QPushButton("开启")
-                s_btn.setStyleSheet("background-color:green;padding:10px")
+                s_btn.setStyleSheet("background-color:green;padding:10px;border-radius:5px;")
                 s_btn.clicked.connect(self.open_strategy_slot)
             else:
                 status = "运行中"
                 s_btn = QPushButton("停止")
-                s_btn.setStyleSheet("background-color:red;padding:10px")
+                s_btn.setStyleSheet("background-color:red;padding:10px;border-radius:5px;")
                 s_btn.clicked.connect(self.close_strategy_slot)
 
             d_btn = QPushButton("删除")
-            d_btn.setStyleSheet("background-color:#e9bc1b;padding:10px")
+            d_btn.setStyleSheet("background-color:#e9bc1b;padding:10px;border-radius:5px;")
             d_btn.clicked.connect(self.delete_strategy_slot)
             self.strategy_table.insertRow(self.row)
             self.strategy_table.setItem(self.row, 0, QTableWidgetItem(k))
@@ -85,10 +102,10 @@ class StrategyWidget(QWidget, Ui_Strategy):
         name = self.strategy_table.item(row, strategy_table_column.index('name')).text()
         res = bee_current_app.suspend_extension(name)
         if res:
-            QMessageBox().information(self, "提示", "停止成功", QMessageBox.Ok, QMessageBox.Ok)
+            TipDialog("停止成功")
             self.fill_table()
         else:
-            QMessageBox().warning(self, "提示", "停止失败", QMessageBox.Ok, QMessageBox.Ok)
+            TipDialog("停止失败")
 
     @Slot()
     def open_strategy_slot(self):
@@ -96,10 +113,10 @@ class StrategyWidget(QWidget, Ui_Strategy):
         name = self.strategy_table.item(row, strategy_table_column.index('name')).text()
         res = bee_current_app.enable_extension(name)
         if res:
-            QMessageBox().information(self, "提示", "开启成功", QMessageBox.Ok, QMessageBox.Ok)
+            TipDialog("开启成功")
             self.fill_table()
         else:
-            QMessageBox().warning(self, "提示", "开启失败", QMessageBox.Ok, QMessageBox.Ok)
+            TipDialog("开启失败")
 
     @Slot()
     def delete_strategy_slot(self):
@@ -110,5 +127,7 @@ class StrategyWidget(QWidget, Ui_Strategy):
         row = self.strategy_table.currentRow()
         name = self.strategy_table.item(row, strategy_table_column.index('name')).text()
         bee_current_app.del_extension(name)
-        QMessageBox().information(self, "提示", "删除成功", QMessageBox.Ok, QMessageBox.Ok)
+        G.config.strategys.pop(name)
+        G.config.to_file()
+        TipDialog("删除成功")
         self.fill_table()

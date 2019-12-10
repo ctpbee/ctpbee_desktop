@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'market.ui',
 # licensing of 'market.ui' applies.
 #
-# Created: Sun Dec  8 16:31:10 2019
+# Created: Tue Dec 10 16:33:25 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -42,6 +42,9 @@ class Ui_Market(object):
         self.horizontalLayout.addWidget(self.subscribe_all)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
+        self.unsubscribe = QtWidgets.QPushButton(Market)
+        self.unsubscribe.setObjectName("unsubscribe")
+        self.horizontalLayout.addWidget(self.unsubscribe)
         self.horizontalLayout.setStretch(0, 4)
         self.horizontalLayout.setStretch(1, 5)
         self.horizontalLayout.setStretch(4, 4)
@@ -95,14 +98,6 @@ class Ui_Market(object):
         self.tableWidget.verticalHeader().setCascadingSectionResizes(False)
         self.tableWidget.verticalHeader().setSortIndicatorShown(False)
         self.formLayout.setWidget(9, QtWidgets.QFormLayout.FieldRole, self.tableWidget)
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem1)
-        self.unsubscribe = QtWidgets.QPushButton(Market)
-        self.unsubscribe.setObjectName("unsubscribe")
-        self.horizontalLayout_2.addWidget(self.unsubscribe)
-        self.formLayout.setLayout(11, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_2)
 
         self.retranslateUi(Market)
         QtCore.QMetaObject.connectSlotsByName(Market)
@@ -112,6 +107,7 @@ class Ui_Market(object):
         self.subscribe_singel.setText(QtWidgets.QApplication.translate("Market", "订阅单个", None, -1))
         self.subscribe_type.setText(QtWidgets.QApplication.translate("Market", "订阅此品种", None, -1))
         self.subscribe_all.setText(QtWidgets.QApplication.translate("Market", "订阅所有合约", None, -1))
+        self.unsubscribe.setText(QtWidgets.QApplication.translate("Market", "取消所有订阅", None, -1))
         self.tableWidget.setSortingEnabled(False)
         self.tableWidget.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Market", "中文名", None, -1))
         self.tableWidget.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Market", "品种", None, -1))
@@ -128,7 +124,5 @@ class Ui_Market(object):
         self.tableWidget.horizontalHeaderItem(12).setText(QtWidgets.QApplication.translate("Market", "开盘", None, -1))
         self.tableWidget.horizontalHeaderItem(13).setText(QtWidgets.QApplication.translate("Market", "最高", None, -1))
         self.tableWidget.horizontalHeaderItem(14).setText(QtWidgets.QApplication.translate("Market", "现增仓", None, -1))
-
         self.tableWidget.horizontalHeaderItem(15).setText(QtWidgets.QApplication.translate("Market", "昨收", None, -1))
-        self.unsubscribe.setText(QtWidgets.QApplication.translate("Market", "取消订阅所有", None, -1))
 

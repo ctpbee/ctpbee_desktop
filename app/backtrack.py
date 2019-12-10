@@ -5,7 +5,8 @@ from datetime import datetime
 import pandas
 from PySide2.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot, QRegExp
 from PySide2.QtGui import QRegExpValidator
-from PySide2.QtWidgets import QWidget, QFileDialog, QMessageBox, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
+from PySide2.QtWidgets import QWidget, QFileDialog, QMessageBox, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, \
+    QHeaderView
 
 from app.tip import TipDialog
 from app.ui import backtrack_qss
@@ -15,13 +16,14 @@ from ctpbee import Vessel, LooperApi
 
 
 class BacktrackrWorker(QRunnable):
-    def __init__(self, name, sig, data, strategy, params):
+    def __init__(self, name, sig, data, strategy, params, table_index):
         super(self.__class__, self).__init__()
         self.name = name
         self.sig = sig
         self.data = data
         self.strategy = strategy
         self.params = params
+        self.table_index = table_index
 
     def run(self):
         try:
@@ -37,7 +39,10 @@ class BacktrackrWorker(QRunnable):
         except Exception as e:
             result = ""
             error = str(e)
-        self.sig.emit({"name": self.name, "url": result, "error": error})
+        self.sig.emit({"name": self.name,
+                       "url": result,
+                       "error": error,
+                       'table_index': self.table_index})
 
 
 class BacktrackSig(QObject):
@@ -56,25 +61,28 @@ class BacktrackWidget(QWidget, Ui_Form):
         self.init_ui()
         self.sig = BacktrackSig()
         self.sig.report_sig.connect(self.report_slot)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget.verticalHeader().setVisible(False)  # 垂直表头不可见
+        self.tableWidget.hide()
         # validate
         rx = QRegExp(r"[0-9]{1,7}\.[0-9]{1,6}")
         self.commission.setValidator(QRegExpValidator(rx, self))
         self.close_commission.setValidator(QRegExpValidator(rx, self))
         self.yesterday_commission.setValidator(QRegExpValidator(rx, self))
         self.today_commission.setValidator(QRegExpValidator(rx, self))
-
         # btn
         self.add_data_btn.clicked.connect(self.add_data_slot)
         self.add_backtrack_btn.clicked.connect(self.add_backtrack_slot)
         self.run_btn.clicked.connect(self.run_slot)
         # var
-        self.counter = 1
+        self.counter = 0
         self.name = None
         self.ext = None
         self.data = None
         #
 
     def init_ui(self):
+        self.params_zn()
         for local_symbol, _ in G.all_contracts.items():
             self.local_symbol_box.addItem(local_symbol)
 
@@ -140,6 +148,23 @@ class BacktrackWidget(QWidget, Ui_Form):
                }
         return par
 
+    def params_zn(self):
+        zn_map = {"initial_capital": "初始资金",
+                  "size_map": "大小",
+                  "deal_pattern": "交易模式",
+                  "close_pattern": "闭合模式",
+                  "commission": "手续费",
+                  "today_commission": "平今手续费",
+                  "yesterday_commission": "平昨手续费",
+                  "close_commission": "平仓手续费",
+                  "slippage_sell": "卖滑点",
+                  "slippage_cover": "复合滑点",
+                  "slippage_buy": "买滑点",
+                  "slippage_short": "卖空滑点",
+                  }
+        for en, zn in zn_map.items():
+            getattr(self, f"{en}_label").setText(f"{zn}\n{en}")
+
     def run_slot(self):
         if not self.data:
             TipDialog("还未传入数据")
@@ -148,10 +173,11 @@ class BacktrackWidget(QWidget, Ui_Form):
             TipDialog("还未传入回测API")
             return
         symbol = self.local_symbol_box.currentText()
-        self.name = f"回测{self.counter}_{symbol}"
+        self.name = f"回测{self.counter + 1} {symbol}"
         self.thread_pool.start(
             BacktrackrWorker(name=self.name, sig=self.sig.report_sig, data=self.data, strategy=self.ext,
-                             params=self.get_params()))
+                             params=self.get_params(), table_index=self.counter))
+        self.tableWidget.insertRow(self.counter)
         self.counter += 1
 
     @Slot(dict)
@@ -159,11 +185,11 @@ class BacktrackWidget(QWidget, Ui_Form):
         if res['error']:
             QMessageBox.information(self, '错误', res['error'])
         else:
-            h_layout = QHBoxLayout(self)
+            if self.tableWidget.isHidden():
+                self.tableWidget.show()
             open_btn = QsPushButton(self, res['url'])
             open_btn.setText(res['name'])
-            h_layout.addWidget(open_btn)
-            self.res_layout.insertLayout(self.counter-1, h_layout)
+            self.tableWidget.setCellWidget(res['table_index'], 0, open_btn)
 
 
 class QsPushButton(QPushButton):

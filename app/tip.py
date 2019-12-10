@@ -11,9 +11,7 @@ qss = """
 }
 
 #msg{
-    font: 18pt "Comic Sans MS";
     color:#ffffff
-
 }
 """
 

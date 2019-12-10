@@ -41,7 +41,7 @@
      <item>
       <widget class="QLabel" name="title">
        <property name="text">
-        <string>ctpbee桌面端</string>
+        <string>🌈ctpbee桌面端</string>
        </property>
       </widget>
      </item>

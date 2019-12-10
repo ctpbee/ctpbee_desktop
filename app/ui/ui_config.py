@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Mon Dec  9 18:07:43 2019
+# Created: Tue Dec 10 16:30:18 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -159,8 +159,6 @@ class Ui_Config(object):
         self.verticalLayout.addLayout(self.formLayout)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem)
         self.submit_btn = QtWidgets.QPushButton(self.comm_tab)
         self.submit_btn.setMaximumSize(QtCore.QSize(200, 16777215))
         font = QtGui.QFont()
@@ -183,8 +181,8 @@ class Ui_Config(object):
         self.verticalLayout_4.addLayout(self.sc_layout)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem1)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
         self.default_btn = QtWidgets.QPushButton(self.short_tab)
         self.default_btn.setObjectName("default_btn")
         self.horizontalLayout_2.addWidget(self.default_btn)

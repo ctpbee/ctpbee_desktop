@@ -49,10 +49,8 @@ class RecordWorker(QObject):
         super(self.__class__, self).__init__()
 
     def record(self):
-        while True:
+        while G.pool_done:
             if G.tick_queue.empty():
-                if G.pool_done:
-                    break
                 time.sleep(0.5)
                 continue
             local_symbol, info = G.tick_queue.get()

@@ -10,7 +10,7 @@ from PySide2.QtWidgets import QWidget, QMessageBox, QLineEdit
 from app.lib.global_var import G
 from app.ui.ui_signin import Ui_SignIn
 from ctpbee import CtpBee, VLogger, current_app
-from app.lib.get_path import get_user_path, desktop_path, join_path
+from app.lib.get_path import get_user_path, desktop_path, join_path, config_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
 from app.ui import sign_in_qss
@@ -118,7 +118,6 @@ class SignInWidget(QWidget, Ui_SignIn):
             return
 
     def load_config(self):
-        config_path = os.path.join(G.user_path, ".config.json")
         if not os.path.exists(config_path):
             return
         with open(config_path, 'r')as f:
@@ -129,6 +128,7 @@ class SignInWidget(QWidget, Ui_SignIn):
                     raise Exception
             except Exception:
                 return
+            G.config.update(cfg)
             for k, v in cfg.items():
                 if hasattr(current_app.config, k):
                     current_app.config[k] = v
@@ -245,4 +245,3 @@ class SignInWidget(QWidget, Ui_SignIn):
                 QMouseEvent.accept()
         except:
             pass
-

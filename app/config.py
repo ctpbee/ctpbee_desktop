@@ -57,12 +57,12 @@ class ConfigDialog(QDialog, Ui_Config):
 
     def init_shortcut(self):
         for name, sc in G.config.shortcut.items():
-            h_layout = QHBoxLayout(self)
+            h_layout = QHBoxLayout()
             label = QLabel(self)
-            label.setStyleSheet("font: 12pt")
+            label.setStyleSheet("font: 10pt")
             label.setText(zn[name])
             shortcut = ShortCutEdit(self, name, sc)
-            shortcut.setStyleSheet("font: 12pt")
+            shortcut.setStyleSheet("font: 10pt")
             h_layout.addWidget(label)
             h_layout.addWidget(shortcut)
             self.sc_layout.addLayout(h_layout)

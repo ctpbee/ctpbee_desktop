@@ -36,6 +36,14 @@ class Config:
 
     def __init__(self):
         self.path = config_path
+        with open(config_path, 'r')as f:
+            data = f.read()
+            try:
+                cfg = json.loads(data)
+                if isinstance(cfg, dict):
+                    self.update(cfg)
+            except Exception:
+                pass
 
     def update(self, data: dict):
         for k, v in data.items():

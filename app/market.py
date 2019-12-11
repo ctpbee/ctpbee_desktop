@@ -4,6 +4,7 @@ from PySide2.QtCore import Slot, QTimer, Qt
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QListWidgetItem, QTableWidget, \
     QHeaderView, QAbstractItemView, QMenu
+from ctpbee import current_app
 
 from app.tip import TipDialog
 from app.ui.ui_market import Ui_Market
@@ -39,7 +40,6 @@ class MarketWidget(QWidget, Ui_Market):
         self.setStyleSheet(market_qss)
         self.setWindowTitle("行情")
         self.item_row = len(G.market_tick_row_map)
-        self.bee_ext = mainwindow.bee_ext
         self.mainwindow = mainwindow
         self.load_status = self.mainwindow.status_msg
         # ctpbee
@@ -77,7 +77,7 @@ class MarketWidget(QWidget, Ui_Market):
         if action == item1:
             local_symbol = self.tableWidget.item(row_num, market_table_column.index('local_symbol')).text()
             # 取消订阅
-            self.bee_ext.app.market.unsubscribe(local_symbol.split('.')[0])
+            current_app.market.unsubscribe(local_symbol.split('.')[0])
             # 事后处理
             G.market_tick_row_map.remove(local_symbol)
             G.subscribes.pop(local_symbol, None)
@@ -108,15 +108,19 @@ class MarketWidget(QWidget, Ui_Market):
     @Slot()
     def unsubscribe_all_slot(self):
         for i in G.subscribes:
-            self.bee_ext.app.market.unsubscribe(i.split('.')[0])
+            current_app.market.unsubscribe(i.split('.')[0])
         self.fresh_()
 
     @Slot()
     def subscribe_slot(self):
-        local_symbol = self.symbol_list.currentText().split(contract_space)[0]
-        name = self.symbol_list.currentText().split(contract_space)[1]
+        text = self.symbol_list.currentText()
+        if text not in G.all_contracts:
+            TipDialog("未知合约")
+            return
+        local_symbol = text.split(contract_space)[0]
+        name = text.split(contract_space)[1]
         if local_symbol:
-            res = self.bee_ext.app.subscribe(local_symbol)
+            res = current_app.subscribe(local_symbol)
             if res == 0:
                 G.subscribes.update({local_symbol: name})
                 TipDialog("订阅成功")
@@ -125,21 +129,25 @@ class MarketWidget(QWidget, Ui_Market):
 
     @Slot()
     def subscribe_type_slot(self):
-        local_symbol_ = self.symbol_list.currentText().split(contract_space)[0]
+        text = self.symbol_list.currentText()
+        if text not in G.all_contracts:
+            TipDialog("未知合约")
+            return
+        local_symbol_ = text.split(contract_space)[0]
         symbol = ''.join([x for x in local_symbol_.split('.')[0] if x.isalpha()])  # AP
         for local_symbol in G.all_contracts:
             if local_symbol.startswith(symbol):
-                res = self.bee_ext.app.subscribe(local_symbol)
+                res = current_app.subscribe(local_symbol)
                 if res == 0:
                     G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})
 
     @Slot()
     def subscribe_all_slot(self):
         self.load_time = time.time()
-        self.timer.start(500)
+        self.timer.start(300)
         self.tableWidget.setDisabled(True)
         for local_symbol in sorted(G.all_contracts):
-            res = self.bee_ext.app.subscribe(local_symbol)  # 订阅
+            res = current_app.subscribe(local_symbol)  # 订阅
             if res == 0:
                 G.subscribes.update({local_symbol: G.all_contracts[local_symbol]})  # 更新订阅列表
 

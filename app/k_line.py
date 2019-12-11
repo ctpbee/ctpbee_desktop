@@ -69,8 +69,9 @@ class KlineWidget(QWidget, Ui_Form):
 
     def symbol_change_slot(self):
         symbol = self.symbol_list.currentText()
-        G.choice_local_symbol = symbol
-        self.k_line_reload()
+        if symbol in G.all_contracts:
+            G.choice_local_symbol = symbol
+            self.k_line_reload()
 
     def search_path(self, dir):
         p = os.path.split(dir)[0] + G.kline_folder

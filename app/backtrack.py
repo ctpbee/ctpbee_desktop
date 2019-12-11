@@ -16,14 +16,13 @@ from ctpbee import Vessel, LooperApi
 
 
 class BacktrackrWorker(QRunnable):
-    def __init__(self, name, sig, data, strategy, params, table_index):
+    def __init__(self, name, sig, data, strategy, params):
         super(self.__class__, self).__init__()
         self.name = name
         self.sig = sig
         self.data = data
         self.strategy = strategy
         self.params = params
-        self.table_index = table_index
 
     def run(self):
         try:
@@ -42,7 +41,7 @@ class BacktrackrWorker(QRunnable):
         self.sig.emit({"name": self.name,
                        "url": result,
                        "error": error,
-                       'table_index': self.table_index})
+                       })
 
 
 class BacktrackSig(QObject):
@@ -75,7 +74,8 @@ class BacktrackWidget(QWidget, Ui_Form):
         self.add_backtrack_btn.clicked.connect(self.add_backtrack_slot)
         self.run_btn.clicked.connect(self.run_slot)
         # var
-        self.counter = 0
+        self.counter = 1
+        self.table_index = 0
         self.name = None
         self.ext = None
         self.data = None
@@ -173,11 +173,10 @@ class BacktrackWidget(QWidget, Ui_Form):
             TipDialog("还未传入回测API")
             return
         symbol = self.local_symbol_box.currentText()
-        self.name = f"回测{self.counter + 1} {symbol}"
+        self.name = f"回测{self.counter} {symbol}"
         self.thread_pool.start(
             BacktrackrWorker(name=self.name, sig=self.sig.report_sig, data=self.data, strategy=self.ext,
-                             params=self.get_params(), table_index=self.counter))
-        self.tableWidget.insertRow(self.counter)
+                             params=self.get_params()))
         self.counter += 1
 
     @Slot(dict)
@@ -189,7 +188,9 @@ class BacktrackWidget(QWidget, Ui_Form):
                 self.tableWidget.show()
             open_btn = QsPushButton(self, res['url'])
             open_btn.setText(res['name'])
-            self.tableWidget.setCellWidget(res['table_index'], 0, open_btn)
+            self.tableWidget.insertRow(self.table_index)
+            self.tableWidget.setCellWidget(self.table_index, 0, open_btn)
+            self.table_index += 1
 
 
 class QsPushButton(QPushButton):

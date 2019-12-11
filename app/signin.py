@@ -118,20 +118,9 @@ class SignInWidget(QWidget, Ui_SignIn):
             return
 
     def load_config(self):
-        if not os.path.exists(config_path):
-            return
-        with open(config_path, 'r')as f:
-            data = f.read()
-            try:
-                cfg = json.loads(data)
-                if not isinstance(cfg, dict):
-                    raise Exception
-            except Exception:
-                return
-            G.config.update(cfg)
-            for k, v in cfg.items():
-                if hasattr(current_app.config, k):
-                    current_app.config[k] = v
+        for k, v in G.config.to_dict().items():
+            if v:
+                current_app.config.update({k: v})
 
     def close_load(self):
         self.loading.close()

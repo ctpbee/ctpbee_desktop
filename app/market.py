@@ -74,15 +74,17 @@ class MarketWidget(QWidget, Ui_Market):
         menu = QMenu()
         item1 = menu.addAction("取消订阅")
         action = menu.exec_(self.tableWidget.mapToGlobal(pos))
-        if action == item1:
-            local_symbol = self.tableWidget.item(row_num, market_table_column.index('local_symbol')).text()
+        row_data = self.tableWidget.item(row_num, market_table_column.index('local_symbol'))
+        if action == item1 and row_data:
+            local_symbol = row_data.text()
             # 取消订阅
-            current_app.market.unsubscribe(local_symbol.split('.')[0])
+            res = current_app.market.unsubscribe(local_symbol.split('.')[0])
             # 事后处理
-            G.market_tick_row_map.remove(local_symbol)
-            G.subscribes.pop(local_symbol, None)
-            self.tableWidget.removeRow(row_num)
-            self.item_row -= 1
+            if res == 0:
+                G.market_tick_row_map.remove(local_symbol)
+                G.subscribes.pop(local_symbol, None)
+                self.tableWidget.removeRow(row_num)
+                self.item_row -= 1
 
     @Slot()
     def go_order(self, row, col):
@@ -108,17 +110,17 @@ class MarketWidget(QWidget, Ui_Market):
     @Slot()
     def unsubscribe_all_slot(self):
         for i in G.subscribes:
-            current_app.market.unsubscribe(i.split('.')[0])
+            res = current_app.market.unsubscribe(i.split('.')[0])
         self.fresh_()
 
     @Slot()
     def subscribe_slot(self):
         text = self.symbol_list.currentText()
-        if text not in G.all_contracts:
-            TipDialog("未知合约")
-            return
         local_symbol = text.split(contract_space)[0]
         name = text.split(contract_space)[1]
+        if local_symbol not in G.all_contracts:
+            TipDialog("未知合约")
+            return
         if local_symbol:
             res = current_app.subscribe(local_symbol)
             if res == 0:
@@ -130,11 +132,11 @@ class MarketWidget(QWidget, Ui_Market):
     @Slot()
     def subscribe_type_slot(self):
         text = self.symbol_list.currentText()
-        if text not in G.all_contracts:
-            TipDialog("未知合约")
-            return
         local_symbol_ = text.split(contract_space)[0]
         symbol = ''.join([x for x in local_symbol_.split('.')[0] if x.isalpha()])  # AP
+        if local_symbol_ not in G.all_contracts:
+            TipDialog("未知合约")
+            return
         for local_symbol in G.all_contracts:
             if local_symbol.startswith(symbol):
                 res = current_app.subscribe(local_symbol)
@@ -163,21 +165,20 @@ class MarketWidget(QWidget, Ui_Market):
         local_symbol = tick['local_symbol']
         if local_symbol not in G.market_tick_row_map:  # 不在table ,插入row
             G.market_tick_row_map.append(local_symbol)
-
             row = self.item_row
             self.tableWidget.insertRow(row)
             self.item_row += 1
             # 渲染
-            self.load_time = time.time()  # 刷新关闭渲染动画计时
+            self.load_time = time.time()  # 刷新渲染动画计时
             self.insert_(row, tick)
         else:  # 已在table中 ,更新对应row
             row = G.market_tick_row_map.index(local_symbol)
             for i, col in enumerate(market_table_column):
                 if col == "last_price":  # 对最新价动态颜色表示涨跌
                     old = self.tableWidget.item(row, i)
-                    new = float(tick[col])
                     if old:  # 非空
                         old = float(old.text())
+                        new = float(tick[col])
                         difference = new - old
                         item = QTableWidgetItem(str(new))
                         if difference > 0:  # 涨

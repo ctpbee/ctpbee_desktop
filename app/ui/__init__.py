@@ -185,11 +185,7 @@ color:#ffffff;
 margin:0px;
 }
 
-QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
-    color:#ffffff;
-    border:1px solid #1b89ca;
-    border-radius:5px;
-}
+
 
 QPushButton{
 background:#2B2B2B;

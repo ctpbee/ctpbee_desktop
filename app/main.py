@@ -31,12 +31,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("ctpbee桌面端")
         # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框 可能会导致闪屏异常
         self.setStyleSheet(main_qss)
-        self.animation = QPropertyAnimation(self, b'windowOpacity')
-        self.animation.stop()
-        self.animation.setDuration(500)
-        self.animation.setStartValue(0)
-        self.animation.setEndValue(1)
-        self.animation.start()
+        self.animation_show()
         #
         G.mainwindow = self
         self.exit_ = False
@@ -103,6 +98,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         q = q.text()
         if q == "退出应用":
             self.quit()
+
+    def animation_show(self):
+        self.animation = QPropertyAnimation(self, b'windowOpacity')
+        self.animation.stop()
+        self.animation.setDuration(500)
+        self.animation.setStartValue(0)
+        self.animation.setEndValue(1)
+        self.animation.start()
 
     @property
     def page_history(self):

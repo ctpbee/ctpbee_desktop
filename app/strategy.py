@@ -68,7 +68,7 @@ class StrategyWidget(QWidget, Ui_Strategy):
             with open(filename, 'w') as f:
                 f.write(strategy_template)
             TipDialog(f"策略模板已生成")
-            QDesktopServices.openUrl(QUrl(os.path.dirname(filename)))
+            QDesktopServices.openUrl(QUrl("file:" + os.path.dirname(filename)))
 
     def fill_table(self):
         self.strategy_table.setRowCount(0)

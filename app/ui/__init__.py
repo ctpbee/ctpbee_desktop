@@ -333,9 +333,11 @@ QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
 }
 
 QTabBar::tab {
+     font:10pt;
      border:1px solid #1b89ca;
      border-radius:2px; 
-     min-width: 60px;
+     margin-right:5px;
+     min-width: 100px;
      padding: 2px;
  }
 QTabBar::tab:selected{

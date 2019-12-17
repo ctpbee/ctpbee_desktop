@@ -8,6 +8,7 @@ a = Analysis(['ctpbee_desktop.py'],
              binaries=[],
              datas=[("app/static","static"),
              ('venv/Lib/site-packages/PySide2','PySide2'),
+             ("venv/Lib/site-packages/ctpbee",'ctpbee')
              ],
              hiddenimports=['PySide2.QtPrintSupport'],
              hookspath=[],

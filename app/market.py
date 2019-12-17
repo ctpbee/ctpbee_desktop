@@ -109,9 +109,9 @@ class MarketWidget(QWidget, Ui_Market):
 
     @Slot()
     def unsubscribe_all_slot(self):
-        self.fresh_()
         for i in G.subscribes:
             res = current_app.market.unsubscribe(i.split('.')[0])
+        self.fresh_()
 
     @Slot()
     def subscribe_slot(self):

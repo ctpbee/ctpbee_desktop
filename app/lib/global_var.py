@@ -89,4 +89,3 @@ class G(dict):
     # kline
     kline_folder = "/static/kline.html"
     pool_done = False
-    tick_queue = Queue()

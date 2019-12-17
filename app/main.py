@@ -40,10 +40,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.job = Job()
         self.kline_job = KInterfaceObject()
         self.record_work = RecordWorker()
-        self.r_thread = QThread()
-        self.record_work.moveToThread(self.r_thread)
-        self.r_thread.started.connect(self.record_work.record)
-        self.r_thread.start()
         self.bee_ext = None
         self.tray_init()
         self.shortcut_init()
@@ -214,7 +210,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             data = {bar.local_symbol: info}
             self.kline_job.qt_to_js.emit(json.dumps(data))
         # 存入文件
-        G.tick_queue.put([bar.local_symbol, info])
+        self.record_work.record_sig.emit(bar.local_symbol, info)
 
     def on_order(self, ext, order: OrderData) -> None:
         active_orders = []

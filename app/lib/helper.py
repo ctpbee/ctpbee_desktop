@@ -1,7 +1,6 @@
 import json
 import os
-import time
-from queue import Queue
+
 
 from PySide2.QtCore import QObject, Signal, Slot
 
@@ -65,3 +64,4 @@ class RecordWorker(QObject):
             else:
                 old[local_symbol].append(info)
             json.dump(old, f)
+

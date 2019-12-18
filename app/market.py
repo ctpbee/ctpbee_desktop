@@ -50,7 +50,7 @@ class MarketWidget(QWidget, Ui_Market):
         # self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.tableWidget.cellDoubleClicked.connect(self.go_order)
+        self.tableWidget.cellDoubleClicked.connect(self.cellDoubleClicked_slot)
         # 渲染table
         self.obj = self.mainwindow.job
         self.obj.market_signal.connect(self.set_item_slot)
@@ -87,7 +87,7 @@ class MarketWidget(QWidget, Ui_Market):
                 self.item_row -= 1
 
     @Slot()
-    def go_order(self, row, col):
+    def cellDoubleClicked_slot(self, row, col):
         name = self.tableWidget.item(row, 0).text()
         local_symbol = self.tableWidget.item(row, 1).text()
         G.choice_local_symbol = local_symbol
@@ -102,16 +102,17 @@ class MarketWidget(QWidget, Ui_Market):
             self.tableWidget.setEnabled(True)
 
     def fresh_(self):
-        self.item_row = 0
-        self.tableWidget.setRowCount(0)
         G.subscribes.clear()
         G.market_tick_row_map.clear()
+        self.item_row = 0
+        self.tableWidget.setRowCount(0)
 
     @Slot()
     def unsubscribe_all_slot(self):
         for i in G.subscribes:
             res = current_app.market.unsubscribe(i.split('.')[0])
         self.fresh_()
+
 
     @Slot()
     def subscribe_slot(self):

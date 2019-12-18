@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="ticks" uuid="c476838e-c2f7-4ef3-94a0-a4fb00c62d60">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\ljunf\.ctpbee\ctpbee_desktop\ticks\ticks.db</jdbc-url>
+    </data-source>
+  </component>
+</project>

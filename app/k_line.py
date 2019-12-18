@@ -123,3 +123,6 @@ class KlineWidget(QWidget, Ui_Form):
             self.tick_table.insertRow(row)
             self.tick_table.setItem(row, 0, QTableWidgetItem(str(tick_zn[k])))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
+
+
+

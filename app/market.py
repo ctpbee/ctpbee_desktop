@@ -50,7 +50,7 @@ class MarketWidget(QWidget, Ui_Market):
         # self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.tableWidget.cellDoubleClicked.connect(self.go_order)
+        self.tableWidget.cellDoubleClicked.connect(self.cellDoubleClicked_slot)
         # 渲染table
         self.obj = self.mainwindow.job
         self.obj.market_signal.connect(self.set_item_slot)
@@ -71,6 +71,8 @@ class MarketWidget(QWidget, Ui_Market):
         row_num = -1
         for i in self.tableWidget.selectionModel().selection().indexes():
             row_num = i.row()
+        if row_num < 0:
+            return
         menu = QMenu()
         item1 = menu.addAction("取消订阅")
         action = menu.exec_(self.tableWidget.mapToGlobal(pos))
@@ -87,7 +89,7 @@ class MarketWidget(QWidget, Ui_Market):
                 self.item_row -= 1
 
     @Slot()
-    def go_order(self, row, col):
+    def cellDoubleClicked_slot(self, row, col):
         name = self.tableWidget.item(row, 0).text()
         local_symbol = self.tableWidget.item(row, 1).text()
         G.choice_local_symbol = local_symbol

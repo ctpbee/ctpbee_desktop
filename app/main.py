@@ -174,6 +174,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.kline_widget = KlineWidget(self)
             self.stackedWidget.addWidget(self.kline_widget)
         self.stackedWidget.setCurrentIndex(self.page_map(self.kline_widget))
+        self.kline_widget.symbol_list.setCurrentText(G.choice_local_symbol)
         self.kline_widget.k_line_reload()
 
     def order_handle(self):

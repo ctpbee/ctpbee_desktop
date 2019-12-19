@@ -144,16 +144,16 @@ class BacktrackWidget(QWidget, Ui_Form):
 
     def params_zn(self):
         zn_map = {"initial_capital": "初始资金",
-                  "size_map": "大小",
-                  "deal_pattern": "交易模式",
-                  "close_pattern": "闭合模式",
+                  "size_map": "合约数量乘数",
+                  "deal_pattern": "成交模式",
+                  "close_pattern": "优先平仓模式",
                   "commission": "手续费",
                   "today_commission": "平今手续费",
                   "yesterday_commission": "平昨手续费",
                   "close_commission": "平仓手续费",
-                  "slippage_sell": "卖滑点",
-                  "slippage_cover": "复合滑点",
-                  "slippage_buy": "买滑点",
+                  "slippage_sell": "平空头滑点",
+                  "slippage_cover": "平多头滑点",
+                  "slippage_buy": "买多滑点",
                   "slippage_short": "卖空滑点",
                   }
         for en, zn in zn_map.items():

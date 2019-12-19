@@ -77,16 +77,16 @@ class StrategyWidget(QWidget, Ui_Strategy):
             if v.frozen:
                 status = "停止"
                 s_btn = QPushButton("开启")
-                s_btn.setStyleSheet("background-color:green;padding:10px;border-radius:5px;")
+                s_btn.setStyleSheet("background-color:green;padding:10px;border-radius:2px;")
                 s_btn.clicked.connect(self.open_strategy_slot)
             else:
                 status = "运行中"
                 s_btn = QPushButton("停止")
-                s_btn.setStyleSheet("background-color:red;padding:10px;border-radius:5px;")
+                s_btn.setStyleSheet("background-color:red;padding:10px;border-radius:2px;")
                 s_btn.clicked.connect(self.close_strategy_slot)
 
             d_btn = QPushButton("删除")
-            d_btn.setStyleSheet("background-color:#e9bc1b;padding:10px;border-radius:5px;")
+            d_btn.setStyleSheet("background-color:#e9bc1b;padding:10px;border-radius:2px;")
             d_btn.clicked.connect(self.delete_strategy_slot)
             self.strategy_table.insertRow(self.row)
             self.strategy_table.setItem(self.row, 0, QTableWidgetItem(k))

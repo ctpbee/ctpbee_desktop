@@ -13,7 +13,7 @@ from ctpbee import CtpBee, VLogger, current_app
 from app.lib.get_path import get_user_path, desktop_path, join_path, config_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
-from app.ui import sign_in_qss
+from app.ui import qss
 
 
 class Vlog(VLogger):
@@ -53,7 +53,7 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
         self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
-        self.setStyleSheet(sign_in_qss)
+        self.setStyleSheet(qss)
         self.submask()
         #
         self.close_btn.clicked.connect(self.close)

@@ -9,7 +9,7 @@ from app.backtrack import BacktrackWidget
 from app.lib.global_var import G
 from app.lib.helper import Job, KInterfaceObject, RecordWorker
 from app.tip import TipDialog
-from app.ui import main_qss
+from app.ui import qss
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
 from app.market import MarketWidget
@@ -30,7 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
         # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框 可能会导致闪屏异常
-        self.setStyleSheet(main_qss)
+        self.setStyleSheet(qss)
         self.animation_show()
         #
         G.mainwindow = self

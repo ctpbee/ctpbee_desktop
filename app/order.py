@@ -13,7 +13,7 @@ from ctpbee import current_app as bee_current_app
 
 from app.lib.global_var import G
 from app.tip import TipDialog
-from app.ui import order_qss
+from app.ui import qss
 from app.ui.ui_order import Ui_Order
 
 exchange_map = {
@@ -41,7 +41,7 @@ class OrderWidget(QWidget, Ui_Order):
     def __init__(self, mainwindow):
         super(OrderWidget, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(order_qss)
+        self.setStyleSheet(qss)
         self.setWindowTitle("下单")
         #
         self.position_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑

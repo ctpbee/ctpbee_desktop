@@ -3,7 +3,7 @@ from PySide2.QtGui import QCloseEvent
 from PySide2.QtWidgets import QDialog, QAbstractItemView
 
 from app.lib.global_var import G
-from app.ui import log_qss
+from app.ui import qss
 from app.ui.ui_log import Ui_Log
 
 
@@ -11,7 +11,7 @@ class LogDialog(QDialog, Ui_Log):
     def __init__(self, mainwindow):
         super(LogDialog, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(log_qss)
+        self.setStyleSheet(qss)
 
         # self.setWindowFlags(Qt.WindowStaysOnTopHint)#窗口置顶
         self.mainwindow = mainwindow

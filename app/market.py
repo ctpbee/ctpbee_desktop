@@ -9,7 +9,7 @@ from ctpbee import current_app
 from app.tip import TipDialog
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
-from app.ui import market_qss
+from app.ui import qss
 
 contract_space = " " * 2
 market_table_column = ['name',  # 中文名
@@ -37,7 +37,7 @@ class MarketWidget(QWidget, Ui_Market):
     def __init__(self, mainwindow):
         super(MarketWidget, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(market_qss)
+        self.setStyleSheet(qss)
         self.setWindowTitle("行情")
         self.item_row = len(G.market_tick_row_map)
         self.mainwindow = mainwindow

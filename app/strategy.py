@@ -8,7 +8,7 @@ from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBo
 
 from app.lib.global_var import G
 from app.tip import TipDialog
-from app.ui import strategy_qss
+from app.ui import qss
 from app.ui.ui_strategy import Ui_Strategy
 from ctpbee import current_app as bee_current_app, dynamic_loading_api
 from app.lib.strategy_lib import check_code, strategy_template
@@ -20,7 +20,7 @@ class StrategyWidget(QWidget, Ui_Strategy):
     def __init__(self, mainwindow):
         super(StrategyWidget, self).__init__(parent=mainwindow)
         self.setupUi(self)
-        self.setStyleSheet(strategy_qss)
+        self.setStyleSheet(qss)
         self.row = 0
         self.strategy_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.strategy_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch);  # 所有列自适应表格宽度

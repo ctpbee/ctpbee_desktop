@@ -7,7 +7,8 @@ from app.lib.global_var import G
 from app.tip import TipDialog
 from app.ui.ui_config import Ui_Config
 from ctpbee import current_app as bee_current_app
-from app.ui import config_qss
+from app.ui import qss
+from app.db import DBWidget
 
 keys = [
     "REFRESH_INTERVAL",
@@ -35,13 +36,28 @@ class ConfigDialog(QDialog, Ui_Config):
     def __init__(self, mainwindow):
         super(ConfigDialog, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(config_qss)
+        self.setStyleSheet(qss)
         self.mainwindow = mainwindow
         # btn
         self.default_btn.clicked.connect(self.default_sc_slot)
         self.submit_btn.clicked.connect(self.update_config)
+        self.local_btn.clicked.connect(self.local_btn_slot)
+        self.exter_btn.clicked.connect(self.exter_btn_slot)
+        self.open_db_btn.clicked.connect(self.open_db_btn_slot)
+
+        #
         self.init_config()
         self.init_shortcut()
+
+    def local_btn_slot(self):
+        self.open_db_btn.setDisabled(True)
+
+    def exter_btn_slot(self):
+        self.open_db_btn.setEnabled(True)
+
+    def open_db_btn_slot(self):
+        self.db_dialog = DBWidget()
+        self.db_dialog.show()
 
     def init_config(self):
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))

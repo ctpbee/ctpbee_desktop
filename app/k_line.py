@@ -6,7 +6,7 @@ from PySide2.QtWebEngineWidgets import QWebEngineView
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QTableWidget
 
 from app.lib.global_var import G
-from app.ui import kline_qss
+from app.ui import qss
 from app.ui.ui_k_line import Ui_Form
 
 tick_zn = {
@@ -28,7 +28,7 @@ class KlineWidget(QWidget, Ui_Form):
     def __init__(self, mainwindow):
         super(self.__class__, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(kline_qss)
+        self.setStyleSheet(qss)
         self.mainwindow = mainwindow
         # k-line
         self.k_line_init()

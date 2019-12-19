@@ -9,7 +9,7 @@ from PySide2.QtWidgets import QWidget, QFileDialog, QMessageBox, QVBoxLayout, QH
     QHeaderView
 
 from app.tip import TipDialog
-from app.ui import backtrack_qss
+from app.ui import qss
 from app.ui.ui_backtrack import Ui_Form
 from app.lib.global_var import G
 from ctpbee import Vessel, LooperApi
@@ -55,7 +55,7 @@ class BacktrackWidget(QWidget, Ui_Form):
     def __init__(self, mainwindow):
         super(self.__class__, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(backtrack_qss)
+        self.setStyleSheet(qss)
         self.thread_pool = QThreadPool()
         self.init_ui()
         self.sig = BacktrackSig()
@@ -93,16 +93,10 @@ class BacktrackWidget(QWidget, Ui_Form):
             return
         self.data_label.setText(filename)
         i = filetypes.index(ft)
-
-        def resolve_json(data):
-            data['datetime'] = datetime.strptime(data['datetime'], "%Y-%m-%d %H:%M:%S.%f")
-            return data
-
         if i == 0:  # json
             try:
                 with open(filename, 'r') as fp:
-                    data = json.load(fp)
-                    self.data = list(map(resolve_json, data['data']))
+                    self.data = json.load(fp)
             except Exception as e:
                 QMessageBox.information(self, '提示', str(e))
                 return

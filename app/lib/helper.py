@@ -25,8 +25,19 @@ class Job(QObject):
         super(self.__class__, self).__init__()
 
 
+def get_history_tick():
+    try:
+        file_path = tick_path + f"/{str(G.choice_local_symbol)}.json"
+        with open(file_path, 'r') as f:
+            data = f.read()
+    except:
+        data = json.dumps({G.choice_local_symbol: []})
+    return data
+
+
 class KInterfaceObject(QObject):
     qt_to_js = Signal(str)  # channel only str  在js中connect
+    qt_to_js_reload = Signal(str)  # channel only str  在js中connect
     js_to_qt = Signal(str)
 
     def __init__(self):
@@ -35,13 +46,7 @@ class KInterfaceObject(QObject):
     @Slot(result=str)
     def get_history_data(self):
         """js通过调用此函数获取数据"""
-        try:
-            file_path = tick_path + f"/{str(G.choice_local_symbol)}.json"
-            with open(file_path, 'r') as f:
-                data = f.read()
-        except:
-            data = json.dumps({G.choice_local_symbol: []})
-        return data
+        return get_history_tick()
 
 
 class RecordWorker(QObject):

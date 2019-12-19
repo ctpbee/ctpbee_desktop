@@ -66,6 +66,9 @@ class KlineWidget(QWidget, Ui_Form):
 
     def k_line_reload(self):
         self.browser.reload()
+        # from app.lib.helper import get_history_tick
+        # data = get_history_tick()
+        # self.mainwindow.kline_job.qt_to_js_reload.emit(data)
 
     def symbol_change_slot(self):
         symbol = self.symbol_list.currentText()

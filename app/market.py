@@ -1,11 +1,10 @@
 import time
 
-from PySide2.QtCore import Slot, QTimer, Qt
+from PySide2.QtCore import Slot, QTimer, Qt, QObject, QEvent
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QListWidgetItem, QTableWidget, \
     QHeaderView, QAbstractItemView, QMenu
 from ctpbee import current_app
-
 from app.tip import TipDialog
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
@@ -51,6 +50,8 @@ class MarketWidget(QWidget, Ui_Market):
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.cellDoubleClicked.connect(self.cellDoubleClicked_slot)
+        #
+        self.tableWidget.verticalScrollBar().installEventFilter(self)
         # 渲染table
         self.obj = self.mainwindow.job
         self.obj.market_signal.connect(self.set_item_slot)
@@ -62,7 +63,6 @@ class MarketWidget(QWidget, Ui_Market):
         # 右键菜单
         self.tableWidget.setContextMenuPolicy(Qt.CustomContextMenu)  ######允许右键产生子菜单
         self.tableWidget.customContextMenuRequested.connect(self.generate_menu)  ####右键菜单
-
         # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.timer_slot)

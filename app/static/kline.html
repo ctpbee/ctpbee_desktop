@@ -26,10 +26,10 @@
 <script>
     var Data = [];
 
-    var kline = new Kline({"width": window.innerWidth-20, "height": window.innerHeight-20},);
+    var kline = new Kline({"width": window.innerWidth - 20, "height": window.innerHeight - 20},);
 
     window.onresize = () => {
-        kline.resize(window.innerWidth-20, window.innerHeight-20);
+        kline.resize(window.innerWidth - 20, window.innerHeight - 20);
     }
 
     function render() {
@@ -54,6 +54,7 @@
 
 </script>
 <script type="text/javascript">
+
     window.onload = function () {
         new QWebChannel(qt.webChannelTransport, function (channel) {
             //Get Qt interact object
@@ -72,6 +73,13 @@
                 var data = JSON.parse(str);
                 for (var i in data) {
                     Data.push(data[i])
+                }
+                render();
+            });
+            signal.qt_to_js_reload.connect(function (str) {
+                var history_json = JSON.parse(str);
+                for (var i in history_json) {
+                    Data = history_json[i]
                 }
                 render();
             })

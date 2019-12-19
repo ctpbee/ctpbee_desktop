@@ -25,19 +25,19 @@ class BacktrackrWorker(QRunnable):
         self.params = params
 
     def run(self):
-        try:
-            vessel = Vessel()
-            vessel.add_data(self.data)
-            vessel.add_strategy(self.strategy)
-            vessel.set_params({"looper": self.params,
-                               "strategy": {}
-                               })
-            vessel.run()
-            result = vessel.get_result(report=True)
-            error = ""
-        except Exception as e:
-            result = ""
-            error = str(e)
+        # try:
+        vessel = Vessel()
+        vessel.add_data(self.data)
+        vessel.add_strategy(self.strategy)
+        vessel.set_params({"looper": self.params,
+                           "strategy": {}
+                           })
+        vessel.run()
+        result = vessel.get_result(report=True)
+        error = ""
+        # except Exception as e:
+        #     result = ""
+        #     error = str(e)
         self.sig.emit({"name": self.name,
                        "url": result,
                        "error": error,
@@ -96,7 +96,7 @@ class BacktrackWidget(QWidget, Ui_Form):
         if i == 0:  # json
             try:
                 with open(filename, 'r') as fp:
-                    self.data = json.load(fp)
+                    self.data = json.load(fp)['data']
             except Exception as e:
                 QMessageBox.information(self, '提示', str(e))
                 return

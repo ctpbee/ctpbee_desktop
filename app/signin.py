@@ -24,7 +24,11 @@ class Vlog(VLogger):
         if G.mainwindow:
             G.mainwindow.job.log_signal.emit(msg)
         if G.loading:
-            G.loading.msg.setText(record['message'])
+            try:
+                msg1 = json.loads(record['message'].replace("\'", "\""))
+                G.loading.msg.setText(msg1['ErrorMsg'])
+            except Exception as e:
+                G.loading.msg.setText(record['message'])
 
 
 simnow_yd = dict(
@@ -62,7 +66,7 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.sign_in_btn_1.clicked.connect(self.common_sign_in)
         self.sign_in_btn_2.clicked.connect(self.detailed_sign_in)
         self.sign_in_btn_1.setDisabled(True)
-        self.sign_in_btn_2.setEnabled(True)
+        self.sign_in_btn_2.setDisabled(True)
         self.password_1.returnPressed.connect(self.common_sign_in)
         #
         for i in self.__dict__.values():
@@ -70,8 +74,18 @@ class SignInWidget(QWidget, Ui_SignIn):
                 i.setContextMenuPolicy(Qt.NoContextMenu)  ######不允许右键产生子菜单
 
         # 普通
-        self.userid_1.textChanged[str].connect(self.check_disable)
-        self.password_1.textChanged[str].connect(self.check_disable)
+        self.userid_1.textChanged.connect(self.check_disable)
+        self.password_1.textChanged.connect(self.check_disable)
+        #
+        self.userid_2.textChanged.connect(self.check_disable)
+        self.password_2.textChanged.connect(self.check_disable)
+        self.brokerid_2.textChanged.connect(self.check_disable)
+        self.auth_code_2.textChanged.connect(self.check_disable)
+        self.appid_2.textChanged.connect(self.check_disable)
+        self.td_address_2.textChanged.connect(self.check_disable)
+        self.td_address_2.editingFinished.connect(self.editingFinished_slot)
+        self.md_address_2.editingFinished.connect(self.editingFinished_slot)
+        self.md_address_2.textChanged.connect(self.check_disable)
         # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.close_load)
@@ -92,6 +106,26 @@ class SignInWidget(QWidget, Ui_SignIn):
                 self.sign_in_btn_1.setEnabled(True)
             else:
                 self.sign_in_btn_1.setDisabled(True)
+        if self.login_tab.currentIndex() == 1:
+            if self.userid_2.text() and \
+                    self.password_2.text() and \
+                    self.brokerid_2.text() and \
+                    self.auth_code_2.text() and \
+                    self.appid_2.text() and \
+                    self.td_address_2.text() and \
+                    self.md_address_2.text():
+                self.sign_in_btn_2.setEnabled(True)
+            else:
+                self.sign_in_btn_2.setDisabled(True)
+
+    def editingFinished_slot(self):
+        td = self.td_address_2.text()
+        md = self.md_address_2.text()
+        k = 'tcp://'
+        if not md.startswith(k):
+            self.md_address_2.setText(k + md)
+        if not td.startswith(k):
+            self.td_address_2.setText(k + td)
 
     def load_remember(self):
         path_list = os.listdir(desktop_path)

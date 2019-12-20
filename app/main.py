@@ -123,7 +123,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             TipDialog("到底啦~")
 
     def shortcut_init(self):
-        sc = G.config.shortcut
+        sc = G.config.SHORTCUT
         for name, sho in sc.items():
             if sho == '--':
                 continue
@@ -132,7 +132,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             setattr(self, f"{name}_sc", temp)
 
     def update_shortcut(self):
-        sc = G.config.shortcut
+        sc = G.config.SHORTCUT
         for name, sho in sc.items():
             getattr(self, f"{name}_sc").setKey(QKeySequence(self.tr(sho)))
 

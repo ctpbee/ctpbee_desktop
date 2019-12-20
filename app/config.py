@@ -43,20 +43,17 @@ class ConfigDialog(QDialog, Ui_Config):
         self.submit_btn.clicked.connect(self.update_config)
         self.local_btn.clicked.connect(self.local_btn_slot)
         self.exter_btn.clicked.connect(self.exter_btn_slot)
-        self.open_db_btn.clicked.connect(self.open_db_btn_slot)
-
         #
         self.init_config()
         self.init_shortcut()
+        self.init_data_source()
 
     def local_btn_slot(self):
-        self.open_db_btn.setDisabled(True)
+        G.config.LOCAL_SOURCE = True
+        G.config.to_file()
 
     def exter_btn_slot(self):
-        self.open_db_btn.setEnabled(True)
-
-    def open_db_btn_slot(self):
-        self.db_dialog = DBWidget()
+        self.db_dialog = DBWidget(self)
         self.db_dialog.show()
 
     def init_config(self):
@@ -72,7 +69,7 @@ class ConfigDialog(QDialog, Ui_Config):
         self.CLOSE_PATTERN.setCurrentText(bee_current_app.config["CLOSE_PATTERN"])
 
     def init_shortcut(self):
-        for name, sc in G.config.shortcut.items():
+        for name, sc in G.config.SHORTCUT.items():
             h_layout = QHBoxLayout()
             label = QLabel(self)
             label.setStyleSheet("font: 10pt")
@@ -82,6 +79,12 @@ class ConfigDialog(QDialog, Ui_Config):
             h_layout.addWidget(label)
             h_layout.addWidget(shortcut)
             self.sc_layout.addLayout(h_layout)
+
+    def init_data_source(self):
+        if G.config.LOCAL_SOURCE:
+            self.local_btn.setChecked(True)
+        else:
+            self.exter_btn.setChecked(True)
 
     def default_sc_slot(self):
         G.config.back_default()
@@ -139,7 +142,7 @@ class ShortCutEdit(QLineEdit):
         sp = self.text().split("+")[-1]
         if len(sp) != 1:
             self.setText("--")
-        G.config.shortcut.update({self.name: self.text()})
+        G.config.SHORTCUT.update({self.name: self.text()})
         G.config.to_file()
         self.parent_widget.mainwindow.update_shortcut()
         TipDialog("修改成功")

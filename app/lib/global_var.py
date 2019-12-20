@@ -1,6 +1,9 @@
 import json
 from app.lib.get_path import join_path, get_user_path
 from copy import deepcopy
+from cryptography.fernet import Fernet
+
+key = lambda: Fernet.generate_key()
 
 default_shortcut = {
     "home": "Ctrl+H",
@@ -24,14 +27,16 @@ class Config:
     CLOSE_PATTERN = None
     SHARED_FUNC = None
     #
-    shortcut = deepcopy(default_shortcut)  # 快捷键
+    SHORTCUT = deepcopy(default_shortcut)  # 快捷键
     #
-    strategys = {}  # 策略
+    STRATEGYS = {}  # 策略
     #
-    contract = {}  # 收藏合约
+    CONTRACT = {}  # 收藏合约
+    LOCAL_SOURCE = True  # 本地数据源
+
 
     def back_default(self):
-        self.shortcut = deepcopy(default_shortcut)
+        self.SHORTCUT = deepcopy(default_shortcut)
         self.to_file()
 
     def update(self, data: dict):
@@ -76,6 +81,8 @@ class G(dict):
     # kline
     kline_folder = "/static/kline.html"
     pool_done = False  # 对线程发送停止信号
+    #
+    db = None
 
     @staticmethod
     def signin_success(uid):

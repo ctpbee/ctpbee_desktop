@@ -30,7 +30,7 @@ class StrategyWidget(QWidget, Ui_Strategy):
         self.gen_strategy.clicked.connect(self.gen_strategy_slot)
 
     def load_strategy(self):
-        for name, path in G.config.strategys.items():
+        for name, path in G.config.STRATEGYS.items():
             if os.path.exists(path):
                 with open(path, 'r') as f:
                     try:
@@ -52,7 +52,7 @@ class StrategyWidget(QWidget, Ui_Strategy):
             try:
                 ext = dynamic_loading_api(f)
                 bee_current_app.add_extension(ext)
-                G.config.strategys.update({ext.extension_name: filename})
+                G.config.STRATEGYS.update({ext.extension_name: filename})
                 G.config.to_file()
                 TipDialog("策略添加成功")
                 self.fill_table()
@@ -127,7 +127,7 @@ class StrategyWidget(QWidget, Ui_Strategy):
         row = self.strategy_table.currentRow()
         name = self.strategy_table.item(row, strategy_table_column.index('name')).text()
         bee_current_app.del_extension(name)
-        G.config.strategys.pop(name)
+        G.config.STRATEGYS.pop(name)
         G.config.to_file()
         TipDialog("删除成功")
         self.fill_table()

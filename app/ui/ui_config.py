@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Thu Dec 19 10:25:56 2019
+# Created: Fri Dec 20 20:42:20 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -200,11 +200,6 @@ class Ui_Config(object):
         self.local_btn.setChecked(True)
         self.local_btn.setObjectName("local_btn")
         self.gridLayout.addWidget(self.local_btn, 1, 0, 1, 1)
-        self.open_db_btn = QtWidgets.QPushButton(self.history_data_tab)
-        self.open_db_btn.setObjectName("open_db_btn")
-        self.gridLayout.addWidget(self.open_db_btn, 2, 1, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem1, 3, 1, 1, 1)
         self.tabWidget.addTab(self.history_data_tab, "")
         self.verticalLayout_2.addWidget(self.tabWidget)
 
@@ -230,7 +225,6 @@ class Ui_Config(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.short_tab), QtWidgets.QApplication.translate("Config", "快捷键", None, -1))
         self.exter_btn.setText(QtWidgets.QApplication.translate("Config", "接入外部数据", None, -1))
         self.local_btn.setText(QtWidgets.QApplication.translate("Config", "本地数据", None, -1))
-        self.open_db_btn.setText(QtWidgets.QApplication.translate("Config", "open", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.history_data_tab), QtWidgets.QApplication.translate("Config", "历史数据源", None, -1))
 
 import app.resource.mainwindow_rc

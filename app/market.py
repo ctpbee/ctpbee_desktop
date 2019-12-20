@@ -68,7 +68,7 @@ class MarketWidget(QWidget, Ui_Market):
     def ready_action(self):
         for local_symbol in sorted(G.all_contracts):
             self.symbol_list.addItem(local_symbol + contract_space + G.all_contracts[local_symbol])  # 添加下拉框
-        for i in G.config.contract:
+        for i in G.config.CONTRACT:
             res = current_app.subscribe(i)
             if res == 0:
                 G.subscribes.update({i: G.all_contracts[i]})
@@ -80,13 +80,13 @@ class MarketWidget(QWidget, Ui_Market):
         if row_num < 0:
             menu = QMenu()
             start_menu = menu.addMenu("我的收藏")
-            for k, v in G.config.contract.items():
+            for k, v in G.config.CONTRACT.items():
                 start_menu.addAction(' '.join([k, v]))
             else:
                 star = start_menu.addAction("一键订阅")
             action = menu.exec_(self.tableWidget.mapToGlobal(pos))
             if action == star:
-                for i in G.config.contract:
+                for i in G.config.CONTRACT:
                     res = current_app.subscribe(i)
                     if res == 0:
                         G.subscribes.update({i: G.all_contracts[i]})
@@ -95,14 +95,14 @@ class MarketWidget(QWidget, Ui_Market):
             local_symbol = self.tableWidget.item(row_num, market_table_column.index('local_symbol')).text()
             menu = QMenu()
             cancel_item = menu.addAction("取消订阅")
-            if local_symbol in G.config.contract:
+            if local_symbol in G.config.CONTRACT:
                 del_item = menu.addAction("取消收藏")
                 inx = True
             else:
                 add_item = menu.addAction("加入收藏")
                 inx = False
             star_menu = menu.addMenu("我的收藏")
-            for k, v in G.config.contract.items():
+            for k, v in G.config.CONTRACT.items():
                 star_menu.addAction(' '.join([k, v]))
             action = menu.exec_(self.tableWidget.mapToGlobal(pos))
             ####
@@ -116,10 +116,10 @@ class MarketWidget(QWidget, Ui_Market):
                     self.tableWidget.removeRow(row_num)
                     self.item_row -= 1
             elif not inx and action == add_item:
-                G.config.contract.update({local_symbol: name})
+                G.config.CONTRACT.update({local_symbol: name})
                 G.config.to_file()
             elif inx and action == del_item:
-                G.config.contract.pop(local_symbol)
+                G.config.CONTRACT.pop(local_symbol)
                 G.config.to_file()
 
     @Slot()

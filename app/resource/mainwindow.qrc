@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="menu">
+    <file>icon/quit.png</file>
     <file>icon/下单.png</file>
     <file>images/bee_temp_grey.png</file>
     <file>icon/业务介绍-一键下单.png</file>

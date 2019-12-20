@@ -1,1 +1,1 @@
-# pyrcc5 -o img_rc.py signin.qrc
+# pyside2-rcc -o img_rc.py signin.qrc

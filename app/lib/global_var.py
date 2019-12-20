@@ -1,7 +1,5 @@
 import json
-import os
-from queue import Queue
-from app.lib.get_path import config_path
+from app.lib.get_path import join_path, get_user_path
 from copy import deepcopy
 
 default_shortcut = {
@@ -26,24 +24,15 @@ class Config:
     CLOSE_PATTERN = None
     SHARED_FUNC = None
     #
-    shortcut = deepcopy(default_shortcut)
+    shortcut = deepcopy(default_shortcut)  # 快捷键
     #
-    strategys = {}
+    strategys = {}  # 策略
+    #
+    contract = {}  # 收藏合约
 
     def back_default(self):
         self.shortcut = deepcopy(default_shortcut)
         self.to_file()
-
-    def __init__(self):
-        self.path = config_path
-        with open(config_path, 'r')as f:
-            data = f.read()
-            try:
-                cfg = json.loads(data)
-                if isinstance(cfg, dict):
-                    self.update(cfg)
-            except Exception:
-                pass
 
     def update(self, data: dict):
         for k, v in data.items():
@@ -59,35 +48,47 @@ class Config:
         return pr
 
     def to_file(self):
-        with open(self.path, 'w')as f:
+        with open(G.config_path, 'w')as f:
             json.dump(self.to_dict(), f)
 
 
 class G(dict):
-    mainwindow = None
-    user_path = None
+    mainwindow = None  # 主窗口
     #
-    current_page = None
+    current_page = None  # 主窗口显示的当前页面index
     #
-    config = Config()
+    config = Config()  # 用户配置
     # log
-    log_history = []
+    log_history = []  # 历史日志
     # market
-    all_contracts = {}
-    subscribes = {}
-    market_tick = {}
-    market_tick_row_map = []  # [ [] ,[] ,[] , []]
+    all_contracts = {}  # 所有合约
+    subscribes = {}  # 订阅合约
+    market_tick_row_map = []  # 合约对应表格 row
     # account
-    current_account = None
-    account = {}
-    account_row_map = []
+    current_account = None  # 当前账户
+    user_path = None  # 当前账户路径
+    config_path = None  # 当前账户配置路径
+    account = {}  # 账户信息
+    account_row_map = []  # 账户对应表格 row
     # order
-    choice_local_symbol = None
-    order_tick_row_map = []  # with market_tick ={}
-    order_position_row_map = []
-
+    choice_local_symbol = None  # 选择的合约，用于k线选择读取哪个合约数据
+    order_tick_row_map = []  # 下单界面tick对应表格row
     # kline
     kline_folder = "/static/kline.html"
-    pool_done = False
-    #
-    db = None
+    pool_done = False  # 对线程发送停止信号
+
+    @staticmethod
+    def signin_success(uid):
+        G.current_account = uid
+        G.user_path = get_user_path(uid)
+        G.config_path = join_path(G.user_path, '.config.json')
+
+        try:
+            with open(G.config_path, 'r')as f:
+                data = f.read()
+                cfg = json.loads(data)
+                if isinstance(cfg, dict):
+                    G.config.update(cfg)
+        except Exception:
+            with open(G.config_path, 'w'):
+                pass

@@ -238,7 +238,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.market_msg.setText(f"最新行情：{tick.name}   {tick.last_price}")
         tick = tick._to_dict()
         local_symbol = tick['local_symbol']
-        G.market_tick[local_symbol] = tick
         if G.current_page == "market":
             self.job.market_signal.emit(tick)
         self.job.order_tick_signal.emit(tick)

@@ -180,8 +180,7 @@ class SignInWidget(QWidget, Ui_SignIn):
                 bee_app.trader and \
                 bee_app.td_login_status:
             ##
-            G.current_account = info['userid']
-            G.user_path = get_user_path(G.current_account)
+            G.signin_success(info['userid'])
             ##
             self.load_config()
             ###
@@ -232,7 +231,7 @@ class SignInWidget(QWidget, Ui_SignIn):
         )
         if self.sign_in(info):
             if self.rember_me.isChecked():
-                account_path = os.path.join(get_user_path(G.current_account), f".account.json")
+                account_path = os.path.join(G.user_path, f".account.json")
                 with open(account_path, 'w') as f:
                     account = deepcopy(info)
                     account.pop('password')

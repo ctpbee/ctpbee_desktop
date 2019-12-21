@@ -56,15 +56,14 @@ class SignInWidget(QWidget, Ui_SignIn):
         super(SignInWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
-        self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
+        # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
         self.setStyleSheet(qss)
         # tab
         self.setTabOrder(self.userid_sim, self.password_sim)
         self.setTabOrder(self.password_sim, self.interface_sim)
         self.setTabOrder(self.interface_sim, self.other)
         self.setTabOrder(self.other, self.remember_me)
-        self.setTabOrder(self.remember_me, self.auto_login_sim)
-        self.setTabOrder(self.auto_login_sim, self.sign_in_btn_sim)
+        self.setTabOrder(self.remember_me, self.sign_in_btn_sim)
         #
         self.setTabOrder(self.userid, self.password)
         self.setTabOrder(self.password, self.brokerid)
@@ -76,11 +75,8 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.setTabOrder(self.interface_, self.remember_me)
         self.setTabOrder(self.remember_me, self.sign_in_btn)
         #
-        self.close_btn.clicked.connect(self.close)
-        self.min_btn.clicked.connect(self.showMinimized)
         self.sign_in_btn_sim.clicked.connect(self.common_sign_in)
         self.sign_in_btn.clicked.connect(self.detailed_sign_in)
-        self.auto_login_sim.stateChanged.connect(self.auto_login_sim_slot)
         self.sign_in_btn_sim.setDisabled(True)
         self.sign_in_btn.setDisabled(True)
         self.password_sim.returnPressed.connect(self.common_sign_in)
@@ -105,6 +101,7 @@ class SignInWidget(QWidget, Ui_SignIn):
         # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.close_load)
+        self.load_remember()
 
     def submask(self):
         self.bmp = QBitmap(self.size())
@@ -139,13 +136,9 @@ class SignInWidget(QWidget, Ui_SignIn):
         md = self.md_address.currentText()
         k = 'tcp://'
         if not md.startswith(k):
-            self.md_address.setText(k + md)
+            self.md_address.setCurrentText(k + md)
         if not td.startswith(k):
-            self.td_address.setText(k + td)
-
-    def auto_login_sim_slot(self):
-        if self.auto_login_sim.isChecked():
-            self.remember_me_sim.setChecked(True)
+            self.td_address.setCurrentText(k + td)
 
     def load_remember(self):
 
@@ -173,16 +166,13 @@ class SignInWidget(QWidget, Ui_SignIn):
                 self.appid.addItem(info.get('appid'))
                 self.td_address.addItem(info.get('td_address'))
                 self.md_address.addItem(info.get('md_address'))
-                self.interface_2.addItem(info.get('interface'))
+                self.interface_.addItem(info.get('interface'))
             path = join_path(desktop_path, i, '.sim.json')
             if os.path.exists(path):
                 info = get_account(path)
                 self.userid_sim.addItem(info.get('userid'))
                 self.password_sim.setText(info.get('password'))
                 self.remember_me_sim.setChecked(True)
-                if info.get('auto_login'):
-                    self.auto_login_sim.setChecked(True)
-                    self.common_sign_in()
 
     def load_config(self):
         for k, v in G.config.to_dict().items():
@@ -240,7 +230,6 @@ class SignInWidget(QWidget, Ui_SignIn):
             if self.remember_me_sim.isChecked():
                 account_path = os.path.join(G.user_path, ".sim.json")
                 with open(account_path, 'w') as f:
-                    info.update({"auto_login": True if self.auto_login_sim.isChecked() else False})
                     json.dump(info, f)
         else:
             if which_ == 'simnow24小时':
@@ -266,7 +255,7 @@ class SignInWidget(QWidget, Ui_SignIn):
             product_info="",
             appid=self.appid.currentText(),
             auth_code=self.auth_code.currentText(),
-            interface=self.interface_2.currentText(),
+            interface=self.interface_.currentText(),
         )
         if self.sign_in(info):
             if self.remember_me.isChecked():
@@ -288,21 +277,21 @@ class SignInWidget(QWidget, Ui_SignIn):
                 pass
         event.accept()
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self.m_flag = True
-            self.r_flag = False
-            self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
-            event.accept()
-
-    def mouseReleaseEvent(self, event):
-        self.r_flag = True
-        event.accept()
-
-    def mouseMoveEvent(self, QMouseEvent):
-        try:
-            if Qt.LeftButton and self.m_flag and not self.r_flag:
-                self.move(QMouseEvent.globalPos() - self.m_Position)  # 更改窗口位置
-                QMouseEvent.accept()
-        except:
-            pass
+    # def mousePressEvent(self, event):
+    #     if event.button() == Qt.LeftButton:
+    #         self.m_flag = True
+    #         self.r_flag = False
+    #         self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
+    #         event.accept()
+    #
+    # def mouseReleaseEvent(self, event):
+    #     self.r_flag = True
+    #     event.accept()
+    #
+    # def mouseMoveEvent(self, QMouseEvent):
+    #     try:
+    #         if Qt.LeftButton and self.m_flag and not self.r_flag:
+    #             self.move(QMouseEvent.globalPos() - self.m_Position)  # 更改窗口位置
+    #             QMouseEvent.accept()
+    #     except:
+    #         pass

@@ -115,13 +115,17 @@ Mongo</string>
     <widget class="QLineEdit" name="user"/>
    </item>
    <item row="3" column="1">
-    <widget class="QLineEdit" name="password"/>
+    <widget class="QLineEdit" name="password">
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
    </item>
    <item row="4" column="1">
     <widget class="QLineEdit" name="database"/>
    </item>
    <item row="5" column="1" colspan="3">
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="url">
      <property name="placeholderText">
       <string>mongodb://user:password@host:port/</string>
      </property>

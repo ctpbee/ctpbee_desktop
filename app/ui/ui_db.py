@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'db.ui',
 # licensing of 'db.ui' applies.
 #
-# Created: Fri Dec 20 21:33:48 2019
+# Created: Sat Dec 21 16:59:29 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -61,14 +61,15 @@ class Ui_DataBase(object):
         self.user.setObjectName("user")
         self.gridLayout.addWidget(self.user, 1, 1, 1, 1)
         self.password = QtWidgets.QLineEdit(DataBase)
+        self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password.setObjectName("password")
         self.gridLayout.addWidget(self.password, 3, 1, 1, 1)
         self.database = QtWidgets.QLineEdit(DataBase)
         self.database.setObjectName("database")
         self.gridLayout.addWidget(self.database, 4, 1, 1, 1)
-        self.lineEdit = QtWidgets.QLineEdit(DataBase)
-        self.lineEdit.setObjectName("lineEdit")
-        self.gridLayout.addWidget(self.lineEdit, 5, 1, 1, 3)
+        self.url = QtWidgets.QLineEdit(DataBase)
+        self.url.setObjectName("url")
+        self.gridLayout.addWidget(self.url, 5, 1, 1, 3)
 
         self.retranslateUi(DataBase)
         QtCore.QMetaObject.connectSlotsByName(DataBase)
@@ -94,5 +95,5 @@ class Ui_DataBase(object):
 "Port", None, -1))
         self.label_7.setText(QtWidgets.QApplication.translate("DataBase", "URL\n"
 "Mongo", None, -1))
-        self.lineEdit.setPlaceholderText(QtWidgets.QApplication.translate("DataBase", "mongodb://user:password@host:port/", None, -1))
+        self.url.setPlaceholderText(QtWidgets.QApplication.translate("DataBase", "mongodb://user:password@host:port/", None, -1))
 

@@ -26,25 +26,30 @@ class DBWidget(QDialog, Ui_DataBase):
         self.close_btn.clicked.connect(self.close)
         self.host.setText('localhost')
         self.port.setText('27017')
+        self.url.setPlaceholderText("mongodb://[user:password@]host:port/database")
 
     def textChanged_slot(self):
         host = self.host.text()
         port = self.port.text()
-        self.url_edit.setText(f"mongodb://{host}:{port}/")
+        user = self.user.text()
+        password = self.password.text()
+        database = self.database.text()
+        userpwd = ''
+        if user and password:
+            userpwd = f"{user}:{'*' * len(password)}@"
+        self.url.setText(f"mongodb://{userpwd}{host}:{port}/{database}")
 
     def test_btn_slot(self):
         self.test_btn.setText('connecting...')
         QApplication.processEvents()
-        user = self.user.text()
         password = self.password.text()
-        database = self.database.text()
         try:
-            client = MongoClient(self.url_edit.text(), serverSelectionTimeoutMS=3000,
+            url = self.url.text().replace("*" * len(password), password)
+            client = MongoClient(url, serverSelectionTimeoutMS=3000,
                                  socketTimeoutMS=3000)
-            self.db = client[database]
-            if user and password:
-                self.db.authenticate(user, password)
-            print(self.db.list_collection_names())
+            print(client.list_database_names())
+            db = client[self.database.text()]
+            print(db.list_collection_names())
             self.check_res = True
             QMessageBox.information(self, '提示', 'connect success!', QMessageBox.Ok, QMessageBox.Ok)
         except Exception as e:
@@ -59,11 +64,11 @@ class DBWidget(QDialog, Ui_DataBase):
             G.db = self.db
             G.config.LOCAL_SOURCE = False
             G.config.to_file()
-            self.config_widget.init_data_source()
+            # self.config_widget.init_data_source()
             self.close()
 
     def closeEvent(self, arg__1):
-        self.config_widget.init_data_source()
+        # self.config_widget.init_data_source()
         arg__1.accept()
 
 

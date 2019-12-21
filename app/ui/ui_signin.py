@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'signin.ui',
 # licensing of 'signin.ui' applies.
 #
-# Created: Sat Dec 21 12:42:55 2019
+# Created: Sat Dec 21 17:17:35 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,6 +40,9 @@ class Ui_SignIn(object):
         font.setPointSize(8)
         self.login_tab.setFont(font)
         self.login_tab.setStyleSheet("")
+        self.login_tab.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.login_tab.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.login_tab.setLineWidth(0)
         self.login_tab.setObjectName("login_tab")
         self.login_tabPage1 = QtWidgets.QWidget()
         self.login_tabPage1.setGeometry(QtCore.QRect(0, 0, 272, 161))
@@ -281,6 +284,8 @@ class Ui_SignIn(object):
         self.verticalLayout_3.addWidget(self.login_tab)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
         self.sign_in_btn = QtWidgets.QPushButton(SignIn)
         self.sign_in_btn.setEnabled(True)
         self.sign_in_btn.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -292,6 +297,8 @@ class Ui_SignIn(object):
         self.sign_in_btn.setFont(font)
         self.sign_in_btn.setObjectName("sign_in_btn")
         self.horizontalLayout.addWidget(self.sign_in_btn)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
 
         self.retranslateUi(SignIn)

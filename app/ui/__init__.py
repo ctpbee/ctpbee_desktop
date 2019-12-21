@@ -103,8 +103,8 @@ QPushButton,QToolButton{
     border-radius:2px;
     padding:5px;
 }
-QPushButton:disabled{
-    background:#2B2B2B;
+QPushButton:disabled,QToolButton:disabled{
+    background:#3C3F41;
     color:#b6b6b6;
     border-radius:2px;
 }
@@ -177,21 +177,21 @@ QProgressBar::chunk {
 }
 
 
-QToolBox::pane{
+QTabWidget::pane,QToolBox::pane{
     border:none;
 }
 
-QToolBox::tab {
+QTabBar::tab,QToolBox::tab {
      border:1px solid #1b89ca;
      border-radius:2px; 
      margin-right:5px;
      min-width: 100px;
      padding: 2px;
  }
-QToolBox::tab:selected{
+QTabBar::tab:selected,QToolBox::tab:selected{
     background:#1b89ca;
 }
-QToolBox::tab:!selected{
+QTabBar::tab:！selected,QToolBox::tab:!selected{
     margin-top:5px;
 }
 

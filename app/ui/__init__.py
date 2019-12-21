@@ -177,22 +177,21 @@ QProgressBar::chunk {
 }
 
 
-QTabWidget::pane{
+QToolBox::pane{
     border:none;
 }
 
-QTabBar::tab {
-     font:10pt;
+QToolBox::tab {
      border:1px solid #1b89ca;
      border-radius:2px; 
      margin-right:5px;
      min-width: 100px;
      padding: 2px;
  }
-QTabBar::tab:selected{
+QToolBox::tab:selected{
     background:#1b89ca;
 }
-QTabBar::tab:!selected{
+QToolBox::tab:!selected{
     margin-top:5px;
 }
 

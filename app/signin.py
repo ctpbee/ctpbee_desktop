@@ -57,13 +57,13 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
         # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
+        self.setWindowFlags(Qt.WindowCloseButtonHint)
         self.setStyleSheet(qss)
         # tab
         self.setTabOrder(self.userid_sim, self.password_sim)
         self.setTabOrder(self.password_sim, self.interface_sim)
         self.setTabOrder(self.interface_sim, self.other)
         self.setTabOrder(self.other, self.remember_me)
-        self.setTabOrder(self.remember_me, self.sign_in_btn_sim)
         #
         self.setTabOrder(self.userid, self.password)
         self.setTabOrder(self.password, self.brokerid)
@@ -75,16 +75,13 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.setTabOrder(self.interface_, self.remember_me)
         self.setTabOrder(self.remember_me, self.sign_in_btn)
         #
-        self.sign_in_btn_sim.clicked.connect(self.common_sign_in)
-        self.sign_in_btn.clicked.connect(self.detailed_sign_in)
-        self.sign_in_btn_sim.setDisabled(True)
+        self.sign_in_btn.clicked.connect(self.sign_in_slot)
         self.sign_in_btn.setDisabled(True)
-        self.password_sim.returnPressed.connect(self.common_sign_in)
         #
         for i in self.__dict__.values():
             if isinstance(i, QLineEdit):
                 i.setContextMenuPolicy(Qt.NoContextMenu)  ######不允许右键产生子菜单
-
+        self.login_tab.currentChanged.connect(self.check_disable)
         # 普通
         self.userid_sim.currentTextChanged.connect(self.check_disable)
         self.password_sim.textChanged.connect(self.check_disable)
@@ -116,9 +113,9 @@ class SignInWidget(QWidget, Ui_SignIn):
     def check_disable(self):
         if self.login_tab.currentIndex() == 0:
             if self.userid_sim.currentText() and self.password_sim.text():
-                self.sign_in_btn_sim.setEnabled(True)
+                self.sign_in_btn.setEnabled(True)
             else:
-                self.sign_in_btn_sim.setDisabled(True)
+                self.sign_in_btn.setDisabled(True)
         if self.login_tab.currentIndex() == 1:
             if self.userid.currentText() and \
                     self.password.text() and \
@@ -214,6 +211,12 @@ class SignInWidget(QWidget, Ui_SignIn):
             return True
         else:
             return False
+
+    def sign_in_slot(self):
+        if self.login_tab.currentIndex() == 0:
+            self.common_sign_in()
+        elif self.login_tab.currentIndex() == 1:
+            self.detailed_sign_in()
 
     def common_sign_in(self):
         info = dict(

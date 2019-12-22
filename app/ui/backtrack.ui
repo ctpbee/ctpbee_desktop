@@ -6,242 +6,283 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>906</width>
-    <height>548</height>
+    <width>723</width>
+    <height>492</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,0">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTableWidget" name="tableWidget">
-     <column>
-      <property name="text">
-       <string>回测结果</string>
-      </property>
-     </column>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tabWidgetPage1" native="true">
+      <attribute name="title">
+       <string>参数</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="initial_capital_label">
+         <property name="text">
+          <string>initial_capital</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="initial_capital">
+         <property name="text">
+          <string>100000</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="deal_pattern_label">
+         <property name="text">
+          <string>deal_pattern</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QComboBox" name="deal_pattern">
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>price</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="commission_label">
+         <property name="text">
+          <string>commission</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="commission">
+         <property name="text">
+          <string>0.005</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="close_pattern_label">
+         <property name="text">
+          <string>close_pattern</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QComboBox" name="close_pattern">
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>yesterday</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="close_commission_label">
+         <property name="text">
+          <string>close_commission</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="close_commission">
+         <property name="text">
+          <string>0.005</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="slippage_sell_label">
+         <property name="text">
+          <string>slippage_sell</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QLineEdit" name="slippage_sell">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="today_commission_label">
+         <property name="text">
+          <string>today_commission</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="today_commission">
+         <property name="text">
+          <string>0.005</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLabel" name="slippage_cover_label">
+         <property name="text">
+          <string>slippage_cover</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3">
+        <widget class="QLineEdit" name="slippage_cover">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="yesterday_commission_label">
+         <property name="text">
+          <string>yesterday_commission</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="yesterday_commission">
+         <property name="text">
+          <string>0.002</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QLabel" name="slippage_buy_label">
+         <property name="text">
+          <string>slippage_buy</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="3">
+        <widget class="QLineEdit" name="slippage_buy">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QLabel" name="slippage_short_label">
+         <property name="text">
+          <string>slippage_short</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="3">
+        <widget class="QLineEdit" name="slippage_short">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabWidgetPage2" native="true">
+      <attribute name="title">
+       <string>api</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="add_data_btn">
+         <property name="text">
+          <string>添加数据</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="add_backtrack_btn">
+         <property name="text">
+          <string>回测API</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,1,0">
+         <item>
+          <widget class="QComboBox" name="local_symbol_box">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="size_map"/>
+         </item>
+         <item>
+          <widget class="QToolButton" name="add_sm_btn">
+           <property name="text">
+            <string>↓</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="1" rowspan="2">
+        <widget class="QListWidget" name="data_list"/>
+       </item>
+       <item row="3" column="2" rowspan="2">
+        <widget class="QListWidget" name="backtrack_list"/>
+       </item>
+       <item row="3" column="0" rowspan="2">
+        <widget class="QTableWidget" name="size_map_table">
+         <column>
+          <property name="text">
+           <string>local_symbol</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>size_map</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabWidgetPage3" native="true">
+      <attribute name="title">
+       <string>报告</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTableWidget" name="tableWidget">
+         <column>
+          <property name="text">
+           <string>-</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout" columnstretch="3,3,3,3">
-     <property name="spacing">
-      <number>10</number>
+    <widget class="QPushButton" name="run_btn">
+     <property name="text">
+      <string>🚀 开始回测</string>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="initial_capital_label">
-       <property name="text">
-        <string>initial_capital</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSpinBox" name="size_map">
-       <property name="value">
-        <number>15</number>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="commission">
-       <property name="text">
-        <string>0.005</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="today_commission_label">
-       <property name="text">
-        <string>today_commission</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="0">
-      <widget class="QPushButton" name="add_data_btn">
-       <property name="text">
-        <string>添加数据</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0">
-      <widget class="QPushButton" name="add_backtrack_btn">
-       <property name="text">
-        <string>回测API</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="3">
-      <widget class="QSpinBox" name="slippage_sell"/>
-     </item>
-     <item row="6" column="3">
-      <widget class="QSpinBox" name="slippage_short"/>
-     </item>
-     <item row="6" column="2">
-      <widget class="QLabel" name="slippage_short_label">
-       <property name="text">
-        <string>slippage_short</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="size_map_label">
-       <property name="text">
-        <string>size_map</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="yesterday_commission_label">
-       <property name="text">
-        <string>yesterday_commission</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QLabel" name="slippage_sell_label">
-       <property name="text">
-        <string>slippage_sell</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="close_commission">
-       <property name="text">
-        <string>0.005</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="3">
-      <widget class="QSpinBox" name="slippage_buy"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="close_commission_label">
-       <property name="text">
-        <string>close_commission</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="2">
-      <widget class="QLabel" name="slippage_buy_label">
-       <property name="text">
-        <string>slippage_buy</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QComboBox" name="deal_pattern">
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-       <item>
-        <property name="text">
-         <string>price</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="today_commission">
-       <property name="text">
-        <string>0.005</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QComboBox" name="close_pattern">
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-       <item>
-        <property name="text">
-         <string>yesterday</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QLineEdit" name="yesterday_commission">
-       <property name="text">
-        <string>0.002</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="deal_pattern_label">
-       <property name="text">
-        <string>deal_pattern</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="commission_label">
-       <property name="text">
-        <string>commission</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSpinBox" name="initial_capital">
-       <property name="maximum">
-        <number>999999999</number>
-       </property>
-       <property name="value">
-        <number>100000</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLabel" name="close_pattern_label">
-       <property name="text">
-        <string>close_pattern</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QLabel" name="slippage_cover_label">
-       <property name="text">
-        <string>slippage_cover</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="3">
-      <widget class="QSpinBox" name="slippage_cover"/>
-     </item>
-     <item row="7" column="1" colspan="3">
-      <widget class="QLabel" name="data_label">
-       <property name="text">
-        <string>空</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="1" colspan="3">
-      <widget class="QLabel" name="backtrack_label">
-       <property name="text">
-        <string>空</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="2" colspan="2">
-      <widget class="QPushButton" name="run_btn">
-       <property name="text">
-        <string>🚀 Run</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="0">
-      <widget class="QComboBox" name="local_symbol_box">
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>

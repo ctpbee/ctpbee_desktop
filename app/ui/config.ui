@@ -24,7 +24,7 @@
   </property>
   <property name="font">
    <font>
-    <pointsize>13</pointsize>
+    <pointsize>9</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -39,7 +39,7 @@
     <widget class="QTabWidget" name="tabWidget">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="focusPolicy">
@@ -77,11 +77,12 @@
           <widget class="QLabel" name="label">
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>REFRESH_INTERVAL/定时刷新秒数</string>
+            <string>定时刷新秒数
+REFRESH_INTERVAL</string>
            </property>
           </widget>
          </item>
@@ -95,7 +96,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
           </widget>
@@ -104,11 +105,12 @@
           <widget class="QLabel" name="label_2">
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>INSTRUMENT_INDEPEND/是否开启独立行情</string>
+            <string>是否开启独立行情
+INSTRUMENT_INDEPEND</string>
            </property>
           </widget>
          </item>
@@ -116,7 +118,7 @@
           <widget class="QCheckBox" name="INSTRUMENT_INDEPEND">
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
@@ -128,11 +130,12 @@
           <widget class="QLabel" name="label_3">
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>SLIPPAGE_SHORT/卖空滑点</string>
+            <string>卖空滑点
+SLIPPAGE_SHORT</string>
            </property>
           </widget>
          </item>
@@ -146,7 +149,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="minimum">
@@ -161,11 +164,12 @@
           <widget class="QLabel" name="label_4">
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>SLIPPAGE_BUY/买多滑点</string>
+            <string>买多滑点
+SLIPPAGE_BUY</string>
            </property>
           </widget>
          </item>
@@ -179,7 +183,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="minimum">
@@ -194,11 +198,12 @@
           <widget class="QLabel" name="label_5">
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>SLIPPAGE_COVER/平多头滑点</string>
+            <string>平多头滑点
+SLIPPAGE_COVER</string>
            </property>
           </widget>
          </item>
@@ -212,7 +217,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="minimum">
@@ -227,11 +232,12 @@
           <widget class="QLabel" name="label_6">
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>SLIPPAGE_SELL/平空头滑点</string>
+            <string>平空头滑点
+SLIPPAGE_SELL</string>
            </property>
           </widget>
          </item>
@@ -245,7 +251,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="minimum">
@@ -260,11 +266,12 @@
           <widget class="QLabel" name="label_7">
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>CLOSE_PATTERN/指定优先平今或者平昨</string>
+            <string>指定优先平今或者平昨
+CLOSE_PATTERN</string>
            </property>
           </widget>
          </item>
@@ -278,7 +285,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <item>
@@ -297,19 +304,7 @@
           <widget class="QLabel" name="label_8">
            <property name="font">
             <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>SHARED_FUNC/分时图数据</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="1">
-          <widget class="QCheckBox" name="SHARED_FUNC">
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
+             <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">

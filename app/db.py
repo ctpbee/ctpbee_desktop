@@ -64,11 +64,10 @@ class DBWidget(QDialog, Ui_DataBase):
             G.db = self.db
             G.config.LOCAL_SOURCE = False
             G.config.to_file()
-            # self.config_widget.init_data_source()
             self.close()
 
     def closeEvent(self, arg__1):
-        # self.config_widget.init_data_source()
+        self.config_widget.init_data_source()
         arg__1.accept()
 
 

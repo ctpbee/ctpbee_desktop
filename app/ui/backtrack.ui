@@ -19,7 +19,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tabWidgetPage1" native="true">
+     <widget class="QWidget" name="tabWidgetPage1">
       <attribute name="title">
        <string>参数</string>
       </attribute>
@@ -190,7 +190,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabWidgetPage2" native="true">
+     <widget class="QWidget" name="tabWidgetPage2">
       <attribute name="title">
        <string>api</string>
       </attribute>
@@ -210,23 +210,13 @@
         </widget>
        </item>
        <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,1,0">
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
          <item>
           <widget class="QComboBox" name="local_symbol_box">
            <property name="editable">
             <bool>true</bool>
            </property>
           </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>+</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="size_map"/>
          </item>
          <item>
           <widget class="QToolButton" name="add_sm_btn">
@@ -259,7 +249,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabWidgetPage3" native="true">
+     <widget class="QWidget" name="tabWidgetPage3">
       <attribute name="title">
        <string>报告</string>
       </attribute>

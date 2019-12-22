@@ -4,8 +4,8 @@ import webbrowser
 from datetime import datetime
 
 import pandas
-from PySide2.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot, QRegExp, Qt
-from PySide2.QtGui import QRegExpValidator
+from PySide2.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot, QRegExp, Qt, QUrl
+from PySide2.QtGui import QRegExpValidator, QDesktopServices
 from PySide2.QtWidgets import QWidget, QFileDialog, QMessageBox, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, \
     QHeaderView, QTableWidgetItem, QMenu
 
@@ -95,7 +95,7 @@ class BacktrackWidget(QWidget, Ui_Form):
         self.counter = 1
         self.table_index = 0
         self.name = None
-        self.sm_pool = dict()
+        self.sm_pool = set()
         #
 
     def init_ui(self):
@@ -105,27 +105,25 @@ class BacktrackWidget(QWidget, Ui_Form):
 
     def add_data_slot(self):
         filetypes = ["Text files(*.json)", "Text files(*.csv)"]
-        filename, ft = QFileDialog.getOpenFileName(self, '选择数据文件', '', ";;".join(filetypes))
+        filename, ft = QFileDialog.getOpenFileName(self, '选择数据文件', '/', ";;".join(filetypes))
         if not filename:
             return
         self.data_list.addItem(filename)
 
     def add_backtrack_slot(self):
-        filename, _ = QFileDialog.getOpenFileName(self, '选择回测API', '', 'Python files(*.py)')
+        filename, _ = QFileDialog.getOpenFileName(self, '选择回测API', '/', 'Python files(*.py)')
         if not filename:
             return
         self.backtrack_list.addItem(filename)
 
     def add_sm_slot(self):
         local_symbol = self.local_symbol_box.currentText()
-        sm = self.size_map.text()
-        lst = self.sm_pool.setdefault(local_symbol, [])
-        if sm in lst:
+        if local_symbol in self.sm_pool:
             return
-        lst.append(sm)
+        self.sm_pool.add(local_symbol)
         self.size_map_table.insertRow(0)
         self.size_map_table.setItem(0, 0, QTableWidgetItem(local_symbol))
-        self.size_map_table.setItem(0, 1, QTableWidgetItem(sm))
+        self.size_map_table.setItem(0, 1, QTableWidgetItem('0'))
 
     def get_params(self):
         s_m = {self.size_map_table.item(i, 0).text(): int(self.size_map_table.item(i, 1).text()) for i in
@@ -152,12 +150,20 @@ class BacktrackWidget(QWidget, Ui_Form):
             suffix = os.path.splitext(path)[-1]
             if suffix == '.json':  # json
                 with open(path, 'r') as fp:
-                    data.append(json.load(fp)['data'])
+                    raw = json.load(fp)['data']
+                local_symbol = raw[0].get('local_symbol')
             elif suffix == '.csv':  # csv
                 with open(path, 'r') as fp:
-                    data.append(pandas.read_csv(fp))
+                    raw = pandas.read_csv(fp)
+                raw = raw.to_dict(orient='index')
+                local_symbol = raw.get('local_symbol')
             else:
                 raise Exception(f"未知文件类型\n{path}")
+            if not local_symbol:
+                raise KeyError(f'未包含local_symbol\n{path}')
+            if local_symbol not in self.sm_pool:
+                raise Exception(f"size_map未包含{local_symbol},而data文件中含有")
+            data.append(raw)
         return data
 
     def get_ext(self):
@@ -230,7 +236,7 @@ class BacktrackWidget(QWidget, Ui_Form):
             return
         menu = QMenu()
         del_item = menu.addAction("移除")
-        delall_item = menu.addAction("❌移除所有")
+        delall_item = menu.addAction("移除所有")
         action = menu.exec_(self.size_map_table.mapToGlobal(pos))
         if action == del_item:
             local_symbol = self.size_map_table.item(row_num, 0).text()
@@ -247,13 +253,16 @@ class BacktrackWidget(QWidget, Ui_Form):
         if row_num < 0:
             return
         menu = QMenu()
+        open_item = menu.addAction("打开文件所在位置")
         del_item = menu.addAction("移除")
-        delall_item = menu.addAction("❌移除所有")
+        delall_item = menu.addAction("移除所有")
         action = menu.exec_(self.data_list.mapToGlobal(pos))
         if action == del_item:
             self.data_list.takeItem(row_num)
         elif action == delall_item:
             self.data_list.clear()
+        elif action == open_item:
+            QDesktopServices.openUrl(QUrl("file:" + os.path.dirname(self.data_list.item(row_num).text())))
 
     def bt_generate_menu(self, pos):
         row_num = -1
@@ -262,13 +271,16 @@ class BacktrackWidget(QWidget, Ui_Form):
         if row_num < 0:
             return
         menu = QMenu()
+        open_item = menu.addAction("打开文件所在位置")
         del_item = menu.addAction("移除")
-        delall_item = menu.addAction("❌移除所有")
+        delall_item = menu.addAction("移除所有")
         action = menu.exec_(self.backtrack_list.mapToGlobal(pos))
         if action == del_item:
             self.backtrack_list.takeItem(row_num)
         elif action == delall_item:
             self.backtrack_list.clear()
+        elif action == open_item:
+            QDesktopServices.openUrl(QUrl("file:" + os.path.dirname(self.backtrack_list.item(row_num).text())))
 
 
 class QsPushButton(QPushButton):

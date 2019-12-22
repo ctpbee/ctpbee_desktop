@@ -45,7 +45,7 @@ class StrategyWidget(QWidget, Ui_Strategy):
     @Slot()
     def add_strategy_slot(self):
         pattern = r"ext\s*=\s*\w*[(][\"\'](.*)[\"\'][)]"
-        filename, _ = QFileDialog.getOpenFileName(self, '选择文件', '', 'Python files(*.py)')
+        filename, _ = QFileDialog.getOpenFileName(self, '选择文件', '/', 'Python files(*.py)')
         if not filename:
             return
         with open(filename, 'r') as f:
@@ -57,12 +57,11 @@ class StrategyWidget(QWidget, Ui_Strategy):
                 TipDialog("策略添加成功")
                 self.fill_table()
             except Exception as e:
-                print("添加更新策略文件：", e)
                 QMessageBox.warning(self, 'ctpbee策略', str(e), QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     def gen_strategy_slot(self):
-        filename, _ = QFileDialog.getSaveFileName(self, "策略模板", "", "Python files(*.py)")
+        filename, _ = QFileDialog.getSaveFileName(self, "策略模板", "/", "Python files(*.py)")
         if filename:
             filename = filename if filename.endswith('.py') else filename + '.py'
             with open(filename, 'w') as f:

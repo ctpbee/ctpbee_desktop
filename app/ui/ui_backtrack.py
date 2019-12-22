@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'backtrack.ui',
 # licensing of 'backtrack.ui' applies.
 #
-# Created: Sun Dec 22 14:31:15 2019
+# Created: Sun Dec 22 20:30:35 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -109,17 +109,10 @@ class Ui_Form(object):
         self.local_symbol_box.setEditable(True)
         self.local_symbol_box.setObjectName("local_symbol_box")
         self.horizontalLayout.addWidget(self.local_symbol_box)
-        self.label = QtWidgets.QLabel(self.tabWidgetPage2)
-        self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label)
-        self.size_map = QtWidgets.QSpinBox(self.tabWidgetPage2)
-        self.size_map.setObjectName("size_map")
-        self.horizontalLayout.addWidget(self.size_map)
         self.add_sm_btn = QtWidgets.QToolButton(self.tabWidgetPage2)
         self.add_sm_btn.setObjectName("add_sm_btn")
         self.horizontalLayout.addWidget(self.add_sm_btn)
         self.horizontalLayout.setStretch(0, 1)
-        self.horizontalLayout.setStretch(2, 1)
         self.gridLayout_2.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.data_list = QtWidgets.QListWidget(self.tabWidgetPage2)
         self.data_list.setObjectName("data_list")
@@ -133,13 +126,13 @@ class Ui_Form(object):
         self.size_map_table.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.size_map_table.setHorizontalHeaderItem(0, item)
-
         item = QtWidgets.QTableWidgetItem()
         self.size_map_table.setHorizontalHeaderItem(1, item)
         self.gridLayout_2.addWidget(self.size_map_table, 3, 0, 2, 1)
         self.tabWidget.addTab(self.tabWidgetPage2, "")
         self.tabWidgetPage3 = QtWidgets.QWidget()
         self.tabWidgetPage3.setObjectName("tabWidgetPage3")
+
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.tabWidgetPage3)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.tableWidget = QtWidgets.QTableWidget(self.tabWidgetPage3)
@@ -186,7 +179,6 @@ class Ui_Form(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabWidgetPage1), QtWidgets.QApplication.translate("Form", "参数", None, -1))
         self.add_data_btn.setText(QtWidgets.QApplication.translate("Form", "添加数据", None, -1))
         self.add_backtrack_btn.setText(QtWidgets.QApplication.translate("Form", "回测API", None, -1))
-        self.label.setText(QtWidgets.QApplication.translate("Form", "+", None, -1))
         self.add_sm_btn.setText(QtWidgets.QApplication.translate("Form", "↓", None, -1))
         self.size_map_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Form", "local_symbol", None, -1))
         self.size_map_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Form", "size_map", None, -1))

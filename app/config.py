@@ -17,8 +17,7 @@ keys = [
     "SLIPPAGE_BUY",
     "SLIPPAGE_COVER",
     "SLIPPAGE_SELL",
-    "CLOSE_PATTERN",
-    "SHARED_FUNC"]
+    "CLOSE_PATTERN"]
 
 zn = {
     "home": "首页",
@@ -64,18 +63,16 @@ class ConfigDialog(QDialog, Ui_Config):
         self.SLIPPAGE_SELL.setValue(float(bee_current_app.config['SLIPPAGE_SELL']))
         self.INSTRUMENT_INDEPEND.setCheckState(
             Qt.Checked if bee_current_app.config["INSTRUMENT_INDEPEND"] else Qt.Unchecked)
-        self.SHARED_FUNC.setCheckState(
-            Qt.Checked if bee_current_app.config["SHARED_FUNC"] else Qt.Unchecked)
         self.CLOSE_PATTERN.setCurrentText(bee_current_app.config["CLOSE_PATTERN"])
 
     def init_shortcut(self):
         for name, sc in G.config.SHORTCUT.items():
             h_layout = QHBoxLayout()
             label = QLabel(self)
-            label.setStyleSheet("font: 10pt")
+            label.setStyleSheet("font: 9pt")
             label.setText(zn[name])
             shortcut = ShortCutEdit(self, name, sc)
-            shortcut.setStyleSheet("font: 10pt")
+            shortcut.setStyleSheet("font: 9pt")
             h_layout.addWidget(label)
             h_layout.addWidget(shortcut)
             self.sc_layout.addLayout(h_layout)
@@ -101,8 +98,6 @@ class ConfigDialog(QDialog, Ui_Config):
         G.config.SLIPPAGE_SELL = bee_current_app.config['SLIPPAGE_SELL'] = float(self.SLIPPAGE_SELL.text())
         G.config.INSTRUMENT_INDEPEND = bee_current_app.config[
             'INSTRUMENT_INDEPEND'] = True if self.INSTRUMENT_INDEPEND.isChecked() else False
-        G.config.SHARED_FUNC = bee_current_app.config[
-            'SHARED_FUNC'] = True if self.SHARED_FUNC.isChecked() else False
         G.config.CLOSE_PATTERN = bee_current_app.config['CLOSE_PATTERN'] = str(self.CLOSE_PATTERN.currentText())
         G.config.to_file()
         TipDialog('修改成功')

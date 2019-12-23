@@ -278,6 +278,7 @@
     }, true);
 
     function render(data) {
+        myChart.hideLoading();
         myChart.setOption({
             xAxis: [
                 {
@@ -330,27 +331,39 @@
             var signal = channel.objects.bee_signal;
             //Web use the interface of Qt
             signal.get_history_data(function (str) {
+                myChart.showLoading();
+
                 var history_json = JSON.parse(str);
                 for (var i in history_json) {
-                    Data = history_json[i]
+                    Data = splitData(history_json[i])
                 }
-                render(splitData(Data));
+                render(Data);
             });
 
             //Web connect the Qt signal, then Qt can call "function" function
             signal.qt_to_js.connect(function (str) {
+                myChart.showLoading();
+
                 var data = JSON.parse(str);
                 for (var i in data) {
-                    var c =Data.push(splitData(data[i]))
+                    var c = splitData(data[i]);
+                    for (var i in c) {
+                        Data[i].push(c[i]);
+                    }
                 }
-                render(c);
+                render(Data);
             });
             signal.qt_to_js_reload.connect(function (str) {
-                var history_json = JSON.parse(str);
-                for (var i in history_json) {
-                    var c =Data.push(splitData(data[i]))
+                myChart.showLoading();
+
+                var data = JSON.parse(str);
+                for (var i in data) {
+                    var c = splitData(data[i]);
+                    for (var i in c) {
+                        Data[i].push(c[i]);
+                    }
                 }
-                render(c);
+                render(Data);
             })
         })
     };

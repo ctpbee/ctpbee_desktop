@@ -1,11 +1,6 @@
 from datetime import datetime
 import json
 import os
-<<<<<<< HEAD
-
-
-=======
->>>>>>> dev
 from PySide2.QtCore import QObject, Signal, Slot
 
 from app.lib.get_path import tick_path

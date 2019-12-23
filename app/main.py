@@ -9,7 +9,7 @@ from app.backtrack import BacktrackWidget
 from app.lib.global_var import G
 from app.lib.helper import Job, KInterfaceObject, RecordWorker
 from app.tip import TipDialog
-from app.ui import main_qss
+from app.ui import qss
 from app.ui.ui_mainwindow import Ui_MainWindow
 from ctpbee import CtpbeeApi
 from app.market import MarketWidget
@@ -30,7 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
         # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框 可能会导致闪屏异常
-        self.setStyleSheet(main_qss)
+        self.setStyleSheet(qss)
         self.animation_show()
         #
         G.mainwindow = self
@@ -60,7 +60,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.backtrack_btn.clicked.connect(self.backtrack_handle)
         self.kline_btn.clicked.connect(self.kline_handle)
         #
-        self.menuBar.triggered.connect(self.menu_triggered)
+        # self.menuBar.triggered.connect(self.menu_triggered)
         # widgets
         self.map_ = []
         self.home_widget = None
@@ -123,7 +123,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             TipDialog("到底啦~")
 
     def shortcut_init(self):
-        sc = G.config.shortcut
+        sc = G.config.SHORTCUT
         for name, sho in sc.items():
             if sho == '--':
                 continue
@@ -132,7 +132,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             setattr(self, f"{name}_sc", temp)
 
     def update_shortcut(self):
-        sc = G.config.shortcut
+        sc = G.config.SHORTCUT
         for name, sho in sc.items():
             getattr(self, f"{name}_sc").setKey(QKeySequence(self.tr(sho)))
 
@@ -204,9 +204,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pass
 
     def on_bar(self, ext, bar: BarData) -> None:
-        timestamp = round(bar.datetime.timestamp() * 1000)
-        info = [timestamp, bar.open_price, bar.high_price, bar.low_price,
-                bar.close_price, bar.volume]
+        """ vue kline"""
+        # timestamp = round(bar.datetime.timestamp() * 1000)
+        # info = [timestamp, bar.open_price, bar.high_price, bar.low_price,
+        #         bar.close_price, bar.volume]
+        """ echarts kline """
+        timestamp = bar.datetime.strftime("%Y/%m/%d %H:%M:%S")
+        info = [timestamp, bar.open_price, bar.close_price, bar.low_price,
+                bar.high_price, bar.volume]
+        #
         if bar.local_symbol == G.choice_local_symbol:
             data = {bar.local_symbol: info}
             self.kline_job.qt_to_js.emit(json.dumps(data))
@@ -238,7 +244,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.market_msg.setText(f"最新行情：{tick.name}   {tick.last_price}")
         tick = tick._to_dict()
         local_symbol = tick['local_symbol']
-        G.market_tick[local_symbol] = tick
         if G.current_page == "market":
             self.job.market_signal.emit(tick)
         self.job.order_tick_signal.emit(tick)

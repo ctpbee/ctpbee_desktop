@@ -1,15 +1,14 @@
 import time
 
-from PySide2.QtCore import Slot, QTimer, Qt
+from PySide2.QtCore import Slot, QTimer, Qt, QObject, QEvent
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QListWidgetItem, QTableWidget, \
     QHeaderView, QAbstractItemView, QMenu
 from ctpbee import current_app
-
 from app.tip import TipDialog
 from app.ui.ui_market import Ui_Market
 from app.lib.global_var import G
-from app.ui import market_qss
+from app.ui import qss
 
 contract_space = " " * 2
 market_table_column = ['name',  # 中文名
@@ -37,20 +36,18 @@ class MarketWidget(QWidget, Ui_Market):
     def __init__(self, mainwindow):
         super(MarketWidget, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(market_qss)
+        self.setStyleSheet(qss)
         self.setWindowTitle("行情")
         self.item_row = len(G.market_tick_row_map)
         self.mainwindow = mainwindow
         self.load_status = self.mainwindow.status_msg
-        # ctpbee
-        for local_symbol in sorted(G.all_contracts):
-            self.symbol_list.addItem(local_symbol + contract_space + G.all_contracts[local_symbol])  # 添加下拉框
         #
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         # self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.cellDoubleClicked.connect(self.cellDoubleClicked_slot)
+
         # 渲染table
         self.obj = self.mainwindow.job
         self.obj.market_signal.connect(self.set_item_slot)
@@ -62,29 +59,67 @@ class MarketWidget(QWidget, Ui_Market):
         # 右键菜单
         self.tableWidget.setContextMenuPolicy(Qt.CustomContextMenu)  ######允许右键产生子菜单
         self.tableWidget.customContextMenuRequested.connect(self.generate_menu)  ####右键菜单
-
         # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.timer_slot)
+        self.ready_action()
+
+    def ready_action(self):
+        for local_symbol in sorted(G.all_contracts):
+            self.symbol_list.addItem(local_symbol + contract_space + G.all_contracts[local_symbol])  # 添加下拉框
+        for i in G.config.CONTRACT:
+            res = current_app.subscribe(i)
+            if res == 0:
+                G.subscribes.update({i: G.all_contracts[i]})
 
     def generate_menu(self, pos):
         row_num = -1
         for i in self.tableWidget.selectionModel().selection().indexes():
             row_num = i.row()
-        menu = QMenu()
-        item1 = menu.addAction("取消订阅")
-        action = menu.exec_(self.tableWidget.mapToGlobal(pos))
-        row_data = self.tableWidget.item(row_num, market_table_column.index('local_symbol'))
-        if action == item1 and row_data:
-            local_symbol = row_data.text()
-            # 取消订阅
-            res = current_app.market.unsubscribe(local_symbol.split('.')[0])
-            # 事后处理
-            if res == 0:
-                G.market_tick_row_map.remove(local_symbol)
-                G.subscribes.pop(local_symbol, None)
-                self.tableWidget.removeRow(row_num)
-                self.item_row -= 1
+        if row_num < 0:
+            menu = QMenu()
+            start_menu = menu.addMenu("我的收藏")
+            for k, v in G.config.CONTRACT.items():
+                start_menu.addAction(' '.join([k, v]))
+            else:
+                star = start_menu.addAction("一键订阅")
+            action = menu.exec_(self.tableWidget.mapToGlobal(pos))
+            if action == star:
+                for i in G.config.CONTRACT:
+                    res = current_app.subscribe(i)
+                    if res == 0:
+                        G.subscribes.update({i: G.all_contracts[i]})
+        else:
+            name = self.tableWidget.item(row_num, market_table_column.index('name')).text()
+            local_symbol = self.tableWidget.item(row_num, market_table_column.index('local_symbol')).text()
+            menu = QMenu()
+            cancel_item = menu.addAction("取消订阅")
+            if local_symbol in G.config.CONTRACT:
+                del_item = menu.addAction("取消收藏")
+                inx = True
+            else:
+                add_item = menu.addAction("加入收藏")
+                inx = False
+            star_menu = menu.addMenu("我的收藏")
+            for k, v in G.config.CONTRACT.items():
+                star_menu.addAction(' '.join([k, v]))
+            action = menu.exec_(self.tableWidget.mapToGlobal(pos))
+            ####
+            if action == cancel_item:
+                # 取消订阅
+                res = current_app.market.unsubscribe(local_symbol.split('.')[0])
+                # 事后处理
+                if res == 0:
+                    G.market_tick_row_map.remove(local_symbol)
+                    G.subscribes.pop(local_symbol, None)
+                    self.tableWidget.removeRow(row_num)
+                    self.item_row -= 1
+            elif not inx and action == add_item:
+                G.config.CONTRACT.update({local_symbol: name})
+                G.config.to_file()
+            elif inx and action == del_item:
+                G.config.CONTRACT.pop(local_symbol)
+                G.config.to_file()
 
     @Slot()
     def cellDoubleClicked_slot(self, row, col):

@@ -14,7 +14,7 @@
    <string>简介</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../resource/mainwindow.qrc">
     <normaloff>:/menu/images/bee_temp_grey.png</normaloff>:/menu/images/bee_temp_grey.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
@@ -78,7 +78,7 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="3" column="6">
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -136,6 +136,17 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QToolButton" name="quit_btn">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resource/mainwindow.qrc">
+         <normaloff>:/menu/icon/quit.png</normaloff>:/menu/icon/quit.png</iconset>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item row="1" column="1">
@@ -172,6 +183,8 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resource/mainwindow.qrc"/>
+ </resources>
  <connections/>
 </ui>

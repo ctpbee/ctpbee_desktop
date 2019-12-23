@@ -1,7 +1,11 @@
+from datetime import datetime
 import json
 import os
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> dev
 from PySide2.QtCore import QObject, Signal, Slot
 
 from app.lib.get_path import tick_path
@@ -24,8 +28,42 @@ class Job(QObject):
         super(self.__class__, self).__init__()
 
 
+def get_history_tick():
+    if G.config.LOCAL_SOURCE:
+        return get_local()
+    else:
+        return get_external()
+
+
+def get_local():
+    try:
+        file_path = tick_path + f"/{str(G.choice_local_symbol)}.json"
+        with open(file_path, 'r') as f:
+            data = f.read()
+    except:
+        data = json.dumps({G.choice_local_symbol: []})
+    return data
+
+
+def get_external():
+    info = []
+    try:
+        data = G.db[G.choice_local_symbol].find()
+        if data:
+            for item in data:
+                timestamp = item['datetime']
+                if isinstance(timestamp, datetime):
+                    timestamp = round(timestamp.timestamp() * 1000)
+                info.append([timestamp, item['open_price'], item['high_price'], item['low_price'],
+                             item['close_price'], item['volume']])
+    except Exception as e:
+        print(e)
+    return json.dumps({G.choice_local_symbol: info})
+
+
 class KInterfaceObject(QObject):
     qt_to_js = Signal(str)  # channel only str  在js中connect
+    qt_to_js_reload = Signal(str)  # channel only str  在js中connect
     js_to_qt = Signal(str)
 
     def __init__(self):
@@ -34,13 +72,7 @@ class KInterfaceObject(QObject):
     @Slot(result=str)
     def get_history_data(self):
         """js通过调用此函数获取数据"""
-        try:
-            file_path = tick_path + f"/{str(G.choice_local_symbol)}.json"
-            with open(file_path, 'r') as f:
-                data = f.read()
-        except:
-            data = json.dumps({G.choice_local_symbol: []})
-        return data
+        return get_history_tick()
 
 
 class RecordWorker(QObject):

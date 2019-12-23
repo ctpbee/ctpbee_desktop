@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'order.ui',
 # licensing of 'order.ui' applies.
 #
-# Created: Sun Dec  8 22:57:10 2019
+# Created: Mon Dec 23 19:47:12 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_Order(object):
     def setupUi(self, Order):
         Order.setObjectName("Order")
-        Order.resize(1157, 445)
+        Order.resize(799, 364)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(255)
         sizePolicy.setVerticalStretch(255)

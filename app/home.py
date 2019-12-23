@@ -4,7 +4,7 @@ from PySide2.QtCore import Slot, QTimer
 from PySide2.QtWidgets import QWidget, QTableWidget, QTableWidgetItem
 from ctpbee import current_app
 
-from app.ui import home_qss
+from app.ui import qss
 from app.ui.ui_home import Ui_Home
 from app.lib.global_var import G
 import webbrowser
@@ -26,12 +26,13 @@ class HomeWidget(QWidget, Ui_Home):
     def __init__(self, mainwindow):
         super(HomeWidget, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(home_qss)
+        self.setStyleSheet(qss)
         # btn
         self.beebtn.clicked.connect(self.bee_slot)
         self.issues_btn.clicked.connect(self.issues_slot)
         self.doc_btn.clicked.connect(self.doc_slot)
         self.community_btn.clicked.connect(self.community_slot)
+        self.quit_btn.clicked.connect(mainwindow.quit)
         # account
         self.row = 0
         self.tableWidget.horizontalHeader().setVisible(False)

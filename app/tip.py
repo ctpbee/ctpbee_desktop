@@ -18,7 +18,7 @@ qss = """
 
 
 class TipDialog(QDialog, Ui_Tip):
-    def __init__(self, msg):
+    def __init__(self, msg, interval=500):
         super(self.__class__, self).__init__()
         self.setupUi(self)
         self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏整个头部
@@ -28,7 +28,7 @@ class TipDialog(QDialog, Ui_Tip):
         self.l = [i / 10 for i in range(11)]
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.do)
-        self.timer.start(50)
+        self.timer.start(interval // 10)  # 实际上50*10
         self.exec_()
 
     def do(self):

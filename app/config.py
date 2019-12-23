@@ -7,7 +7,8 @@ from app.lib.global_var import G
 from app.tip import TipDialog
 from app.ui.ui_config import Ui_Config
 from ctpbee import current_app as bee_current_app
-from app.ui import config_qss
+from app.ui import qss
+from app.db import DBWidget
 
 keys = [
     "REFRESH_INTERVAL",
@@ -16,8 +17,7 @@ keys = [
     "SLIPPAGE_BUY",
     "SLIPPAGE_COVER",
     "SLIPPAGE_SELL",
-    "CLOSE_PATTERN",
-    "SHARED_FUNC"]
+    "CLOSE_PATTERN"]
 
 zn = {
     "home": "首页",
@@ -35,13 +35,25 @@ class ConfigDialog(QDialog, Ui_Config):
     def __init__(self, mainwindow):
         super(ConfigDialog, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(config_qss)
+        self.setStyleSheet(qss)
         self.mainwindow = mainwindow
         # btn
         self.default_btn.clicked.connect(self.default_sc_slot)
         self.submit_btn.clicked.connect(self.update_config)
+        self.local_btn.clicked.connect(self.local_btn_slot)
+        self.exter_btn.clicked.connect(self.exter_btn_slot)
+        #
         self.init_config()
         self.init_shortcut()
+        self.init_data_source()
+
+    def local_btn_slot(self):
+        G.config.LOCAL_SOURCE = True
+        G.config.to_file()
+
+    def exter_btn_slot(self):
+        self.db_dialog = DBWidget(self)
+        self.db_dialog.show()
 
     def init_config(self):
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))
@@ -51,21 +63,25 @@ class ConfigDialog(QDialog, Ui_Config):
         self.SLIPPAGE_SELL.setValue(float(bee_current_app.config['SLIPPAGE_SELL']))
         self.INSTRUMENT_INDEPEND.setCheckState(
             Qt.Checked if bee_current_app.config["INSTRUMENT_INDEPEND"] else Qt.Unchecked)
-        self.SHARED_FUNC.setCheckState(
-            Qt.Checked if bee_current_app.config["SHARED_FUNC"] else Qt.Unchecked)
         self.CLOSE_PATTERN.setCurrentText(bee_current_app.config["CLOSE_PATTERN"])
 
     def init_shortcut(self):
-        for name, sc in G.config.shortcut.items():
+        for name, sc in G.config.SHORTCUT.items():
             h_layout = QHBoxLayout()
             label = QLabel(self)
-            label.setStyleSheet("font: 10pt")
+            label.setStyleSheet("font: 9pt")
             label.setText(zn[name])
             shortcut = ShortCutEdit(self, name, sc)
-            shortcut.setStyleSheet("font: 10pt")
+            shortcut.setStyleSheet("font: 9pt")
             h_layout.addWidget(label)
             h_layout.addWidget(shortcut)
             self.sc_layout.addLayout(h_layout)
+
+    def init_data_source(self):
+        if G.config.LOCAL_SOURCE:
+            self.local_btn.setChecked(True)
+        else:
+            self.exter_btn.setChecked(True)
 
     def default_sc_slot(self):
         G.config.back_default()
@@ -82,8 +98,6 @@ class ConfigDialog(QDialog, Ui_Config):
         G.config.SLIPPAGE_SELL = bee_current_app.config['SLIPPAGE_SELL'] = float(self.SLIPPAGE_SELL.text())
         G.config.INSTRUMENT_INDEPEND = bee_current_app.config[
             'INSTRUMENT_INDEPEND'] = True if self.INSTRUMENT_INDEPEND.isChecked() else False
-        G.config.SHARED_FUNC = bee_current_app.config[
-            'SHARED_FUNC'] = True if self.SHARED_FUNC.isChecked() else False
         G.config.CLOSE_PATTERN = bee_current_app.config['CLOSE_PATTERN'] = str(self.CLOSE_PATTERN.currentText())
         G.config.to_file()
         TipDialog('修改成功')
@@ -123,7 +137,7 @@ class ShortCutEdit(QLineEdit):
         sp = self.text().split("+")[-1]
         if len(sp) != 1:
             self.setText("--")
-        G.config.shortcut.update({self.name: self.text()})
+        G.config.SHORTCUT.update({self.name: self.text()})
         G.config.to_file()
         self.parent_widget.mainwindow.update_shortcut()
         TipDialog("修改成功")

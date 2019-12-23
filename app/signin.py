@@ -13,7 +13,7 @@ from ctpbee import CtpBee, VLogger, current_app
 from app.lib.get_path import get_user_path, desktop_path, join_path, config_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
-from app.ui import sign_in_qss
+from app.ui import qss
 
 
 class Vlog(VLogger):
@@ -24,7 +24,11 @@ class Vlog(VLogger):
         if G.mainwindow:
             G.mainwindow.job.log_signal.emit(msg)
         if G.loading:
-            G.loading.msg.setText(record['message'])
+            try:
+                msg1 = json.loads(record['message'].replace("\'", "\""))
+                G.loading.msg.setText(msg1['ErrorMsg'])
+            except Exception as e:
+                G.loading.msg.setText(record['message'])
 
 
 simnow_yd = dict(
@@ -52,29 +56,49 @@ class SignInWidget(QWidget, Ui_SignIn):
         super(SignInWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("ctpbee客户端")
-        self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
-        self.setStyleSheet(sign_in_qss)
-        self.submask()
+        # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框
+        self.setWindowFlags(Qt.WindowCloseButtonHint)
+        self.setStyleSheet(qss)
+        # tab
+        self.setTabOrder(self.userid_sim, self.password_sim)
+        self.setTabOrder(self.password_sim, self.interface_sim)
+        self.setTabOrder(self.interface_sim, self.other)
+        self.setTabOrder(self.other, self.remember_me)
         #
-        self.close_btn.clicked.connect(self.close)
-        self.min_btn.clicked.connect(self.showMinimized)
-        self.load_remember()
-        self.sign_in_btn_1.clicked.connect(self.common_sign_in)
-        self.sign_in_btn_2.clicked.connect(self.detailed_sign_in)
-        self.sign_in_btn_1.setDisabled(True)
-        self.sign_in_btn_2.setEnabled(True)
-        self.password_1.returnPressed.connect(self.common_sign_in)
+        self.setTabOrder(self.userid, self.password)
+        self.setTabOrder(self.password, self.brokerid)
+        self.setTabOrder(self.brokerid, self.auth_code)
+        self.setTabOrder(self.auth_code, self.appid)
+        self.setTabOrder(self.appid, self.td_address)
+        self.setTabOrder(self.td_address, self.md_address)
+        self.setTabOrder(self.md_address, self.interface_)
+        self.setTabOrder(self.interface_, self.remember_me)
+        self.setTabOrder(self.remember_me, self.sign_in_btn)
+        #
+        self.sign_in_btn.clicked.connect(self.sign_in_slot)
+        self.sign_in_btn.setDisabled(True)
         #
         for i in self.__dict__.values():
             if isinstance(i, QLineEdit):
                 i.setContextMenuPolicy(Qt.NoContextMenu)  ######不允许右键产生子菜单
-
+        self.login_tab.currentChanged.connect(self.check_disable)
         # 普通
-        self.userid_1.textChanged[str].connect(self.check_disable)
-        self.password_1.textChanged[str].connect(self.check_disable)
+        self.userid_sim.currentTextChanged.connect(self.check_disable)
+        self.password_sim.textChanged.connect(self.check_disable)
+        #
+        self.userid.currentTextChanged.connect(self.check_disable)
+        self.password.textChanged.connect(self.check_disable)
+        self.brokerid.currentTextChanged.connect(self.check_disable)
+        self.auth_code.currentTextChanged.connect(self.check_disable)
+        self.appid.currentTextChanged.connect(self.check_disable)
+        self.td_address.currentTextChanged.connect(self.check_disable)
+        self.td_address.editTextChanged.connect(self.editTextChanged_slot)
+        self.md_address.editTextChanged.connect(self.editTextChanged_slot)
+        self.md_address.currentTextChanged.connect(self.check_disable)
         # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.close_load)
+        self.load_remember()
 
     def submask(self):
         self.bmp = QBitmap(self.size())
@@ -88,34 +112,64 @@ class SignInWidget(QWidget, Ui_SignIn):
     @Slot()
     def check_disable(self):
         if self.login_tab.currentIndex() == 0:
-            if self.userid_1.text() and self.password_1.text():
-                self.sign_in_btn_1.setEnabled(True)
+            if self.userid_sim.currentText() and self.password_sim.text():
+                self.sign_in_btn.setEnabled(True)
             else:
-                self.sign_in_btn_1.setDisabled(True)
+                self.sign_in_btn.setDisabled(True)
+        if self.login_tab.currentIndex() == 1:
+            if self.userid.currentText() and \
+                    self.password.text() and \
+                    self.brokerid.currentText() and \
+                    self.auth_code.currentText() and \
+                    self.appid.currentText() and \
+                    self.td_address.currentText() and \
+                    self.md_address.currentText():
+                self.sign_in_btn.setEnabled(True)
+            else:
+                self.sign_in_btn.setDisabled(True)
+
+    def editTextChanged_slot(self):
+        td = self.td_address.currentText()
+        md = self.md_address.currentText()
+        k = 'tcp://'
+        if not md.startswith(k):
+            self.md_address.setCurrentText(k + md)
+        if not td.startswith(k):
+            self.td_address.setCurrentText(k + td)
 
     def load_remember(self):
-        path_list = os.listdir(desktop_path)
-        for i in path_list:
-            path = join_path(desktop_path, i, '.account.json')
-            if not os.path.exists(path):
-                continue
+
+        def get_account(path):
+            data = {}
             with open(path, 'r')as f:
                 info = f.read()
             if info:
                 try:
-                    info = json.loads(info)
+                    data = json.loads(info)
                     if not isinstance(info, dict):
                         raise Exception
                 except Exception:
-                    info = {}
-                self.userid_2.setText(info.get('userid'))
-                self.brokerid_2.setText(info.get('brokerid'))
-                self.auth_code_2.setText(info.get('auth_code'))
-                self.appid_2.setText(info.get('appid'))
-                self.td_address_2.setText(info.get('td_address'))
-                self.md_address_2.setText(info.get('md_address'))
-                self.interface_2.setCurrentText(info.get('interface'))
-            return
+                    pass
+            return data
+
+        path_list = os.listdir(desktop_path)
+        for i in path_list:
+            path = join_path(desktop_path, i, '.account.json')
+            if os.path.exists(path):
+                info = get_account(path)
+                self.userid.addItem(info.get('userid'))
+                self.brokerid.addItem(info.get('brokerid'))
+                self.auth_code.addItem(info.get('auth_code'))
+                self.appid.addItem(info.get('appid'))
+                self.td_address.addItem(info.get('td_address'))
+                self.md_address.addItem(info.get('md_address'))
+                self.interface_.addItem(info.get('interface'))
+            path = join_path(desktop_path, i, '.sim.json')
+            if os.path.exists(path):
+                info = get_account(path)
+                self.userid_sim.addItem(info.get('userid'))
+                self.password_sim.setText(info.get('password'))
+                self.remember_me_sim.setChecked(True)
 
     def load_config(self):
         for k, v in G.config.to_dict().items():
@@ -146,8 +200,7 @@ class SignInWidget(QWidget, Ui_SignIn):
                 bee_app.trader and \
                 bee_app.td_login_status:
             ##
-            G.current_account = info['userid']
-            G.user_path = get_user_path(G.current_account)
+            G.signin_success(info['userid'])
             ##
             self.load_config()
             ###
@@ -159,18 +212,29 @@ class SignInWidget(QWidget, Ui_SignIn):
         else:
             return False
 
+    def sign_in_slot(self):
+        if self.login_tab.currentIndex() == 0:
+            self.common_sign_in()
+        elif self.login_tab.currentIndex() == 1:
+            self.detailed_sign_in()
+
     def common_sign_in(self):
         info = dict(
-            userid=self.userid_1.text(),
-            password=self.password_1.text(),
-            interface=self.interface_1.currentText(),
+            userid=self.userid_sim.currentText(),
+            password=self.password_sim.text(),
+            interface=self.interface_sim.currentText(),
         )
         which_ = self.other.currentText()
         if which_ == 'simnow24小时':
             info.update(simnow_24)
         elif which_ == 'simnow移动':
             info.update(simnow_yd)
-        if not self.sign_in(info):
+        if self.sign_in(info):
+            if self.remember_me_sim.isChecked():
+                account_path = os.path.join(G.user_path, ".sim.json")
+                with open(account_path, 'w') as f:
+                    json.dump(info, f)
+        else:
             if which_ == 'simnow24小时':
                 msg = 'simnow移动'
                 info.update(simnow_yd)
@@ -180,25 +244,25 @@ class SignInWidget(QWidget, Ui_SignIn):
             reply = QMessageBox.question(self, '登录出现错误', "是否尝试" + msg,
                                          QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
             if reply == QMessageBox.Yes:
-                self.interface_1.setCurrentText(msg)
+                self.interface_sim.setCurrentText(msg)
                 if not self.sign_in(info):
                     QMessageBox.information(self, "提示", "登录失败")
 
     def detailed_sign_in(self):
         info = dict(
-            userid=self.userid_2.text(),
-            password=self.password_2.text(),
-            brokerid=self.brokerid_2.text(),
-            md_address=self.md_address_2.text(),
-            td_address=self.td_address_2.text(),
+            userid=self.userid.currentText(),
+            password=self.password.text(),
+            brokerid=self.brokerid.currentText(),
+            md_address=self.md_address.currentText(),
+            td_address=self.td_address.currentText(),
             product_info="",
-            appid=self.appid_2.text(),
-            auth_code=self.auth_code_2.text(),
-            interface=self.interface_2.currentText(),
+            appid=self.appid.currentText(),
+            auth_code=self.auth_code.currentText(),
+            interface=self.interface_.currentText(),
         )
         if self.sign_in(info):
-            if self.rember_me.isChecked():
-                account_path = os.path.join(get_user_path(G.current_account), f".account.json")
+            if self.remember_me.isChecked():
+                account_path = os.path.join(G.user_path, ".account.json")
                 with open(account_path, 'w') as f:
                     account = deepcopy(info)
                     account.pop('password')
@@ -216,21 +280,21 @@ class SignInWidget(QWidget, Ui_SignIn):
                 pass
         event.accept()
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self.m_flag = True
-            self.r_flag = False
-            self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
-            event.accept()
-
-    def mouseReleaseEvent(self, event):
-        self.r_flag = True
-        event.accept()
-
-    def mouseMoveEvent(self, QMouseEvent):
-        try:
-            if Qt.LeftButton and self.m_flag and not self.r_flag:
-                self.move(QMouseEvent.globalPos() - self.m_Position)  # 更改窗口位置
-                QMouseEvent.accept()
-        except:
-            pass
+    # def mousePressEvent(self, event):
+    #     if event.button() == Qt.LeftButton:
+    #         self.m_flag = True
+    #         self.r_flag = False
+    #         self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
+    #         event.accept()
+    #
+    # def mouseReleaseEvent(self, event):
+    #     self.r_flag = True
+    #     event.accept()
+    #
+    # def mouseMoveEvent(self, QMouseEvent):
+    #     try:
+    #         if Qt.LeftButton and self.m_flag and not self.r_flag:
+    #             self.move(QMouseEvent.globalPos() - self.m_Position)  # 更改窗口位置
+    #             QMouseEvent.accept()
+    #     except:
+    #         pass

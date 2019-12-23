@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            padding: 2px 0 0 2px;
+            background-color: #2B2B2B;
+        }
+
+    </style>
+</head>
+<body>
+<div id="main" style="width: 100%;height:100%;border: 1px solid #2B2B2B"></div>
+<script src="./js/jquery.js"></script>
+<script src="./js/jquery.mousewheel.js"></script>
+<script src="./js/qwebchannel.js"></script>
+<script src="./js/echarts.min.js"></script>
+
+
+<script type="text/javascript">
+
+    var upColor = '#187300';
+    var downColor = '#FF0000';
+    var Data = [];
+
+    function splitData(rawData) {
+        var categoryData = [];
+        var values = [];
+        var volumes = [];
+        for (var i = 0; i < rawData.length; i++) {
+            categoryData.push(rawData[i].splice(0, 1)[0]);
+            values.push(rawData[i]);
+            volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
+        }
+
+        return {
+            categoryData: categoryData,
+            values: values,
+            volumes: volumes
+        };
+    }
+
+    ma_color = ['#4472C5', '#ED7C30', '#80FF80', '#FF8096', '#800080'];
+
+    function calculateMA(dayCount, data) {
+        var result = [];
+        for (var i = 0, len = data.values.length; i < len; i++) {
+            if (i < dayCount) {
+                result.push('-');
+                continue;
+            }
+            var sum = 0;
+            for (var j = 0; j < dayCount; j++) {
+                sum += data.values[i - j][1];
+            }
+            result.push(+(sum / dayCount).toFixed(3));
+        }
+        return result;
+    }
+
+
+    var Container = document.getElementById('main')
+    var myChart = echarts.init(Container);
+
+    window.onresize = () => {
+        myChart.resize(window.innerWidth, window.innerHeight);
+    };
+    myChart.setOption(option = {
+        backgroundColor: '#2B2B2B',
+        textStyle: {
+            color: "#fff"
+        },
+        animation: true,
+        color: ma_color,
+        legend: {
+            top: 10,
+            left: 'center',
+            textStyle: {
+                color: "#fff"
+            },
+            data: ['分K', 'MA5', 'MA10', 'MA20', 'MA30']
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            borderWidth: 1,
+            borderColor: '#ccc',
+            padding: 10,
+            position: function (pos, params, el, elRect, size) {
+                var obj = {top: 10};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                return obj;
+            }
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: false
+                },
+                brush: {
+                    type: ['lineX', 'clear']
+                },
+                dataView: {
+                    backgroundColor:'#2B2B2B',
+                    textareaColor:'#2B2B2B',
+                    textColor:'#fff'
+                }
+            }
+        },
+        brush: {
+            xAxisIndex: 'all',
+            brushLink: 'all',
+            outOfBrush: {
+                colorAlpha: 0.1
+            }
+        },
+        visualMap: {
+            show: false,
+            seriesIndex: 5,
+            dimension: 2,
+            pieces: [{
+                value: 1,
+                color: downColor
+            }, {
+                value: -1,
+                color: upColor
+            }]
+        },
+        grid: [
+            {
+                left: '1%',
+                right: '10%',
+                height: '50%'
+            },
+            {
+                left: '1%',
+                right: '10%',
+                top: '63%',
+                height: '16%'
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                // data: data.categoryData,
+                data: [],
+                scale: true,
+                boundaryGap: true,
+                axisLine: {onZero: false},
+                splitLine: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+                axisPointer: {
+                    z: 100
+                }
+            },
+            {
+                type: 'category',
+                gridIndex: 1,
+                // data: data.categoryData,
+                data: [],
+                scale: true,
+                boundaryGap: true,
+                axisLine: {onZero: false},
+                axisTick: {show: false},
+                splitLine: {show: false},
+                axisLabel: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax'
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                position: 'right',
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#3C3F41',
+                        type: 'dashed'
+                    }
+                }
+
+            },
+            {
+                scale: true,
+                gridIndex: 1,
+                splitNumber: 2,
+                axisLabel: {show: false},
+                axisLine: {show: false},
+                axisTick: {show: false},
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                xAxisIndex: [0, 1],
+                start: 70,
+                end: 100
+            },
+            {
+                show: true,
+                xAxisIndex: [0, 1],
+                type: 'slider',
+                top: '85%',
+                start: 70,
+                end: 100,
+                textStyle: {
+                    color: '#fff'
+                },
+                fillerColor: 'rgba(27,137,202,0.1)',
+                dataBackground: {
+                    lineStyle: {
+                        color: '#1EBBEE'
+                    },
+                    areaStyle: {
+                        color: '#fff'
+                    }
+
+                }
+            }
+        ],
+        series: [
+            {
+                name: '分K',
+                type: 'candlestick',
+                // data: data.values,
+                data: [],
+                itemStyle: {
+                    normal: {
+                        color: upColor,
+                        color0: downColor,
+                        borderColor: null,
+                        borderColor0: null
+                    }
+                },
+                tooltip: {
+                    formatter: function (param) {
+                        param = param[0];
+                        return [
+                            'Date: ' + param.name + '<hr size=1 style="margin: 3px 0">',
+                            'Open: ' + param.data[0] + '<br/>',
+                            'Close: ' + param.data[1] + '<br/>',
+                            'Lowest: ' + param.data[2] + '<br/>',
+                            'Highest: ' + param.data[3] + '<br/>'
+                        ].join('');
+                    }
+                }
+            },
+            {
+                name: 'MA5',
+                type: 'line',
+                // data: calculateMA(5, data),
+                data: [],
+                symbol: 'none',
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        color: ma_color[0]
+                    },
+                }
+            },
+            {
+                name: 'MA10',
+                type: 'line',
+                symbol: 'none',
+
+                // data: calculateMA(10, data),
+                data: [],
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        color: ma_color[1]
+                    },
+                }
+            },
+            {
+                name: 'MA20',
+                type: 'line',
+                symbol: 'none',
+
+                // data: calculateMA(20, data),
+                data: [],
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        color: ma_color[2],
+                    }
+                }
+            },
+            {
+                name: 'MA30',
+                type: 'line',
+                symbol: 'none',
+                // data: calculateMA(30, data),
+                data: [],
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        color: ma_color[3],
+                    }
+                }
+            },
+            {
+                name: 'Volume',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                // data: data.volumes,
+                data: [],
+                itemStyle: {
+                    normal: {
+                        color: function (params) {
+                            var index = params.dataIndex;
+                            var close_price = Data.values[index][1];
+                            var open_price = Data.values[index][0];
+                            if (close_price >= open_price)
+                                return upColor;
+                            else
+                                return downColor;
+                        },
+                        borderColor: null,
+                        borderColor0: null
+                    }
+                },
+
+            }
+        ]
+    }, true);
+    myChart.showLoading();
+
+    function render(data) {
+        if(data.length<=0){
+            return
+        }
+        myChart.hideLoading();
+        myChart.setOption({
+            xAxis: [
+                {
+                    type: 'category',
+                    data: data.categoryData,
+                },
+                {
+                    type: 'category',
+                    gridIndex: 1,
+                    data: data.categoryData,
+                }
+            ],
+            series: [
+                {
+                    name: '分K',
+                    data: data.values,
+                },
+                {
+                    name: 'MA5',
+                    data: calculateMA(5, data),
+                },
+                {
+                    name: 'MA10',
+                    data: calculateMA(10, data),
+
+                },
+                {
+                    name: 'MA20',
+                    data: calculateMA(20, data)
+                },
+                {
+                    name: 'MA30',
+                    data: calculateMA(30, data)
+                },
+                {
+                    name: 'Volume',
+                    data: data.volumes
+                }
+            ]
+        })
+    }
+
+
+</script>
+<script type="text/javascript">
+
+    window.onload = function () {
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            //Get Qt interact object
+            var signal = channel.objects.bee_signal;
+            //Web use the interface of Qt
+            signal.get_history_data(function (str) {
+
+                var history_json = JSON.parse(str);
+                for (var i in history_json) {
+                    Data = splitData(history_json[i])
+                }
+                render(Data);
+            });
+
+            //Web connect the Qt signal, then Qt can call "function" function
+            signal.qt_to_js.connect(function (str) {
+                var data = JSON.parse(str);
+                for (var i in data) {
+                    var c = splitData([data[i]]);//传入的数据需要为 [ ['2019-2',333,333,333...] ]
+                    for (var j in c) {
+                        Data[j].push.apply(Data[j], c[j]);
+                    }
+                }
+                render(Data);
+            });
+
+            signal.qt_to_js_reload.connect(function (str) {
+                //为了不刷新整个页面
+            })
+        })
+    };
+
+</script>
+</body>
+</html>

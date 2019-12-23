@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
-    <height>450</height>
+    <width>315</width>
+    <height>368</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -35,47 +35,28 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
+  <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="title">
-       <property name="text">
-        <string>🌈ctpbee桌面端</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QToolButton" name="min_btn">
-       <property name="text">
-        <string>—</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="close_btn">
-       <property name="text">
-        <string>×</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QLabel" name="label">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">image: url(:/menu/images/bee_temp_grey.png);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </item>
    <item>
-    <widget class="QTabWidget" name="login_tab">
+    <widget class="QToolBox" name="login_tab">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>100</horstretch>
@@ -84,143 +65,36 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>11</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>
-     <property name="tabPosition">
-      <enum>QTabWidget::North</enum>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
      </property>
-     <property name="tabShape">
-      <enum>QTabWidget::Rounded</enum>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
      </property>
-     <property name="currentIndex">
+     <property name="lineWidth">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="login1">
-      <attribute name="title">
-       <string>快速登录</string>
+     <widget class="QWidget" name="login_tabPage1">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>272</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <attribute name="label">
+       <string>普通登录</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout">
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="label">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>100</height>
-          </size>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">image: url(:/menu/images/bee_temp_grey.png);</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>用户名</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="userid_1">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="placeholderText">
-          <string>USERNAME</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>密  码</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="password_1">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="echoMode">
-          <enum>QLineEdit::Password</enum>
-         </property>
-         <property name="placeholderText">
-          <string>PASSWORD</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>接  口</string>
-         </property>
-        </widget>
-       </item>
+      <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0">
        <item row="3" column="1">
-        <widget class="QComboBox" name="interface_1">
+        <widget class="QComboBox" name="interface_sim">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -236,7 +110,7 @@
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -253,16 +127,79 @@
          </item>
         </widget>
        </item>
+       <item row="5" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QCheckBox" name="remember_me_sim">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>记住我</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>密  码</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>用户名</string>
+         </property>
+        </widget>
+       </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_5">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
           <string>前  置</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="userid_sim">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="editable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -277,7 +214,7 @@
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -294,69 +231,63 @@
          </item>
         </widget>
        </item>
-       <item row="7" column="0" colspan="2">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QPushButton" name="sign_in_btn_1">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>登   录</string>
-           </property>
-           <property name="checkable">
-            <bool>false</bool>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="password_sim">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
        </item>
-       <item row="6" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
+         <property name="text">
+          <string>接  口</string>
          </property>
-        </spacer>
+        </widget>
        </item>
       </layout>
+      <zorder>label_2</zorder>
+      <zorder>label_3</zorder>
+      <zorder>label_4</zorder>
+      <zorder>interface_sim</zorder>
+      <zorder>label_5</zorder>
+      <zorder>other</zorder>
+      <zorder>userid_sim</zorder>
+      <zorder>password_sim</zorder>
+      <zorder></zorder>
      </widget>
-     <widget class="QWidget" name="login2">
-      <attribute name="title">
+     <widget class="QWidget" name="login_tabPage2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>272</width>
+        <height>270</height>
+       </rect>
+      </property>
+      <attribute name="label">
        <string>详细登录</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_2">
+      <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <widget class="QLabel" name="label_6">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -365,29 +296,14 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="userid_2">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="baseSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
+        <widget class="QComboBox" name="userid">
          <property name="font">
           <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <pointsize>8</pointsize>
           </font>
          </property>
-         <property name="placeholderText">
-          <string>USERNAME</string>
+         <property name="editable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -395,8 +311,9 @@
         <widget class="QLabel" name="label_7">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -405,7 +322,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="password_2">
+        <widget class="QLineEdit" name="password">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -418,7 +335,7 @@
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -427,7 +344,7 @@
           <enum>QLineEdit::Password</enum>
          </property>
          <property name="placeholderText">
-          <string>PASSWORD</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -435,8 +352,9 @@
         <widget class="QLabel" name="label_8">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -445,35 +363,14 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLineEdit" name="brokerid_2">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
+        <widget class="QComboBox" name="brokerid">
          <property name="font">
           <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <pointsize>8</pointsize>
           </font>
          </property>
-         <property name="accessibleName">
-          <string/>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="inputMethodHints">
-          <set>Qt::ImhNone</set>
-         </property>
-         <property name="echoMode">
-          <enum>QLineEdit::Normal</enum>
-         </property>
-         <property name="placeholderText">
-          <string>BROKERID</string>
+         <property name="editable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -481,8 +378,9 @@
         <widget class="QLabel" name="label_9">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -491,23 +389,14 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QLineEdit" name="auth_code_2">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
+        <widget class="QComboBox" name="auth_code">
          <property name="font">
           <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <pointsize>8</pointsize>
           </font>
          </property>
-         <property name="placeholderText">
-          <string>AUTH_CODE</string>
+         <property name="editable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -515,8 +404,9 @@
         <widget class="QLabel" name="label_10">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -525,23 +415,14 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QLineEdit" name="appid_2">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
+        <widget class="QComboBox" name="appid">
          <property name="font">
           <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <pointsize>8</pointsize>
           </font>
          </property>
-         <property name="placeholderText">
-          <string>APPID</string>
+         <property name="editable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -549,8 +430,9 @@
         <widget class="QLabel" name="label_11">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -559,23 +441,14 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="td_address_2">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
+        <widget class="QComboBox" name="td_address">
          <property name="font">
           <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <pointsize>8</pointsize>
           </font>
          </property>
-         <property name="placeholderText">
-          <string>TD_ADDRESS</string>
+         <property name="editable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -583,8 +456,9 @@
         <widget class="QLabel" name="label_12">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -593,23 +467,14 @@
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="QLineEdit" name="md_address_2">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
+        <widget class="QComboBox" name="md_address">
          <property name="font">
           <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <pointsize>8</pointsize>
           </font>
          </property>
-         <property name="placeholderText">
-          <string>MD_ADDRESS</string>
+         <property name="editable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -617,8 +482,9 @@
         <widget class="QLabel" name="label_13">
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -627,7 +493,7 @@
         </widget>
        </item>
        <item row="7" column="1">
-        <widget class="QComboBox" name="interface_2">
+        <widget class="QComboBox" name="interface_">
          <property name="maximumSize">
           <size>
            <width>16777215</width>
@@ -654,21 +520,8 @@
          </item>
         </widget>
        </item>
-       <item row="8" column="0">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="8" column="1">
-        <widget class="QCheckBox" name="rember_me">
+        <widget class="QCheckBox" name="remember_me">
          <property name="maximumSize">
           <size>
            <width>16777215</width>
@@ -694,37 +547,63 @@
          </property>
         </widget>
        </item>
-       <item row="9" column="0" colspan="2">
-        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
-         <item>
-          <widget class="QPushButton" name="sign_in_btn_2">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>登    录</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
       </layout>
      </widget>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="sign_in_btn">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>登    录</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

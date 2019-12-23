@@ -1,18 +1,20 @@
 import json
+import os
 import webbrowser
 from datetime import datetime
 
 import pandas
-from PySide2.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot, QRegExp
-from PySide2.QtGui import QRegExpValidator
+from PySide2.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot, QRegExp, Qt, QUrl
+from PySide2.QtGui import QRegExpValidator, QDesktopServices
 from PySide2.QtWidgets import QWidget, QFileDialog, QMessageBox, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, \
-    QHeaderView
+    QHeaderView, QTableWidgetItem, QMenu
 
 from app.tip import TipDialog
-from app.ui import backtrack_qss
+from app.ui import qss
 from app.ui.ui_backtrack import Ui_Form
 from app.lib.global_var import G
 from ctpbee import Vessel, LooperApi
+from ctpbee import dynamic_loading_api
 
 
 class BacktrackrWorker(QRunnable):
@@ -25,19 +27,21 @@ class BacktrackrWorker(QRunnable):
         self.params = params
 
     def run(self):
-        try:
-            vessel = Vessel()
-            vessel.add_data(self.data)
-            vessel.add_strategy(self.strategy)
-            vessel.set_params({"looper": self.params,
-                               "strategy": {}
-                               })
-            vessel.run()
-            result = vessel.get_result(report=True)
-            error = ""
-        except Exception as e:
-            result = ""
-            error = str(e)
+        # try:
+        vessel = Vessel()
+        for i in self.data:
+            vessel.add_data(i)
+        for i in self.strategy:
+            vessel.add_strategy(i)
+        vessel.set_params({"looper": self.params,
+                           "strategy": {}
+                           })
+        vessel.run()
+        result = vessel.get_result(report=True)
+        error = ""
+        # except Exception as e:
+        #     result = ""
+        #     error = str(e)
         self.sig.emit({"name": self.name,
                        "url": result,
                        "error": error,
@@ -55,30 +59,43 @@ class BacktrackWidget(QWidget, Ui_Form):
     def __init__(self, mainwindow):
         super(self.__class__, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(backtrack_qss)
+        self.setStyleSheet(qss)
         self.thread_pool = QThreadPool()
         self.init_ui()
         self.sig = BacktrackSig()
         self.sig.report_sig.connect(self.report_slot)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tableWidget.verticalHeader().setVisible(False)  # 垂直表头不可见
+        self.size_map_table.verticalHeader().setVisible(False)  # 垂直表头不可见
         self.tableWidget.hide()
         # validate
         rx = QRegExp(r"[0-9]{1,7}\.[0-9]{1,6}")
+        self.initial_capital.setValidator(QRegExpValidator(rx, self))
         self.commission.setValidator(QRegExpValidator(rx, self))
         self.close_commission.setValidator(QRegExpValidator(rx, self))
         self.yesterday_commission.setValidator(QRegExpValidator(rx, self))
         self.today_commission.setValidator(QRegExpValidator(rx, self))
+        self.slippage_sell.setValidator(QRegExpValidator(rx, self))
+        self.slippage_buy.setValidator(QRegExpValidator(rx, self))
+        self.slippage_cover.setValidator(QRegExpValidator(rx, self))
+        self.slippage_short.setValidator(QRegExpValidator(rx, self))
         # btn
+        self.add_sm_btn.clicked.connect(self.add_sm_slot)
         self.add_data_btn.clicked.connect(self.add_data_slot)
         self.add_backtrack_btn.clicked.connect(self.add_backtrack_slot)
         self.run_btn.clicked.connect(self.run_slot)
+        # 右键菜单
+        self.size_map_table.setContextMenuPolicy(Qt.CustomContextMenu)  ######允许右键产生子菜单
+        self.size_map_table.customContextMenuRequested.connect(self.sm_generate_menu)  ####右键菜单
+        self.data_list.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.data_list.customContextMenuRequested.connect(self.data_generate_menu)
+        self.backtrack_list.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.backtrack_list.customContextMenuRequested.connect(self.bt_generate_menu)
         # var
         self.counter = 1
         self.table_index = 0
         self.name = None
-        self.ext = None
-        self.data = None
+        self.sm_pool = set()
         #
 
     def init_ui(self):
@@ -88,53 +105,31 @@ class BacktrackWidget(QWidget, Ui_Form):
 
     def add_data_slot(self):
         filetypes = ["Text files(*.json)", "Text files(*.csv)"]
-        filename, ft = QFileDialog.getOpenFileName(self, '选择数据文件', '', ";;".join(filetypes))
+        filename, ft = QFileDialog.getOpenFileName(self, '选择数据文件', '/', ";;".join(filetypes))
         if not filename:
             return
-        self.data_label.setText(filename)
-        i = filetypes.index(ft)
-
-        def resolve_json(data):
-            data['datetime'] = datetime.strptime(data['datetime'], "%Y-%m-%d %H:%M:%S.%f")
-            return data
-
-        if i == 0:  # json
-            try:
-                with open(filename, 'r') as fp:
-                    data = json.load(fp)
-                    self.data = list(map(resolve_json, data['data']))
-            except Exception as e:
-                QMessageBox.information(self, '提示', str(e))
-                return
-        elif i == 1:  # csv
-            try:
-                with open(filename, 'r') as fp:
-                    data = pandas.read_csv(fp)
-                    self.data = data.to_dict("index")
-            except Exception as e:
-                QMessageBox.information(self, '提示', str(e))
-                return
-        TipDialog("传入数据成功")
+        self.data_list.addItem(filename)
 
     def add_backtrack_slot(self):
-        filename, _ = QFileDialog.getOpenFileName(self, '选择回测API', '', 'Python files(*.py)')
+        filename, _ = QFileDialog.getOpenFileName(self, '选择回测API', '/', 'Python files(*.py)')
         if not filename:
             return
-        self.backtrack_label.setText(filename)
-        from ctpbee import dynamic_loading_api
-        try:
-            with open(filename, 'r') as fp:
-                self.ext = dynamic_loading_api(fp)
-                if not isinstance(self.ext, LooperApi):
-                    raise Exception(f"你的回测API类型出错,期望LooperApi,你的{type(self.ext)}")
-        except Exception as e:
-            QMessageBox.information(self, '提示', str(e))
+        self.backtrack_list.addItem(filename)
+
+    def add_sm_slot(self):
+        local_symbol = self.local_symbol_box.currentText()
+        if local_symbol in self.sm_pool:
             return
-        TipDialog("传入回测API成功")
+        self.sm_pool.add(local_symbol)
+        self.size_map_table.insertRow(0)
+        self.size_map_table.setItem(0, 0, QTableWidgetItem(local_symbol))
+        self.size_map_table.setItem(0, 1, QTableWidgetItem('0'))
 
     def get_params(self):
+        s_m = {self.size_map_table.item(i, 0).text(): int(self.size_map_table.item(i, 1).text()) for i in
+               range(self.size_map_table.rowCount())}
         par = {"initial_capital": float(self.initial_capital.text()),
-               "size_map": {self.local_symbol_box.currentText(): int(self.size_map.text())},
+               "size_map": s_m,
                "deal_pattern": self.deal_pattern.currentText(),
                "close_pattern": self.close_pattern.currentText(),
                "commission": float(self.commission.text()),
@@ -148,35 +143,76 @@ class BacktrackWidget(QWidget, Ui_Form):
                }
         return par
 
+    def get_data(self):
+        data = []
+        for row in range(self.data_list.count()):
+            path = self.data_list.item(row).text()
+            suffix = os.path.splitext(path)[-1]
+            if suffix == '.json':  # json
+                with open(path, 'r') as fp:
+                    raw = json.load(fp)['data']
+                local_symbol = raw[0].get('local_symbol')
+            elif suffix == '.csv':  # csv
+                with open(path, 'r') as fp:
+                    raw = pandas.read_csv(fp)
+                raw = raw.to_dict(orient='index')
+                local_symbol = raw.get('local_symbol')
+            else:
+                raise Exception(f"未知文件类型\n{path}")
+            if not local_symbol:
+                raise KeyError(f'未包含local_symbol\n{path}')
+            if local_symbol not in self.sm_pool:
+                raise Exception(f"size_map未包含{local_symbol},而data文件中含有")
+            data.append(raw)
+        return data
+
+    def get_ext(self):
+        ext = []
+        for row in range(self.backtrack_list.count()):
+            path = self.backtrack_list.item(row).text()
+            with open(path, 'r') as fp:
+                ext_ = dynamic_loading_api(fp)
+                if not isinstance(ext_, LooperApi):
+                    raise TypeError(f"你的回测API类型出错,期望LooperApi,你的{type(ext_)}\n{path}")
+                ext.append(ext_)
+        return ext
+
     def params_zn(self):
         zn_map = {"initial_capital": "初始资金",
-                  "size_map": "大小",
-                  "deal_pattern": "交易模式",
-                  "close_pattern": "闭合模式",
+                  # "size_map": "合约数量乘数",
+                  "deal_pattern": "成交模式",
+                  "close_pattern": "优先平仓模式",
                   "commission": "手续费",
                   "today_commission": "平今手续费",
                   "yesterday_commission": "平昨手续费",
                   "close_commission": "平仓手续费",
-                  "slippage_sell": "卖滑点",
-                  "slippage_cover": "复合滑点",
-                  "slippage_buy": "买滑点",
+                  "slippage_sell": "平空头滑点",
+                  "slippage_cover": "平多头滑点",
+                  "slippage_buy": "买多滑点",
                   "slippage_short": "卖空滑点",
                   }
         for en, zn in zn_map.items():
             getattr(self, f"{en}_label").setText(f"{zn}\n{en}")
 
     def run_slot(self):
-        if not self.data:
+        if self.data_list.count() <= 0:
             TipDialog("还未传入数据")
             return
-        if not self.ext:
+        if self.backtrack_list.count() <= 0:
             TipDialog("还未传入回测API")
             return
-        symbol = self.local_symbol_box.currentText()
-        self.name = f"回测{self.counter} {symbol}"
-        self.thread_pool.start(
-            BacktrackrWorker(name=self.name, sig=self.sig.report_sig, data=self.data, strategy=self.ext,
-                             params=self.get_params()))
+        if self.size_map_table.rowCount() <= 0:
+            TipDialog("还未选择size_map")
+            return
+        self.name = f"回测{self.counter} {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        try:
+            worker = BacktrackrWorker(name=self.name, sig=self.sig.report_sig, data=self.get_data(),
+                                      strategy=self.get_ext(),
+                                      params=self.get_params())
+        except Exception as e:
+            QMessageBox.information(self, '提示', str(e))
+            return
+        self.thread_pool.start(worker)
         self.counter += 1
 
     @Slot(dict)
@@ -191,6 +227,60 @@ class BacktrackWidget(QWidget, Ui_Form):
             self.tableWidget.insertRow(self.table_index)
             self.tableWidget.setCellWidget(self.table_index, 0, open_btn)
             self.table_index += 1
+
+    def sm_generate_menu(self, pos):
+        row_num = -1
+        for i in self.size_map_table.selectionModel().selection().indexes():
+            row_num = i.row()
+        if row_num < 0:
+            return
+        menu = QMenu()
+        del_item = menu.addAction("移除")
+        delall_item = menu.addAction("移除所有")
+        action = menu.exec_(self.size_map_table.mapToGlobal(pos))
+        if action == del_item:
+            local_symbol = self.size_map_table.item(row_num, 0).text()
+            sm = self.size_map_table.item(row_num, 1).text()
+            self.sm_pool[local_symbol].remove(sm)
+            self.size_map_table.removeRow(row_num)
+        elif action == delall_item:
+            self.size_map_table.setRowCount(0)
+
+    def data_generate_menu(self, pos):
+        row_num = -1
+        for i in self.data_list.selectionModel().selection().indexes():
+            row_num = i.row()
+        if row_num < 0:
+            return
+        menu = QMenu()
+        open_item = menu.addAction("打开文件所在位置")
+        del_item = menu.addAction("移除")
+        delall_item = menu.addAction("移除所有")
+        action = menu.exec_(self.data_list.mapToGlobal(pos))
+        if action == del_item:
+            self.data_list.takeItem(row_num)
+        elif action == delall_item:
+            self.data_list.clear()
+        elif action == open_item:
+            QDesktopServices.openUrl(QUrl("file:" + os.path.dirname(self.data_list.item(row_num).text())))
+
+    def bt_generate_menu(self, pos):
+        row_num = -1
+        for i in self.backtrack_list.selectionModel().selection().indexes():
+            row_num = i.row()
+        if row_num < 0:
+            return
+        menu = QMenu()
+        open_item = menu.addAction("打开文件所在位置")
+        del_item = menu.addAction("移除")
+        delall_item = menu.addAction("移除所有")
+        action = menu.exec_(self.backtrack_list.mapToGlobal(pos))
+        if action == del_item:
+            self.backtrack_list.takeItem(row_num)
+        elif action == delall_item:
+            self.backtrack_list.clear()
+        elif action == open_item:
+            QDesktopServices.openUrl(QUrl("file:" + os.path.dirname(self.backtrack_list.item(row_num).text())))
 
 
 class QsPushButton(QPushButton):

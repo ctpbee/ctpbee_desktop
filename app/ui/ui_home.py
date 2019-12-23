@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'home.ui',
 # licensing of 'home.ui' applies.
 #
-# Created: Tue Dec 10 16:57:35 2019
+# Created: Mon Dec 23 19:28:32 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -69,6 +69,13 @@ class Ui_Home(object):
         self.issues_btn.setFont(font)
         self.issues_btn.setObjectName("issues_btn")
         self.horizontalLayout.addWidget(self.issues_btn)
+        self.quit_btn = QtWidgets.QToolButton(Home)
+        self.quit_btn.setText("")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/menu/icon/quit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.quit_btn.setIcon(icon1)
+        self.quit_btn.setObjectName("quit_btn")
+        self.horizontalLayout.addWidget(self.quit_btn)
         self.gridLayout_2.addLayout(self.horizontalLayout, 3, 6, 1, 1)
         self.tableWidget = QtWidgets.QTableWidget(Home)
         self.tableWidget.setMinimumSize(QtCore.QSize(0, 0))
@@ -111,3 +118,4 @@ class Ui_Home(object):
         self.tableWidget.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Home", "key", None, -1))
         self.tableWidget.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Home", "value", None, -1))
 
+import app.resource.mainwindow_rc

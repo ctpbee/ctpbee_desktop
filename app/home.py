@@ -32,6 +32,7 @@ class HomeWidget(QWidget, Ui_Home):
         self.issues_btn.clicked.connect(self.issues_slot)
         self.doc_btn.clicked.connect(self.doc_slot)
         self.community_btn.clicked.connect(self.community_slot)
+        self.quit_btn.clicked.connect(mainwindow.quit)
         # account
         self.row = 0
         self.tableWidget.horizontalHeader().setVisible(False)

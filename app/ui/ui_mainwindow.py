@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'mainwindow.ui',
 # licensing of 'mainwindow.ui' applies.
 #
-# Created: Fri Dec 20 12:28:12 2019
+# Created: Mon Dec 23 19:28:46 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -66,19 +66,8 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1016, 26))
-        self.menuBar.setObjectName("menuBar")
-        self.menux = QtWidgets.QMenu(self.menuBar)
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/menu/icon/quit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.menux.setIcon(icon1)
-        self.menux.setObjectName("menux")
-        MainWindow.setMenuBar(self.menuBar)
         self.quit_action = QtWidgets.QAction(MainWindow)
         self.quit_action.setObjectName("quit_action")
-        self.menux.addAction(self.quit_action)
-        self.menuBar.addAction(self.menux.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

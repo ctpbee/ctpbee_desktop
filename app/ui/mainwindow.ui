@@ -112,24 +112,6 @@
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1016</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menux">
-    <property name="icon">
-     <iconset resource="../resource/mainwindow.qrc">
-      <normaloff>:/menu/icon/quit.png</normaloff>:/menu/icon/quit.png</iconset>
-    </property>
-    <addaction name="quit_action"/>
-   </widget>
-   <addaction name="menux"/>
-  </widget>
   <action name="quit_action">
    <property name="text">
     <string>退出应用</string>

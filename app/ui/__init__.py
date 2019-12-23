@@ -187,7 +187,7 @@ QTabWidget::pane,QToolBox::pane{
 
 QTabBar::tab,QToolBox::tab {
      border:1px solid #1b89ca;
-     border-radius:2px; 
+     border-radius:5px; 
      margin-right:5px;
      min-width: 100px;
      padding: 5px;
@@ -198,7 +198,6 @@ QTabBar::tab:selected,QToolBox::tab:selected{
     background:#1b89ca;
 }
 QTabBar::tab:！selected,QToolBox::tab:!selected{
-    margin-top:5px;
 }
 
 #local_symbol_zn{

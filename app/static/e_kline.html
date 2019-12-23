@@ -46,6 +46,8 @@
         };
     }
 
+    ma_color = ['#4472C5', '#ED7C30', '#80FF80', '#FF8096', '#800080'];
+
     function calculateMA(dayCount, data) {
         var result = [];
         for (var i = 0, len = data.values.length; i < len; i++) {
@@ -75,8 +77,9 @@
             color: "#fff"
         },
         animation: true,
+        color: ma_color,
         legend: {
-            top : 10,
+            top: 10,
             left: 'center',
             textStyle: {
                 color: "#fff"
@@ -107,6 +110,11 @@
                 },
                 brush: {
                     type: ['lineX', 'clear']
+                },
+                dataView: {
+                    backgroundColor:'#2B2B2B',
+                    textareaColor:'#2B2B2B',
+                    textColor:'#fff'
                 }
             }
         },
@@ -223,7 +231,7 @@
                         color: '#1EBBEE'
                     },
                     areaStyle: {
-                        color: '#9FDABF'
+                        color: '#fff'
                     }
 
                 }
@@ -264,7 +272,9 @@
                 symbol: 'none',
                 smooth: true,
                 lineStyle: {
-                    normal: {opacity: 0.5}
+                    normal: {
+                        color: ma_color[0]
+                    },
                 }
             },
             {
@@ -276,7 +286,9 @@
                 data: [],
                 smooth: true,
                 lineStyle: {
-                    normal: {opacity: 0.5}
+                    normal: {
+                        color: ma_color[1]
+                    },
                 }
             },
             {
@@ -288,7 +300,9 @@
                 data: [],
                 smooth: true,
                 lineStyle: {
-                    normal: {opacity: 0.5}
+                    normal: {
+                        color: ma_color[2],
+                    }
                 }
             },
             {
@@ -299,7 +313,9 @@
                 data: [],
                 smooth: true,
                 lineStyle: {
-                    normal: {opacity: 0.5}
+                    normal: {
+                        color: ma_color[3],
+                    }
                 }
             },
             {
@@ -307,14 +323,33 @@
                 type: 'bar',
                 xAxisIndex: 1,
                 yAxisIndex: 1,
-                // data: data.volumes
+                // data: data.volumes,
                 data: [],
+                itemStyle: {
+                    normal: {
+                        color: function (params) {
+                            var index = params.dataIndex;
+                            var close_price = Data.values[index][1];
+                            var open_price = Data.values[index][0];
+                            if (close_price >= open_price)
+                                return upColor;
+                            else
+                                return downColor;
+                        },
+                        borderColor: null,
+                        borderColor0: null
+                    }
+                },
+
             }
         ]
     }, true);
     myChart.showLoading();
 
     function render(data) {
+        if(data.length<=0){
+            return
+        }
         myChart.hideLoading();
         myChart.setOption({
             xAxis: [

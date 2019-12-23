@@ -60,7 +60,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.backtrack_btn.clicked.connect(self.backtrack_handle)
         self.kline_btn.clicked.connect(self.kline_handle)
         #
-        self.menuBar.triggered.connect(self.menu_triggered)
+        # self.menuBar.triggered.connect(self.menu_triggered)
         # widgets
         self.map_ = []
         self.home_widget = None

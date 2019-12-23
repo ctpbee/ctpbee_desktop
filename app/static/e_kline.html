@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            padding: 2px 0 0 2px;
+            background-color: #2B2B2B;
+        }
 
+    </style>
 </head>
 <body>
-<div id="main" style="width: 100%;height:400px;border: 1px solid #2B2B2B"></div>
+<div id="main" style="width: 100%;height:100%;border: 1px solid #2B2B2B"></div>
 <script src="./js/jquery.js"></script>
 <script src="./js/jquery.mousewheel.js"></script>
 <script src="./js/qwebchannel.js"></script>
@@ -15,8 +25,8 @@
 
 <script type="text/javascript">
 
-    var upColor = '#00da3c';
-    var downColor = '#ec0000';
+    var upColor = '#187300';
+    var downColor = '#FF0000';
     var Data = [];
 
     function splitData(rawData) {
@@ -52,45 +62,43 @@
         return result;
     }
 
-    var myChart = echarts.init(document.getElementById('main'));
-    window.onresize = function () {
-        myChart.resize();
 
+    var Container = document.getElementById('main')
+    var myChart = echarts.init(Container);
+
+    window.onresize = () => {
+        myChart.resize(window.innerWidth, window.innerHeight);
     };
-
-
     myChart.setOption(option = {
-        backgroundColor: '#fff',
-        animation: false,
+        backgroundColor: '#2B2B2B',
+        textStyle: {
+            color: "#fff"
+        },
+        animation: true,
         legend: {
             bottom: 10,
             left: 'center',
-            data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
+            textStyle: {
+                color: "#fff"
+            },
+            data: ['分K', 'MA5', 'MA10', 'MA20', 'MA30']
         },
         tooltip: {
             trigger: 'axis',
             axisPointer: {
                 type: 'cross'
             },
-            backgroundColor: 'rgba(245, 245, 245, 0.8)',
             borderWidth: 1,
             borderColor: '#ccc',
             padding: 10,
-            textStyle: {
-                color: '#000'
-            },
             position: function (pos, params, el, elRect, size) {
                 var obj = {top: 10};
                 obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
                 return obj;
             }
-            // extraCssText: 'width: 170px'
         },
         axisPointer: {
             link: {xAxisIndex: 'all'},
-            label: {
-                backgroundColor: '#777'
-            }
         },
         toolbox: {
             feature: {
@@ -123,13 +131,13 @@
         },
         grid: [
             {
-                left: '10%',
-                right: '8%',
-                height: '50%'
+                left: '1%',
+                right: '10%',
+                height: '50%',
             },
             {
-                left: '10%',
-                right: '8%',
+                left: '1%',
+                right: '10%',
                 top: '63%',
                 height: '16%'
             }
@@ -140,7 +148,7 @@
                 // data: data.categoryData,
                 data: [],
                 scale: true,
-                boundaryGap: false,
+                boundaryGap: true,
                 axisLine: {onZero: false},
                 splitLine: {show: false},
                 splitNumber: 20,
@@ -156,7 +164,7 @@
                 // data: data.categoryData,
                 data: [],
                 scale: true,
-                boundaryGap: false,
+                boundaryGap: true,
                 axisLine: {onZero: false},
                 axisTick: {show: false},
                 splitLine: {show: false},
@@ -170,8 +178,17 @@
             {
                 scale: true,
                 splitArea: {
-                    show: true
+                    show: false
+                },
+                position :'right',
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#3C3F41',
+                        type: 'dashed'
+                    }
                 }
+
             },
             {
                 scale: true,
@@ -187,7 +204,7 @@
             {
                 type: 'inside',
                 xAxisIndex: [0, 1],
-                start: 98,
+                start: 70,
                 end: 100
             },
             {
@@ -195,13 +212,26 @@
                 xAxisIndex: [0, 1],
                 type: 'slider',
                 top: '85%',
-                start: 98,
-                end: 100
+                start: 70,
+                end: 100,
+                textStyle: {
+                    color: '#fff'
+                },
+                fillerColor: 'rgba(27,137,202,0.1)',
+                dataBackground: {
+                    lineStyle: {
+                        color: '#1EBBEE'
+                    },
+                    areaStyle: {
+                        color: '#9FDABF'
+                    }
+
+                }
             }
         ],
         series: [
             {
-                name: 'Dow-Jones index',
+                name: '分K',
                 type: 'candlestick',
                 // data: data.values,
                 data: [],
@@ -231,6 +261,7 @@
                 type: 'line',
                 // data: calculateMA(5, data),
                 data: [],
+                symbol: 'none',
                 smooth: true,
                 lineStyle: {
                     normal: {opacity: 0.5}
@@ -239,6 +270,8 @@
             {
                 name: 'MA10',
                 type: 'line',
+                symbol: 'none',
+
                 // data: calculateMA(10, data),
                 data: [],
                 smooth: true,
@@ -249,6 +282,8 @@
             {
                 name: 'MA20',
                 type: 'line',
+                symbol: 'none',
+
                 // data: calculateMA(20, data),
                 data: [],
                 smooth: true,
@@ -259,6 +294,8 @@
             {
                 name: 'MA30',
                 type: 'line',
+                symbol: 'none',
+
                 // data: calculateMA(30, data),
                 data: [],
                 smooth: true,
@@ -276,6 +313,7 @@
             }
         ]
     }, true);
+    myChart.showLoading();
 
     function render(data) {
         myChart.hideLoading();
@@ -293,7 +331,7 @@
             ],
             series: [
                 {
-                    name: 'Dow-Jones index',
+                    name: '分K',
                     data: data.values,
                 },
                 {
@@ -331,7 +369,6 @@
             var signal = channel.objects.bee_signal;
             //Web use the interface of Qt
             signal.get_history_data(function (str) {
-                myChart.showLoading();
 
                 var history_json = JSON.parse(str);
                 for (var i in history_json) {
@@ -342,28 +379,18 @@
 
             //Web connect the Qt signal, then Qt can call "function" function
             signal.qt_to_js.connect(function (str) {
-                myChart.showLoading();
-
                 var data = JSON.parse(str);
                 for (var i in data) {
-                    var c = splitData(data[i]);
-                    for (var i in c) {
-                        Data[i].push(c[i]);
+                    var c = splitData([data[i]]);//传入的数据需要为 [ ['2019-2',333,333,333...] ]
+                    for (var j in c) {
+                        Data[j].push.apply(Data[j],c[j]);
                     }
                 }
                 render(Data);
             });
-            signal.qt_to_js_reload.connect(function (str) {
-                myChart.showLoading();
 
-                var data = JSON.parse(str);
-                for (var i in data) {
-                    var c = splitData(data[i]);
-                    for (var i in c) {
-                        Data[i].push(c[i]);
-                    }
-                }
-                render(Data);
+            signal.qt_to_js_reload.connect(function (str) {
+                //为了不刷新整个页面
             })
         })
     };

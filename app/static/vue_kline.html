@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            padding: 2px 0 0 2px;
+            background-color: #2B2B2B;
+        }
+
+    </style>
+</head>
+<body>
+<div id="kline_container"></div>
+
+
+<script type="text/javascript" src="./js/qwebchannel.js"></script>
+<script src="./js/jquery.js"></script>
+<script src="./js/jquery.mousewheel.js"></script>
+<script src="./js/kline.js"></script>
+<script>
+    var Data = [];
+
+    var kline = new Kline({"width": window.innerWidth - 20, "height": window.innerHeight - 20},);
+
+    window.onresize = () => {
+        kline.resize(window.innerWidth - 20, window.innerHeight - 20);
+    }
+
+    function render() {
+        params = "";
+        kline.onRequestData = function onRequestData(params, callback) {
+            let data = {
+                "success": true,
+                "data": {
+                    "lines": Data,
+                    "trades": [],
+                    "depths": {
+                        "asks": [],
+                        "bids": []
+                    }
+                }
+            };
+            callback(data)
+        }
+        kline.draw();
+    }
+
+
+</script>
+<script type="text/javascript">
+
+    window.onload = function () {
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            //Get Qt interact object
+            var signal = channel.objects.bee_signal;
+            //Web use the interface of Qt
+            signal.get_history_data(function (str) {
+                var history_json = JSON.parse(str);
+                for (var i in history_json) {
+                    Data = history_json[i]
+                }
+                render();
+            });
+
+            //Web connect the Qt signal, then Qt can call "function" function
+            signal.qt_to_js.connect(function (str) {
+                var data = JSON.parse(str);
+                for (var i in data) {
+                    Data.push(data[i])
+                }
+                render();
+            });
+            signal.qt_to_js_reload.connect(function (str) {
+                var history_json = JSON.parse(str);
+                for (var i in history_json) {
+                    Data = history_json[i]
+                }
+                render();
+            })
+        })
+    };
+
+</script>
+
+</body>
+</html>

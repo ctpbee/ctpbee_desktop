@@ -204,9 +204,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pass
 
     def on_bar(self, ext, bar: BarData) -> None:
-        timestamp = round(bar.datetime.timestamp() * 1000)
-        info = [timestamp, bar.open_price, bar.high_price, bar.low_price,
-                bar.close_price, bar.volume]
+        """ vue kline"""
+        # timestamp = round(bar.datetime.timestamp() * 1000)
+        # info = [timestamp, bar.open_price, bar.high_price, bar.low_price,
+        #         bar.close_price, bar.volume]
+        """ echarts kline """
+        timestamp = bar.datetime.strftime("%Y/%m/%d %H:%M:%S")
+        info = [timestamp, bar.open_price, bar.close_price, bar.low_price,
+                bar.high_price, bar.volume]
+        #
         if bar.local_symbol == G.choice_local_symbol:
             data = {bar.local_symbol: info}
             self.kline_job.qt_to_js.emit(json.dumps(data))

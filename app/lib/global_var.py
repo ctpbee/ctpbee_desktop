@@ -79,7 +79,7 @@ class G(dict):
     choice_local_symbol = None  # 选择的合约，用于k线选择读取哪个合约数据
     order_tick_row_map = []  # 下单界面tick对应表格row
     # kline
-    kline_folder = "/static/kline.html"
+    kline_folder = "/static/e_kline.html"
     pool_done = False  # 对线程发送停止信号
     #
     db = None

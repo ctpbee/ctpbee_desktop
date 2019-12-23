@@ -102,6 +102,8 @@ QPushButton,QToolButton{
     background:#1b89ca;
     border-radius:2px;
     padding:5px;
+    min-height:20px
+
 }
 QPushButton:disabled,QToolButton:disabled{
     background:#3C3F41;
@@ -115,7 +117,9 @@ QPushButton:hover,QToolButton:hover{
 QLabel#title{
     color:#1b89ca;
     border-radius:5px;
-    padding:5px
+    padding:5px;
+    min-height:20px
+
 }
 
 
@@ -186,7 +190,9 @@ QTabBar::tab,QToolBox::tab {
      border-radius:2px; 
      margin-right:5px;
      min-width: 100px;
-     padding: 2px;
+     padding: 5px;
+     min-height:20px
+
  }
 QTabBar::tab:selected,QToolBox::tab:selected{
     background:#1b89ca;
@@ -210,7 +216,8 @@ QComboBox,QLineEdit,QDoubleSpinBox,QSpinBox{
     color:#ffffff;
     border:1px solid #1b89ca;
     border-radius:5px;
-    padding:5px
+    padding:5px;
+    min-height:20px
 }
 
 

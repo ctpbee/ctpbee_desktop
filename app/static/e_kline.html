@@ -76,7 +76,7 @@
         },
         animation: true,
         legend: {
-            bottom: 10,
+            top : 10,
             left: 'center',
             textStyle: {
                 color: "#fff"
@@ -133,7 +133,7 @@
             {
                 left: '1%',
                 right: '10%',
-                height: '50%',
+                height: '50%'
             },
             {
                 left: '1%',
@@ -180,7 +180,7 @@
                 splitArea: {
                     show: false
                 },
-                position :'right',
+                position: 'right',
                 splitLine: {
                     show: true,
                     lineStyle: {
@@ -295,7 +295,6 @@
                 name: 'MA30',
                 type: 'line',
                 symbol: 'none',
-
                 // data: calculateMA(30, data),
                 data: [],
                 smooth: true,
@@ -309,7 +308,7 @@
                 xAxisIndex: 1,
                 yAxisIndex: 1,
                 // data: data.volumes
-                data: []
+                data: [],
             }
         ]
     }, true);
@@ -383,7 +382,7 @@
                 for (var i in data) {
                     var c = splitData([data[i]]);//传入的数据需要为 [ ['2019-2',333,333,333...] ]
                     for (var j in c) {
-                        Data[j].push.apply(Data[j],c[j]);
+                        Data[j].push.apply(Data[j], c[j]);
                     }
                 }
                 render(Data);

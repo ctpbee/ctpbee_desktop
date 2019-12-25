@@ -47,8 +47,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.tableWidget.verticalHeader().setVisible(False)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.cellDoubleClicked.connect(self.cellDoubleClicked_slot)
-        #
-        self.tableWidget.verticalScrollBar().installEventFilter(self)
+
         # 渲染table
         self.obj = self.mainwindow.job
         self.obj.market_signal.connect(self.set_item_slot)
@@ -82,8 +81,7 @@ class MarketWidget(QWidget, Ui_Market):
             start_menu = menu.addMenu("我的收藏")
             for k, v in G.config.CONTRACT.items():
                 start_menu.addAction(' '.join([k, v]))
-            else:
-                star = start_menu.addAction("一键订阅")
+            star = start_menu.addAction("一键订阅")
             action = menu.exec_(self.tableWidget.mapToGlobal(pos))
             if action == star:
                 for i in G.config.CONTRACT:
@@ -138,16 +136,17 @@ class MarketWidget(QWidget, Ui_Market):
             self.tableWidget.setEnabled(True)
 
     def fresh_(self):
-        self.item_row = 0
-        self.tableWidget.setRowCount(0)
         G.subscribes.clear()
         G.market_tick_row_map.clear()
+        self.item_row = 0
+        self.tableWidget.setRowCount(0)
 
     @Slot()
     def unsubscribe_all_slot(self):
         for i in G.subscribes:
             res = current_app.market.unsubscribe(i.split('.')[0])
         self.fresh_()
+
 
     @Slot()
     def subscribe_slot(self):

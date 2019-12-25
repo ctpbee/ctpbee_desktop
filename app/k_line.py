@@ -30,8 +30,7 @@ class KlineWidget(QWidget, Ui_Form):
         self.setupUi(self)
         self.setStyleSheet(qss)
         self.mainwindow = mainwindow
-        # k-line
-        self.k_line_init()
+
         #
         for local_symbol in sorted(G.all_contracts):
             self.symbol_list.addItem(local_symbol)  # 添加下拉框
@@ -48,6 +47,8 @@ class KlineWidget(QWidget, Ui_Form):
         self.hide_btn.clicked.connect(self.hide_btn_slot)
         self.hide_btn_slot()  # 默认隐藏
         self.mainwindow.job.order_tick_signal.connect(self.set_tick_slot)
+        # k-line
+        self.k_line_init()
 
     def k_line_init(self):
         self.browser = QWebEngineView(self)
@@ -65,10 +66,8 @@ class KlineWidget(QWidget, Ui_Form):
         self.kline_layout.addWidget(self.browser)
 
     def k_line_reload(self):
-        self.browser.reload()
-        # from app.lib.helper import get_history_tick
-        # data = get_history_tick()
-        # self.mainwindow.kline_job.qt_to_js_reload.emit(data)
+        # self.browser.reload()
+        self.mainwindow.kline_job.qt_to_js_reload.emit()
 
     def symbol_change_slot(self):
         symbol = self.symbol_list.currentText()
@@ -126,3 +125,6 @@ class KlineWidget(QWidget, Ui_Form):
             self.tick_table.insertRow(row)
             self.tick_table.setItem(row, 0, QTableWidgetItem(str(tick_zn[k])))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
+
+
+

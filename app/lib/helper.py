@@ -58,7 +58,7 @@ def get_external():
 
 class KInterfaceObject(QObject):
     qt_to_js = Signal(str)  # channel only str  在js中connect
-    qt_to_js_reload = Signal(str)  # channel only str  在js中connect
+    qt_to_js_reload = Signal()  # channel only str  在js中connect
     js_to_qt = Signal(str)
 
     def __init__(self):

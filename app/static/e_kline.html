@@ -76,7 +76,7 @@
         textStyle: {
             color: "#fff"
         },
-        animation: true,
+        animation: false,
         color: ma_color,
         legend: {
             top: 10,
@@ -112,9 +112,9 @@
                     type: ['lineX', 'clear']
                 },
                 dataView: {
-                    backgroundColor:'#2B2B2B',
-                    textareaColor:'#2B2B2B',
-                    textColor:'#fff'
+                    backgroundColor: '#2B2B2B',
+                    textareaColor: '#2B2B2B',
+                    textColor: '#fff'
                 }
             }
         },
@@ -347,7 +347,7 @@
     myChart.showLoading();
 
     function render(data) {
-        if(data.length<=0){
+        if (data.length <= 0) {
             return
         }
         myChart.hideLoading();
@@ -401,16 +401,20 @@
         new QWebChannel(qt.webChannelTransport, function (channel) {
             //Get Qt interact object
             var signal = channel.objects.bee_signal;
+
             //Web use the interface of Qt
-            signal.get_history_data(function (str) {
+            function get_all() {
+                signal.get_history_data(function (str) {
 
-                var history_json = JSON.parse(str);
-                for (var i in history_json) {
-                    Data = splitData(history_json[i])
-                }
-                render(Data);
-            });
+                    var history_json = JSON.parse(str);
+                    for (var i in history_json) {
+                        Data = splitData(history_json[i])
+                    }
+                    render(Data);
+                });
+            }
 
+            get_all();
             //Web connect the Qt signal, then Qt can call "function" function
             signal.qt_to_js.connect(function (str) {
                 var data = JSON.parse(str);
@@ -423,8 +427,9 @@
                 render(Data);
             });
 
-            signal.qt_to_js_reload.connect(function (str) {
-                //为了不刷新整个页面
+            signal.qt_to_js_reload.connect(function () {
+
+                get_all()
             })
         })
     };

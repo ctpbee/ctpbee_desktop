@@ -81,8 +81,7 @@ class MarketWidget(QWidget, Ui_Market):
             start_menu = menu.addMenu("我的收藏")
             for k, v in G.config.CONTRACT.items():
                 start_menu.addAction(' '.join([k, v]))
-            else:
-                star = start_menu.addAction("一键订阅")
+            star = start_menu.addAction("一键订阅")
             action = menu.exec_(self.tableWidget.mapToGlobal(pos))
             if action == star:
                 for i in G.config.CONTRACT:

@@ -30,7 +30,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("ctpbee桌面端")
         # self.setWindowFlag(Qt.FramelessWindowHint)  # 去边框 可能会导致闪屏异常
-        self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.setStyleSheet(qss)
         self.animation_show()
         #

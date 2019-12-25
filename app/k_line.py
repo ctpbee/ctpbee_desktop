@@ -30,7 +30,6 @@ class KlineWidget(QWidget, Ui_Form):
         self.setupUi(self)
         self.setStyleSheet(qss)
         self.mainwindow = mainwindow
-
         #
         for local_symbol in sorted(G.all_contracts):
             self.symbol_list.addItem(local_symbol)  # 添加下拉框

@@ -110,8 +110,10 @@ QPushButton:disabled,QToolButton:disabled{
     color:#b6b6b6;
     border-radius:2px;
 }
-QPushButton:hover,QToolButton:hover{
-    border-bottom:1px solid #ff00dc;
+QRadioButton:hover,QPushButton:hover,QToolButton:hover{
+    border:1px solid #EDD714;
+    border-radius:5px;
+
 }
 
 QLabel#title{
@@ -144,7 +146,7 @@ QCheckBox{
     border-radius:5px;
 }
 
-QCheckBox::indicator:checked {
+QCheckBox:checked {
     color:#1b89ca;
  }
  

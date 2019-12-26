@@ -383,15 +383,8 @@ CLOSE_PATTERN</string>
       <attribute name="title">
        <string>历史数据源</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="1">
-        <widget class="QRadioButton" name="exter_btn">
-         <property name="text">
-          <string>接入外部数据</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
         <widget class="QRadioButton" name="local_btn">
          <property name="text">
           <string>本地数据</string>
@@ -400,6 +393,29 @@ CLOSE_PATTERN</string>
           <bool>true</bool>
          </property>
         </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="exter_btn">
+         <property name="text">
+          <string>接入外部数据</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="db_layout"/>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

@@ -40,6 +40,11 @@ def get_local():
     return data
 
 
+def create_db_conn(**kwargs):
+    from ctpbee import QADataSupport
+    G.db = QADataSupport(host=kwargs['host'])
+
+
 def get_external():
     try:
         info = []

@@ -33,6 +33,7 @@ class Config:
     #
     CONTRACT = {}  # 收藏合约
     LOCAL_SOURCE = True  # 本地数据源
+    WHICH_DB = ""
     DB_INFO = {}
 
     def back_default(self):

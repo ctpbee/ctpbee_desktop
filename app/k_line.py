@@ -3,7 +3,7 @@ import os
 from PySide2.QtCore import QUrl, Slot
 from PySide2.QtWebChannel import QWebChannel
 from PySide2.QtWebEngineWidgets import QWebEngineView
-from PySide2.QtWidgets import QWidget, QTableWidgetItem, QTableWidget
+from PySide2.QtWidgets import QWidget, QTableWidgetItem, QTableWidget, QMessageBox
 
 from app.lib.global_var import G
 from app.ui import qss
@@ -23,6 +23,8 @@ tick_zn = {
     "datetime": '时间'
 }
 
+contract_space = " " * 2
+
 
 class KlineWidget(QWidget, Ui_Form):
     def __init__(self, mainwindow):
@@ -32,7 +34,7 @@ class KlineWidget(QWidget, Ui_Form):
         self.mainwindow = mainwindow
         #
         for local_symbol in sorted(G.all_contracts):
-            self.symbol_list.addItem(local_symbol)  # 添加下拉框
+            self.symbol_list.addItem(local_symbol + contract_space + G.all_contracts[local_symbol])  # 添加下拉框
         self.symbol_list.currentIndexChanged.connect(self.symbol_change_slot)
         # table
         self.tick_table.setRowCount(0)
@@ -45,9 +47,24 @@ class KlineWidget(QWidget, Ui_Form):
         #
         self.hide_btn.clicked.connect(self.hide_btn_slot)
         self.hide_btn_slot()  # 默认隐藏
-        self.mainwindow.job.order_tick_signal.connect(self.set_tick_slot)
+        self.mainwindow.job.kline_tick_signal.connect(self.set_tick_slot)
+        self.ready_action()
+
+    def ready_action(self):
         # k-line
         self.k_line_init()
+        if not G.config.LOCAL_SOURCE:
+            from app.lib.helper import create_db_conn
+            info = G.config.DB_INFO.get(G.config.WHICH_DB)
+            if info:
+                create_db_conn(**info)
+            else:
+                replay = QMessageBox.information(self, '提示', '你选择了外部数据源但未指定.是否切换本地数据源',
+                                                 QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+                if replay == QMessageBox.Yes:
+                    G.config.LOCAL_SOURCE = True
+                    G.config.to_file()
+                    self.k_line_reload()
 
     def k_line_init(self):
         self.browser = QWebEngineView(self)
@@ -69,9 +86,11 @@ class KlineWidget(QWidget, Ui_Form):
         self.mainwindow.kline_job.qt_to_js_reload.emit()
 
     def symbol_change_slot(self):
-        symbol = self.symbol_list.currentText()
-        if symbol in G.all_contracts:
-            G.choice_local_symbol = symbol
+        text = self.symbol_list.currentText()
+        local_symbol = text.split(contract_space)[0]
+        name = text.split(contract_space)[1]
+        if local_symbol in G.all_contracts:
+            G.choice_local_symbol = local_symbol
             self.k_line_reload()
 
     def search_path(self, dir):
@@ -124,6 +143,3 @@ class KlineWidget(QWidget, Ui_Form):
             self.tick_table.insertRow(row)
             self.tick_table.setItem(row, 0, QTableWidgetItem(str(tick_zn[k])))
             self.tick_table.setItem(row, 1, QTableWidgetItem(str(tick[k])))
-
-
-

@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'config.ui',
 # licensing of 'config.ui' applies.
 #
-# Created: Sun Dec 22 19:40:16 2019
+# Created: Thu Dec 26 17:32:08 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -185,15 +185,20 @@ class Ui_Config(object):
         self.tabWidget.addTab(self.short_tab, "")
         self.history_data_tab = QtWidgets.QWidget()
         self.history_data_tab.setObjectName("history_data_tab")
-        self.gridLayout = QtWidgets.QGridLayout(self.history_data_tab)
-        self.gridLayout.setObjectName("gridLayout")
-        self.exter_btn = QtWidgets.QRadioButton(self.history_data_tab)
-        self.exter_btn.setObjectName("exter_btn")
-        self.gridLayout.addWidget(self.exter_btn, 1, 1, 1, 1)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.history_data_tab)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.local_btn = QtWidgets.QRadioButton(self.history_data_tab)
         self.local_btn.setChecked(True)
         self.local_btn.setObjectName("local_btn")
-        self.gridLayout.addWidget(self.local_btn, 1, 0, 1, 1)
+        self.verticalLayout_3.addWidget(self.local_btn)
+        self.exter_btn = QtWidgets.QRadioButton(self.history_data_tab)
+        self.exter_btn.setObjectName("exter_btn")
+        self.verticalLayout_3.addWidget(self.exter_btn)
+        self.db_layout = QtWidgets.QVBoxLayout()
+        self.db_layout.setObjectName("db_layout")
+        self.verticalLayout_3.addLayout(self.db_layout)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_3.addItem(spacerItem1)
         self.tabWidget.addTab(self.history_data_tab, "")
         self.verticalLayout_2.addWidget(self.tabWidget)
 
@@ -223,8 +228,8 @@ class Ui_Config(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.comm_tab), QtWidgets.QApplication.translate("Config", "常规", None, -1))
         self.default_btn.setText(QtWidgets.QApplication.translate("Config", "恢复默认", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.short_tab), QtWidgets.QApplication.translate("Config", "快捷键", None, -1))
-        self.exter_btn.setText(QtWidgets.QApplication.translate("Config", "接入外部数据", None, -1))
         self.local_btn.setText(QtWidgets.QApplication.translate("Config", "本地数据", None, -1))
+        self.exter_btn.setText(QtWidgets.QApplication.translate("Config", "接入外部数据", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.history_data_tab), QtWidgets.QApplication.translate("Config", "历史数据源", None, -1))
 
 import app.resource.mainwindow_rc

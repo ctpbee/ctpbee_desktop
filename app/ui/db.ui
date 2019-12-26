@@ -6,129 +6,178 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>467</width>
-    <height>430</height>
+    <width>428</width>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>DataBase</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>主机
-Host</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="3">
-    <widget class="QPushButton" name="close_btn">
-     <property name="text">
-      <string>关闭</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>密码
-Password</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>用户名
-User</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1">
-    <widget class="QPushButton" name="test_btn">
-     <property name="text">
-      <string>测试连接</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <widget class="QLabel" name="label_6">
-     <property name="text">
-      <string>保存密码
-save</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="1">
-    <widget class="QPushButton" name="ok_btn">
-     <property name="text">
-      <string>应用</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="3">
-    <widget class="QComboBox" name="savebox">
-     <item>
-      <property name="text">
-       <string>总是</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>从不</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>数据库
-Database</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>端口
-Port</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>URL
-Mongo</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="host"/>
-   </item>
-   <item row="0" column="3">
-    <widget class="QLineEdit" name="port"/>
-   </item>
    <item row="1" column="1">
-    <widget class="QLineEdit" name="user"/>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="password">
-     <property name="echoMode">
-      <enum>QLineEdit::Password</enum>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="database"/>
-   </item>
-   <item row="5" column="1" colspan="3">
-    <widget class="QLineEdit" name="url">
-     <property name="placeholderText">
-      <string>mongodb://user:password@host:port/</string>
-     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>可用</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QTableWidget" name="ava_table">
+         <column>
+          <property name="text">
+           <string>-</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>-</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>数据库配置</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>用户名
+User</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="host"/>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>端口
+Port</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>主机
+Host</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="4">
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="database"/>
+       </item>
+       <item row="7" column="1">
+        <widget class="QPushButton" name="test_btn">
+         <property name="text">
+          <string>测试连接</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>保存密码
+save</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="password">
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="user"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>名称
+name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" colspan="2">
+        <widget class="QLineEdit" name="name"/>
+       </item>
+       <item row="2" column="3">
+        <widget class="QLineEdit" name="port"/>
+       </item>
+       <item row="4" column="3">
+        <widget class="QComboBox" name="savebox">
+         <item>
+          <property name="text">
+           <string>总是</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>从不</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>URL
+Mongo</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>数据库
+Database</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="url"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>密码
+Password</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="3">
+        <widget class="QPushButton" name="ok_btn">
+         <property name="text">
+          <string>新增</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2" rowspan="2" colspan="2">
+        <widget class="QLabel" name="res">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

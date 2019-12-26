@@ -37,6 +37,8 @@ class ConfigDialog(QDialog, Ui_Config):
         self.setupUi(self)
         self.setStyleSheet(qss)
         self.mainwindow = mainwindow
+        self.db_widget = DBWidget(self)
+        self.db_layout.addWidget(self.db_widget)
         # btn
         self.default_btn.clicked.connect(self.default_sc_slot)
         self.submit_btn.clicked.connect(self.update_config)
@@ -48,12 +50,14 @@ class ConfigDialog(QDialog, Ui_Config):
         self.init_data_source()
 
     def local_btn_slot(self):
+        self.db_widget.hide()
         G.config.LOCAL_SOURCE = True
         G.config.to_file()
+        TipDialog("修改成功")
 
     def exter_btn_slot(self):
-        self.db_dialog = DBWidget(self)
-        self.db_dialog.show()
+        self.db_widget.show()
+        self.db_widget.load_available()
 
     def init_config(self):
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))
@@ -80,8 +84,10 @@ class ConfigDialog(QDialog, Ui_Config):
     def init_data_source(self):
         if G.config.LOCAL_SOURCE:
             self.local_btn.setChecked(True)
+            self.db_widget.hide()
         else:
             self.exter_btn.setChecked(True)
+            self.db_widget.show()
 
     def default_sc_slot(self):
         G.config.back_default()

@@ -33,7 +33,7 @@ class Config:
     #
     CONTRACT = {}  # 收藏合约
     LOCAL_SOURCE = True  # 本地数据源
-
+    DB_INFO = {}
 
     def back_default(self):
         self.SHORTCUT = deepcopy(default_shortcut)
@@ -69,6 +69,7 @@ class G(dict):
     all_contracts = {}  # 所有合约
     subscribes = {}  # 订阅合约
     market_tick_row_map = []  # 合约对应表格 row
+    ticks = {}  # 最新推送的所有订阅合约tick
     # account
     current_account = None  # 当前账户
     user_path = None  # 当前账户路径

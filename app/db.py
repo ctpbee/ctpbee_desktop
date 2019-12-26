@@ -27,6 +27,15 @@ class DBWidget(QDialog, Ui_DataBase):
         self.host.setText('localhost')
         self.port.setText('27017')
         self.url.setPlaceholderText("mongodb://[user:password@]host:port/database")
+        self.load_info()
+
+    def load_info(self):
+        for k, v in G.config.DB_INFO.items():
+            w = getattr(self, k)
+            if k == 'password':
+                w.setText(len(v) * "*")
+            else:
+                w.setText(v)
 
     def textChanged_slot(self):
         host = self.host.text()
@@ -47,11 +56,9 @@ class DBWidget(QDialog, Ui_DataBase):
             url = self.url.text().replace("*" * len(password), password)
             client = MongoClient(url, serverSelectionTimeoutMS=3000,
                                  socketTimeoutMS=3000)
-            print(client.list_database_names())
             db = client[self.database.text()]
-            print(db.list_collection_names())
-            self.check_res = True
             QMessageBox.information(self, '提示', 'connect success!', QMessageBox.Ok, QMessageBox.Ok)
+            self.check_res = True
         except Exception as e:
             self.check_res = False
             QMessageBox.information(self, '提示', str(e), QMessageBox.Ok, QMessageBox.Ok)
@@ -61,8 +68,11 @@ class DBWidget(QDialog, Ui_DataBase):
         if self.check_res is None:
             self.test_btn_slot()
         elif self.check_res is True:
-            G.db = self.db
+            from ctpbee import QADataSupport
+            G.db = QADataSupport(host=self.host.text())
             G.config.LOCAL_SOURCE = False
+            G.config.DB_INFO = dict(host=self.host.text(), user=self.user.text(), password=self.password.text(),
+                                    database=self.database.text(), port=self.port.text())
             G.config.to_file()
             self.close()
 

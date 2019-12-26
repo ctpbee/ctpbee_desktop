@@ -41,18 +41,17 @@ def get_local():
 
 
 def get_external():
-    info = []
     try:
-        data = G.db[G.choice_local_symbol].find()
+        info = []
+        data = G.db.get_future_min(G.choice_local_symbol.upper(), start="2019-9-1 10:00:10", end="2019-10-1 10:00:10")
         if data:
             for item in data:
                 timestamp = item['datetime']
-                if isinstance(timestamp, datetime):
-                    timestamp = round(timestamp.timestamp() * 1000)
                 info.append([timestamp, item['open_price'], item['high_price'], item['low_price'],
-                             item['close_price'], item['volume']])
+                             item['close_price'], item.get('volume',item['amount'])])
     except Exception as e:
         print(e)
+        info = []
     return json.dumps({G.choice_local_symbol: info})
 
 
@@ -91,4 +90,3 @@ class RecordWorker(QObject):
             else:
                 old[local_symbol].append(info)
             json.dump(old, f)
-

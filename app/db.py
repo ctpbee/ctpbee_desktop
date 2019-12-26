@@ -1,7 +1,8 @@
 import sys
 
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QMessageBox, QWidget, QDialog, QApplication, QRadioButton, QButtonGroup, QMenu
+from PySide2.QtWidgets import QMessageBox, QWidget, QDialog, QApplication, QRadioButton, QButtonGroup, QMenu, \
+    QTableWidgetItem
 from pymongo import MongoClient
 from app.lib.helper import create_db_conn
 from app.lib.global_var import G
@@ -17,7 +18,10 @@ class DBWidget(QDialog, Ui_DataBase):
         self.setStyleSheet(qss)
         self.config_widget = parent
         self.check_res = None
+        self.btn_group = QButtonGroup(self)
         #
+        self.res.setWordWrap(True)
+        self.user.setFocus()
         self.name.textChanged.connect(self.name_slot)
         self.host.textChanged.connect(self.host_slot)
         self.port.textChanged.connect(self.textChanged_slot)
@@ -25,45 +29,53 @@ class DBWidget(QDialog, Ui_DataBase):
         self.password.textChanged.connect(self.textChanged_slot)
         self.database.textChanged.connect(self.textChanged_slot)
         # 右键菜单
-        self.listWidget.setContextMenuPolicy(Qt.CustomContextMenu)  ######允许右键产生子菜单
-        self.listWidget.customContextMenuRequested.connect(self.generate_menu)  ####右键菜单
+        self.ava_table.horizontalHeader().setVisible(False)
+        self.ava_table.setContextMenuPolicy(Qt.CustomContextMenu)  ######允许右键产生子菜单
+        self.ava_table.customContextMenuRequested.connect(self.generate_menu)  ####右键菜单
         # btn
         self.test_btn.clicked.connect(self.test_btn_slot)
         self.ok_btn.clicked.connect(self.ok_btn_slot)
-        self.close_btn.clicked.connect(self.close)
         self.host.setText('localhost')
         self.port.setText('27017')
         self.url.setPlaceholderText("mongodb://[user:password@]host:port/database")
-        self.load_available()
 
     def load_available(self):
         for name, info in G.config.DB_INFO.items():
             if not self.db_connect(**info):
-                self.listWidget.addItem(name)
+                self.ava_table.insertRow(0)
+                self.ava_table.setItem(0, 0, QTableWidgetItem(name))
+                radio = QRadioButton(self)
+                self.btn_group.addButton(radio)
+                radio.clicked.connect(self.radio_slot)
+                if name == G.config.WHICH_DB:
+                    radio.setChecked(True)
+                self.ava_table.setCellWidget(0, 1, radio)
+
+    def radio_slot(self):
+        row = self.ava_table.currentRow()
+        name = self.ava_table.item(row, 0).text()
+        G.config.WHICH_DB = name
+        G.config.LOCAL_SOURCE = False
+        G.config.to_file()
+        create_db_conn(**G.config.DB_INFO[name])
+        TipDialog("修改成功")
 
     def generate_menu(self, pos):
         row_num = -1
-        for i in self.listWidget.selectionModel().selection().indexes():
+        for i in self.ava_table.selectionModel().selection().indexes():
             row_num = i.row()
         if row_num < 0:
             return
         menu = QMenu()
-        set_item = menu.addAction('选中')
         modify_item = menu.addAction('修改')
         del_item = menu.addAction('删除')
-        action = menu.exec_(self.listWidget.mapToGlobal(pos))
-        name = self.listWidget.item(row_num).text()
-        if action == set_item:
-            G.config.WHICH_DB = name
-            G.config.LOCAL_SOURCE = False
-            G.config.to_file()
-            create_db_conn(**G.config.DB_INFO[name])
-            TipDialog("修改成功")
-        elif action == del_item:
+        action = menu.exec_(self.ava_table.mapToGlobal(pos))
+        name = self.ava_table.item(row_num, 0).text()
+        if action == del_item:
             if G.config.WHICH_DB == name:
                 G.config.WHICH_DB = ""
             G.config.DB_INFO.pop(name, None)
-            self.listWidget.takeItem(row_num)
+            self.ava_table.removeRow(row_num)
         elif action == modify_item:
             self.load_info(G.config.DB_INFO.get(name, {}))
             self.tabWidget.setCurrentIndex(1)

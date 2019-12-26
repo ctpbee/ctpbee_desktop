@@ -186,6 +186,9 @@ QProgressBar::chunk {
 QTabWidget::pane,QToolBox::pane{
     border:none;
 }
+QTabBar::tab{
+    background-color:rbg(255,255,255,0);
+}
 
 QTabBar::tab,QToolBox::tab {
      border:1px solid #1b89ca;

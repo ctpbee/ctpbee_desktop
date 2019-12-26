@@ -49,7 +49,6 @@ class ConfigDialog(QDialog, Ui_Config):
         self.init_shortcut()
         self.init_data_source()
 
-
     def local_btn_slot(self):
         self.db_widget.hide()
         G.config.LOCAL_SOURCE = True
@@ -58,6 +57,7 @@ class ConfigDialog(QDialog, Ui_Config):
 
     def exter_btn_slot(self):
         self.db_widget.show()
+        self.db_widget.load_available()
 
     def init_config(self):
         self.REFRESH_INTERVAL.setValue(float(bee_current_app.config['REFRESH_INTERVAL']))

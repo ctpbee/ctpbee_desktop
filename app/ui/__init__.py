@@ -111,7 +111,7 @@ QPushButton:disabled,QToolButton:disabled{
     border-radius:2px;
 }
 QPushButton:hover,QToolButton:hover{
-    border-bottom:1px solid #ffffff;
+    border-bottom:1px solid #ff00dc;
 }
 
 QLabel#title{

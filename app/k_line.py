@@ -45,7 +45,7 @@ class KlineWidget(QWidget, Ui_Form):
         #
         self.hide_btn.clicked.connect(self.hide_btn_slot)
         self.hide_btn_slot()  # 默认隐藏
-        self.mainwindow.job.order_tick_signal.connect(self.set_tick_slot)
+        self.mainwindow.job.kline_tick_signal.connect(self.set_tick_slot)
         # k-line
         self.k_line_init()
 

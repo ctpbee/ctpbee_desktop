@@ -10,7 +10,7 @@ from app.lib.global_var import G
 class Job(QObject):
     account_signal = Signal(dict)
     market_signal = Signal(dict)
-    order_tick_signal = Signal(dict)
+    kline_tick_signal = Signal(dict)
     order_position_signal = Signal(list)
     order_activate_signal = Signal(list)
     order_order_signal = Signal(list)
@@ -43,12 +43,12 @@ def get_local():
 def get_external():
     try:
         info = []
-        data = G.db.get_future_min(G.choice_local_symbol.upper(), start="2019-9-1 10:00:10", end="2019-10-1 10:00:10")
+        data = G.db.get_future_min(G.choice_local_symbol, start="2019-9-1 10:00:10", end="2019-10-1 10:00:10")
         if data:
             for item in data:
                 timestamp = item['datetime']
                 info.append([timestamp, item['open_price'], item['high_price'], item['low_price'],
-                             item['close_price'], item.get('volume',item['amount'])])
+                             item['close_price'], item['volume']])
     except Exception as e:
         print(e)
         info = []

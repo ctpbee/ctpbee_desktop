@@ -244,9 +244,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.market_msg.setText(f"最新行情：{tick.name}   {tick.last_price}")
         tick = tick._to_dict()
         local_symbol = tick['local_symbol']
+        G.ticks[local_symbol] = tick
+        if local_symbol not in G.market_tick_row_map:  # 插入row
+            G.market_tick_row_map.append(local_symbol)
         if G.current_page == "market":
             self.job.market_signal.emit(tick)
-        self.job.order_tick_signal.emit(tick)
+        self.job.kline_tick_signal.emit(tick)
 
     def on_shared(self, ext, shared: SharedData) -> None:
         pass

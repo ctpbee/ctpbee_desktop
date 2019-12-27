@@ -1,4 +1,6 @@
 import json
+from datetime import timedelta, datetime
+
 from app.lib.get_path import join_path, get_user_path
 from copy import deepcopy
 from cryptography.fernet import Fernet
@@ -66,10 +68,14 @@ class G(dict):
     config = Config()  # 用户配置
     # log
     log_history = []  # 历史日志
+    # kline
+    choice_local_symbol = None  # 选择的合约，用于k线选择读取哪个合约数据
+    frq = '1min'
+    start = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d %H:%M:%S')
+    end = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     # market
     all_contracts = {}  # 所有合约
     subscribes = {}  # 订阅合约
-    market_tick_row_map = []  # 合约对应表格 row
     ticks = {}  # 最新推送的所有订阅合约tick
     # account
     current_account = None  # 当前账户
@@ -78,7 +84,6 @@ class G(dict):
     account = {}  # 账户信息
     account_row_map = []  # 账户对应表格 row
     # order
-    choice_local_symbol = None  # 选择的合约，用于k线选择读取哪个合约数据
     order_tick_row_map = []  # 下单界面tick对应表格row
     # kline
     kline_folder = "/static/e_kline.html"

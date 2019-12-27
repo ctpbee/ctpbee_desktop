@@ -163,6 +163,23 @@ border-radius: 5px;
 background:#1b89ca;
 }
 
+QMenu {
+ background-color: #3C3F41; 
+ border: 1px solid #2B2B2B;
+}
+
+QMenu::item {
+ background-color: transparent;
+ padding:5px 32px;
+ margin:0px 8px;
+ border-bottom:1px solid #DBDBDB;
+}
+  
+QMenu::item:selected { 
+ background-color: #2dabf9;
+}
+
+
 QStatusBar,QMenuBar{
 color:#ffffff;
 }
@@ -236,6 +253,19 @@ margin:10px
 QListWidget#search_list{
 background:#3C3F41;
 color:#1b89ca
+}
+
+QToolButton#qt_calendar_monthbutton,#qt_calendar_yearbutton,#qt_calendar_prevmonth,#qt_calendar_nextmonth,QCalendarWidget,QWidget#qt_calendar_navigationbar{
+color: #299999; 
+background:#2B2B2B
+}
+QCalendarWidget QTableView ,QCalendarWidget QWidget#qt_calendar_navigationbar
+{
+alternate-background-color: #2B2B2B; 
+}
+QDateTimeEdit{
+     border:1px solid #1b89ca;
+     border-radius:5px; 
 }
 
 """ + scroll_bar

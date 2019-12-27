@@ -43,7 +43,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.page_start = 0  #
         self.page_end = self.page_start + self.page_row
         self.item_row = 0
-        self.cur_ticks = G.market_tick_row_map[self.page_start:self.page_end]  # 用于过滤非此页的tick2，更新
+        self.cur_ticks = []  # 用于过滤非此页的tick2，更新
         self.cur_row_map = []  # 当前页tick对应row，用于更新
         self.mainwindow = mainwindow
         self.load_status = self.mainwindow.status_msg
@@ -62,6 +62,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.subscribe_type.clicked.connect(self.subscribe_type_slot)
         self.subscribe_all.clicked.connect(self.subscribe_all_slot)
         self.unsubscribe.clicked.connect(self.unsubscribe_all_slot)
+        self.my_star.clicked.connect(self.my_star_slot)
         # 右键菜单
         self.tableWidget.setContextMenuPolicy(Qt.CustomContextMenu)  ######允许右键产生子菜单
         self.tableWidget.customContextMenuRequested.connect(self.generate_menu)  ####右键菜单
@@ -73,58 +74,46 @@ class MarketWidget(QWidget, Ui_Market):
     def ready_action(self):
         for local_symbol in sorted(G.all_contracts):
             self.symbol_list.addItem(local_symbol + contract_space + G.all_contracts[local_symbol])  # 添加下拉框
-        for i in G.config.CONTRACT:
-            res = current_app.subscribe(i)
-            if res == 0:
-                G.subscribes.update({i: G.all_contracts[i]})
 
     def generate_menu(self, pos):
         row_num = -1
         for i in self.tableWidget.selectionModel().selection().indexes():
             row_num = i.row()
         if row_num < 0:
-            menu = QMenu()
-            start_menu = menu.addMenu("我的收藏")
-            for k, v in G.config.CONTRACT.items():
-                start_menu.addAction(' '.join([k, v]))
-            star = start_menu.addAction("一键订阅")
-            action = menu.exec_(self.tableWidget.mapToGlobal(pos))
-            if action == star:
-                for i in G.config.CONTRACT:
-                    res = current_app.subscribe(i)
-                    if res == 0:
-                        G.subscribes.update({i: G.all_contracts[i]})
+            return
+        name = self.tableWidget.item(row_num, market_table_column.index('name')).text()
+        local_symbol = self.tableWidget.item(row_num, market_table_column.index('local_symbol')).text()
+        menu = QMenu()
+        cancel_item = menu.addAction("取消订阅")
+        if local_symbol in G.config.CONTRACT:
+            item = menu.addAction("取消收藏")
+            cancel = True
         else:
-            name = self.tableWidget.item(row_num, market_table_column.index('name')).text()
-            local_symbol = self.tableWidget.item(row_num, market_table_column.index('local_symbol')).text()
-            menu = QMenu()
-            cancel_item = menu.addAction("取消订阅")
-            if local_symbol in G.config.CONTRACT:
-                del_item = menu.addAction("取消收藏")
-                inx = True
-            else:
-                add_item = menu.addAction("加入收藏")
-                inx = False
-            star_menu = menu.addMenu("我的收藏")
-            for k, v in G.config.CONTRACT.items():
-                star_menu.addAction(' '.join([k, v]))
-            action = menu.exec_(self.tableWidget.mapToGlobal(pos))
-            ####
-            if action == cancel_item:
-                # 取消订阅
-                res = current_app.market.unsubscribe(local_symbol.split('.')[0])
-                # 事后处理
-                if res == 0:
-                    G.market_tick_row_map.remove(local_symbol)
-                    G.subscribes.pop(local_symbol, None)
-                    self.tableWidget.removeRow(row_num)
-                    self.item_row -= 1
-            elif not inx and action == add_item:
-                G.config.CONTRACT.update({local_symbol: name})
-                G.config.to_file()
-            elif inx and action == del_item:
+            item = menu.addAction("加入收藏")
+            cancel = False
+        star_menu = menu.addMenu("我的收藏")
+        for k, v in G.config.CONTRACT.items():
+            star_menu.addAction(' '.join([k, v]))
+        clear_item = star_menu.addAction('清空')
+        action = menu.exec_(self.tableWidget.mapToGlobal(pos))
+        ####
+        if action == cancel_item:
+            # 取消订阅
+            res = current_app.market.unsubscribe(local_symbol.split('.')[0])
+            # 事后处理
+            if res == 0:
+                G.subscribes.pop(local_symbol, None)
+                self.tableWidget.removeRow(row_num)
+                self.item_row -= 1
+        elif action == item:
+            if cancel:
                 G.config.CONTRACT.pop(local_symbol)
-                G.config.to_file()
+            else:
+                G.config.CONTRACT.update({local_symbol: name})
+            G.config.to_file()
+        elif action == clear_item:
+            G.config.CONTRACT.clear()
+            G.config.to_file()
 
     @Slot()
     def cellDoubleClicked_slot(self, row, col):
@@ -143,7 +132,6 @@ class MarketWidget(QWidget, Ui_Market):
 
     def fresh_(self):
         G.subscribes.clear()
-        G.market_tick_row_map.clear()
         self.tableWidget.setRowCount(0)
         self.tableWidget.clearContents()
         self.page_init()
@@ -162,10 +150,15 @@ class MarketWidget(QWidget, Ui_Market):
         self.fresh_()
 
     def reload(self):
-        self.tableWidget.setDisabled(True)
-        self.timer.start(700)
-        while self.tableWidget.rowCount() <= 0:
-            self.fill_table()
+        self.fill_table()
+
+    def my_star_slot(self):
+        self.unsubscribe_all_slot()
+        for i in G.config.CONTRACT:
+            res = current_app.subscribe(i)
+            if res == 0:
+                G.subscribes.update({i: G.all_contracts[i]})
+        self.fill_table()
 
     @Slot()
     def subscribe_slot(self):
@@ -224,9 +217,9 @@ class MarketWidget(QWidget, Ui_Market):
         self.tableWidget.clearContents()
         self.item_row = 0
         self.cur_row_map.clear()
-        self.cur_ticks = G.market_tick_row_map[self.page_start:self.page_end]
+        self.cur_ticks = sorted(G.subscribes)[self.page_start:self.page_end]
         for local_symbol in self.cur_ticks:
-            self.set_item_slot(G.ticks[local_symbol])
+            self.set_item_slot(G.ticks.get(local_symbol, dict(local_symbol=local_symbol)))
 
     @Slot(dict)
     def set_item_slot(self, tick: dict):
@@ -242,32 +235,35 @@ class MarketWidget(QWidget, Ui_Market):
         else:  # 已在table中 ,更新对应row
             row = self.cur_row_map.index(local_symbol)
             for i, col in enumerate(market_table_column):
-                if col == "last_price":  # 对最新价动态颜色表示涨跌
-                    old = self.tableWidget.item(row, i)
-                    if old:  # 非空
-                        old = float(old.text())
-                        new = float(tick[col])
-                        difference = new - old
-                        item = QTableWidgetItem(str(new))
-                        if difference > 0:  # 涨
-                            item.setTextColor(QColor('red'))
-                        elif difference < 0:  # 跌
-                            item.setTextColor(QColor('green'))
-                        else:
-                            continue
-                    else:  # None
-                        item = QTableWidgetItem(str(tick[col]))
-                elif col == "inc_day_interest":
-                    data = tick['open_interest'] - tick['pre_open_interest']
-                    item = QTableWidgetItem(str(data))
-                    # item.setTextColor()
-                # elif col == "inc_now_interest":
-                #     item = ''
-                # elif col == "limit":
-                #     item = ''
-                # elif col == "limit1":
-                #     item = ''
-                else:
+                try:
+                    if col == "last_price":  # 对最新价动态颜色表示涨跌
+                        old = self.tableWidget.item(row, i)
+                        if old:  # 非空
+                            old = float(old.text())
+                            new = float(tick[col])
+                            difference = new - old
+                            item = QTableWidgetItem(str(new))
+                            if difference > 0:  # 涨
+                                item.setTextColor(QColor('red'))
+                            elif difference < 0:  # 跌
+                                item.setTextColor(QColor('green'))
+                            else:
+                                continue
+                        else:  # None
+                            item = QTableWidgetItem(str(tick[col]))
+                    elif col == "inc_day_interest":
+                        data = tick['open_interest'] - tick['pre_open_interest']
+                        item = QTableWidgetItem(str(data))
+                        # item.setTextColor()
+                    # elif col == "inc_now_interest":
+                    #     item = ''
+                    # elif col == "limit":
+                    #     item = ''
+                    # elif col == "limit1":
+                    #     item = ''
+                    else:
+                        item = QTableWidgetItem(str(tick.get(col, "---")))
+                except ValueError as e:
                     item = QTableWidgetItem(str(tick.get(col, "---")))
                 if item.text().isdigit():
                     item.setText("%0.2f" % float(item.text()))
@@ -277,23 +273,19 @@ class MarketWidget(QWidget, Ui_Market):
 
     def page_up(self):
         if self.page_end - self.page_row <= 0:  # 已经为首页
-            TipDialog("首页")
             self.page_start = 0
             self.page_end = self.page_start + self.page_row
         else:
-            TipDialog("上一页")
             self.page_start -= self.page_row
             self.page_end -= self.page_row
             self.fill_table()
 
     def page_down(self):
-        max_len = len(G.market_tick_row_map)
+        max_len = len(G.subscribes)
         if self.page_start + self.page_row >= max_len:  # 已经为末页
-            TipDialog("末页")
             self.page_end = max_len
             self.page_start = max_len - self.page_row
         else:
-            TipDialog("下一页")
             self.page_start += self.page_row
             self.page_end += self.page_row
             self.fill_table()

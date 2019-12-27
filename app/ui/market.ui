@@ -21,7 +21,7 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="6" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,5,0,0,4,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,5,0,0,0,4,0">
      <item>
       <widget class="QComboBox" name="symbol_list">
        <property name="sizePolicy">
@@ -68,6 +68,13 @@
       <widget class="QPushButton" name="subscribe_all">
        <property name="text">
         <string>订阅所有合约</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="my_star">
+       <property name="text">
+        <string>我的收藏</string>
        </property>
       </widget>
      </item>

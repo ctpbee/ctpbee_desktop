@@ -3,7 +3,7 @@ import json
 import os
 from PySide2.QtCore import QObject, Signal, Slot
 
-from app.lib.get_path import tick_path
+from app.lib.get_path import tick_path, join_path
 from app.lib.global_var import G
 
 import csv
@@ -39,7 +39,7 @@ headers = ['timestamp', 'open_price', 'close_price', 'low_price',
 
 def get_local():
     try:
-        file_path = tick_path + f"/{str(G.choice_local_symbol)}.csv"
+        file_path = join_path(tick_path, f"{str(G.choice_local_symbol)}.csv")
         f_csv = pd.read_csv(file_path)
         info = map(lambda x: [x[i] for i in headers], f_csv.to_dict(orient='index').values())
         data = json.dumps({G.choice_local_symbol: list(info)})
@@ -91,7 +91,7 @@ class RecordWorker(QObject):
         self.record_sig.connect(self.record)
 
     def record(self, local_symbol, info):
-        file_path = os.path.join(tick_path, f"{str(local_symbol)}.csv")
+        file_path = join_path(tick_path, f"{str(local_symbol)}.csv")
         isexists = os.path.exists(file_path)
         with open(file_path, 'a+', newline='') as f:
             f_csv = csv.writer(f)

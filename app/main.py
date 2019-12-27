@@ -292,6 +292,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.exit_:
             G.pool_done = True
             self.tray.deleteLater()
+            self.market_widget.unsubscribe_all_slot()
             try:
                 for k, v in current_app.extensions.items():
                     current_app.suspend_extension(k)

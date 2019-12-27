@@ -40,25 +40,32 @@ class DBWidget(QDialog, Ui_DataBase):
         self.url.setPlaceholderText("mongodb://[user:password@]host:port/database")
 
     def load_available(self):
+        self.ava_table.setRowCount(0)
+        self.ava_table.clearContents()
         for name, info in G.config.DB_INFO.items():
-            if not self.db_connect(**info):
-                self.ava_table.insertRow(0)
-                self.ava_table.setItem(0, 0, QTableWidgetItem(name))
-                radio = QRadioButton(self)
-                self.btn_group.addButton(radio)
-                radio.clicked.connect(self.radio_slot)
-                if name == G.config.WHICH_DB:
-                    radio.setChecked(True)
-                self.ava_table.setCellWidget(0, 1, radio)
+            self.ava_table.insertRow(0)
+            self.ava_table.setItem(0, 0, QTableWidgetItem(name))
+            radio = QRadioButton(self)
+            self.btn_group.addButton(radio)
+            radio.clicked.connect(self.radio_slot)
+            if name == G.config.WHICH_DB:
+                radio.setChecked(True)
+            self.ava_table.setCellWidget(0, 1, radio)
 
     def radio_slot(self):
         row = self.ava_table.currentRow()
         name = self.ava_table.item(row, 0).text()
-        G.config.WHICH_DB = name
-        G.config.LOCAL_SOURCE = False
-        G.config.to_file()
-        create_db_conn(**G.config.DB_INFO[name])
-        TipDialog("修改成功")
+        info = G.config.DB_INFO[name]
+        TipDialog("connecting... / <=3s")
+        res = self.db_connect(**info)
+        if not res:
+            G.config.WHICH_DB = name
+            G.config.LOCAL_SOURCE = False
+            G.config.to_file()
+            create_db_conn(**info)  # 创建数据库连接
+            TipDialog("修改成功")
+        else:
+            QMessageBox.information(self, '修改失败', res)
 
     def generate_menu(self, pos):
         row_num = -1

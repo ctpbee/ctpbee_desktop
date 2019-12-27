@@ -255,11 +255,11 @@ class MarketWidget(QWidget, Ui_Market):
                         data = tick['open_interest'] - tick['pre_open_interest']
                         item = QTableWidgetItem(str(data))
                         # item.setTextColor()
-                    # elif col == "inc_now_interest":
+                    # elif col == "inc_now_interest": # 现增仓
                     #     item = ''
-                    # elif col == "limit":
+                    # elif col == "limit": # 涨跌
                     #     item = ''
-                    # elif col == "limit1":
+                    # elif col == "limit1": # 涨幅
                     #     item = ''
                     else:
                         item = QTableWidgetItem(str(tick.get(col, "---")))

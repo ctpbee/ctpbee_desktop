@@ -63,6 +63,7 @@ class KlineWidget(QWidget, Ui_Form):
 
     def ready_action(self):
         # k-line
+        self.symbol_list.setFocus()
         self.k_line_init()
         if not G.config.LOCAL_SOURCE:
             from app.lib.helper import create_db_conn

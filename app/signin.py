@@ -76,6 +76,16 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.setTabOrder(self.remember_me, self.sign_in_btn)
         self.icon.installEventFilter(self)
         self.icon.setText('快速登录')
+        self.icon.setStyleSheet("""
+        QLabel{
+        image: url(:/menu/images/bee_temp_grey.png);
+        }
+        QLabel:hover{
+        color:#1B89CA;
+        border:1px solid #2B2B2B;
+        border-radius: 5px;
+        }
+        """)
         #
         self.sign_in_btn.clicked.connect(self.sign_in_slot)
         self.sign_in_btn.setDisabled(True)

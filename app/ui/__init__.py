@@ -113,7 +113,6 @@ QPushButton:disabled,QToolButton:disabled{
 QRadioButton:hover,QPushButton:hover,QToolButton:hover{
     border:1px solid #EDD714;
     border-radius:5px;
-
 }
 
 QLabel#title{

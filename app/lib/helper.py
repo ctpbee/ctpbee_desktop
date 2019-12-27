@@ -6,6 +6,9 @@ from PySide2.QtCore import QObject, Signal, Slot
 from app.lib.get_path import tick_path
 from app.lib.global_var import G
 
+import csv
+import pandas as pd
+
 
 class Job(QObject):
     account_signal = Signal(dict)
@@ -30,13 +33,19 @@ def get_history_tick():
         return get_external()
 
 
+headers = ['timestamp', 'open_price', 'close_price', 'low_price',
+           'high_price', 'volume']
+
+
 def get_local():
     try:
-        file_path = tick_path + f"/{str(G.choice_local_symbol)}.json"
-        with open(file_path, 'r') as f:
-            data = f.read()
-    except:
-        data = json.dumps({G.choice_local_symbol: []})
+        file_path = tick_path + f"/{str(G.choice_local_symbol)}.csv"
+        f_csv = pd.read_csv(file_path)
+        info = map(lambda x: [x[i] for i in headers], f_csv.to_dict(orient='index').values())
+        data = json.dumps({G.choice_local_symbol: list(info)})
+    except Exception as e:
+        print("get_local", e)
+        data = json.dumps({G.choice_local_symbol: list()})
     return data
 
 
@@ -82,16 +91,10 @@ class RecordWorker(QObject):
         self.record_sig.connect(self.record)
 
     def record(self, local_symbol, info):
-        file_path = os.path.join(tick_path, f"{str(local_symbol)}.json")
-        old = {}
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as f:
-                data = f.read()
-                if data:
-                    old = json.loads(data)
-        with open(file_path, 'w') as f:
-            if not old.get(local_symbol):
-                old.setdefault(local_symbol, []).append(info)
-            else:
-                old[local_symbol].append(info)
-            json.dump(old, f)
+        file_path = os.path.join(tick_path, f"{str(local_symbol)}.csv")
+        isexists = os.path.exists(file_path)
+        with open(file_path, 'a+', newline='') as f:
+            f_csv = csv.writer(f)
+            if not isexists:
+                f_csv.writerow(headers)
+            f_csv.writerow(info)

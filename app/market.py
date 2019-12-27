@@ -255,11 +255,11 @@ class MarketWidget(QWidget, Ui_Market):
                         data = tick['open_interest'] - tick['pre_open_interest']
                         item = QTableWidgetItem(str(data))
                         # item.setTextColor()
-                    # elif col == "inc_now_interest":
+                    # elif col == "inc_now_interest": # 现增仓
                     #     item = ''
-                    # elif col == "limit":
+                    # elif col == "limit": # 涨跌
                     #     item = ''
-                    # elif col == "limit1":
+                    # elif col == "limit1": # 涨幅
                     #     item = ''
                     else:
                         item = QTableWidgetItem(str(tick.get(col, "---")))
@@ -275,6 +275,7 @@ class MarketWidget(QWidget, Ui_Market):
         if self.page_end - self.page_row <= 0:  # 已经为首页
             self.page_start = 0
             self.page_end = self.page_start + self.page_row
+            TipDialog("到顶啦~")
         else:
             self.page_start -= self.page_row
             self.page_end -= self.page_row
@@ -285,6 +286,7 @@ class MarketWidget(QWidget, Ui_Market):
         if self.page_start + self.page_row >= max_len:  # 已经为末页
             self.page_end = max_len
             self.page_start = max_len - self.page_row
+            TipDialog('到底啦~')
         else:
             self.page_start += self.page_row
             self.page_end += self.page_row

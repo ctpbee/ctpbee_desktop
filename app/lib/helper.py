@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import os
 from PySide2.QtCore import QObject, Signal, Slot
@@ -45,10 +45,10 @@ def create_db_conn(**kwargs):
     G.db = QADataSupport(host=kwargs['host'])
 
 
-def get_external():
+def get_external(frq=G.frq, start=G.start, end=G.end):
     try:
         info = []
-        data = G.db.get_future_min(G.choice_local_symbol, start="2019-9-1 10:00:10", end="2019-10-1 10:00:10")
+        data = G.db.get_future_min(G.choice_local_symbol, frq=frq, start=start, end=end)
         if data:
             for item in data:
                 timestamp = item['datetime']

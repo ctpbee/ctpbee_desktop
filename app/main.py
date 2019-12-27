@@ -174,7 +174,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.kline_widget = KlineWidget(self)
             self.stackedWidget.addWidget(self.kline_widget)
         self.stackedWidget.setCurrentIndex(self.page_map(self.kline_widget))
-        self.kline_widget.symbol_list.setCurrentText(G.choice_local_symbol)
+        if G.choice_local_symbol:
+            self.kline_widget.symbol_list.setCurrentText(G.choice_local_symbol)
         self.kline_widget.k_line_reload()
 
     def order_handle(self):
@@ -245,8 +246,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         tick = tick._to_dict()
         local_symbol = tick['local_symbol']
         G.ticks[local_symbol] = tick
-        if local_symbol not in G.market_tick_row_map:  # 插入row
-            G.market_tick_row_map.append(local_symbol)
         if G.current_page == "market":
             self.job.market_signal.emit(tick)
         self.job.kline_tick_signal.emit(tick)
@@ -268,7 +267,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         icon = QIcon(":menu/images/bee_temp_grey.png")
         menu = QMenu()
         openAction = menu.addAction("🍯 界面")
+        settingAction = menu.addAction("⚙ 设置")
         exitAction = menu.addAction("❎ 退出")
+        settingAction.triggered.connect(self.config_handle)
         openAction.triggered.connect(self.show)
         exitAction.triggered.connect(self.quit)
         self.tray = QSystemTrayIcon()

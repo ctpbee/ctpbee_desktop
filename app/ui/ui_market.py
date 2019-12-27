@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'market.ui',
 # licensing of 'market.ui' applies.
 #
-# Created: Tue Dec 10 16:33:25 2019
+# Created: Fri Dec 27 13:24:59 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,6 +40,9 @@ class Ui_Market(object):
         self.subscribe_all = QtWidgets.QPushButton(Market)
         self.subscribe_all.setObjectName("subscribe_all")
         self.horizontalLayout.addWidget(self.subscribe_all)
+        self.my_star = QtWidgets.QPushButton(Market)
+        self.my_star.setObjectName("my_star")
+        self.horizontalLayout.addWidget(self.my_star)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.unsubscribe = QtWidgets.QPushButton(Market)
@@ -47,7 +50,7 @@ class Ui_Market(object):
         self.horizontalLayout.addWidget(self.unsubscribe)
         self.horizontalLayout.setStretch(0, 4)
         self.horizontalLayout.setStretch(1, 5)
-        self.horizontalLayout.setStretch(4, 4)
+        self.horizontalLayout.setStretch(5, 4)
         self.formLayout.setLayout(6, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout)
         self.tableWidget = QtWidgets.QTableWidget(Market)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -107,6 +110,7 @@ class Ui_Market(object):
         self.subscribe_singel.setText(QtWidgets.QApplication.translate("Market", "订阅单个", None, -1))
         self.subscribe_type.setText(QtWidgets.QApplication.translate("Market", "订阅此品种", None, -1))
         self.subscribe_all.setText(QtWidgets.QApplication.translate("Market", "订阅所有合约", None, -1))
+        self.my_star.setText(QtWidgets.QApplication.translate("Market", "我的收藏", None, -1))
         self.unsubscribe.setText(QtWidgets.QApplication.translate("Market", "取消所有订阅", None, -1))
         self.tableWidget.setSortingEnabled(False)
         self.tableWidget.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Market", "中文名", None, -1))
@@ -124,5 +128,6 @@ class Ui_Market(object):
         self.tableWidget.horizontalHeaderItem(12).setText(QtWidgets.QApplication.translate("Market", "开盘", None, -1))
         self.tableWidget.horizontalHeaderItem(13).setText(QtWidgets.QApplication.translate("Market", "最高", None, -1))
         self.tableWidget.horizontalHeaderItem(14).setText(QtWidgets.QApplication.translate("Market", "现增仓", None, -1))
+
         self.tableWidget.horizontalHeaderItem(15).setText(QtWidgets.QApplication.translate("Market", "昨收", None, -1))
 

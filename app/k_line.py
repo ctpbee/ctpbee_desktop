@@ -1,6 +1,7 @@
 import os
+from datetime import datetime, timedelta
 
-from PySide2.QtCore import QUrl, Slot
+from PySide2.QtCore import QUrl, Slot, QDateTime, QDate
 from PySide2.QtWebChannel import QWebChannel
 from PySide2.QtWebEngineWidgets import QWebEngineView
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QTableWidget, QMessageBox
@@ -32,10 +33,19 @@ class KlineWidget(QWidget, Ui_Form):
         self.setupUi(self)
         self.setStyleSheet(qss)
         self.mainwindow = mainwindow
+        # calendar
+        self.start.setCalendarPopup(True)
+        self.end.setCalendarPopup(True)
+        self.start.setDisplayFormat('yyyy-MM-dd HH:mm:ss')
+        self.end.setDisplayFormat('yyyy-MM-dd HH:mm:ss')
+        now = datetime.now() - timedelta(days=30)
+        self.start.setDate(QDate(now.year, now.month, now.day))
+        self.end.setDateTime(QDateTime.currentDateTime())
         #
         for local_symbol in sorted(G.all_contracts):
             self.symbol_list.addItem(local_symbol + contract_space + G.all_contracts[local_symbol])  # 添加下拉框
         self.symbol_list.currentIndexChanged.connect(self.symbol_change_slot)
+        self.frq.addItems(['1min', '2min', '5min'])
         # table
         self.tick_table.setRowCount(0)
         self.tick_row = len(G.order_tick_row_map)
@@ -44,8 +54,9 @@ class KlineWidget(QWidget, Ui_Form):
         self.tick_table.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         self.tick_table.horizontalHeader().setVisible(False)  # 水平表头不可见
         self.tick_table.verticalHeader().setVisible(False)  # 垂直表头不可见
-        #
+        # btn
         self.hide_btn.clicked.connect(self.hide_btn_slot)
+        self.reload_btn.clicked.connect(self.k_line_reload)
         self.hide_btn_slot()  # 默认隐藏
         self.mainwindow.job.kline_tick_signal.connect(self.set_tick_slot)
         self.ready_action()
@@ -83,6 +94,10 @@ class KlineWidget(QWidget, Ui_Form):
 
     def k_line_reload(self):
         # self.browser.reload()
+        G.choice_local_symbol = self.symbol_list.currentText().split(contract_space)[0]
+        G.frq = self.frq.currentText()
+        G.start = self.start.text()
+        G.end = self.end.text()
         self.mainwindow.kline_job.qt_to_js_reload.emit()
 
     def symbol_change_slot(self):
@@ -105,10 +120,10 @@ class KlineWidget(QWidget, Ui_Form):
     def hide_btn_slot(self):
         if self.tick_table.isHidden():
             self.tick_table.show()
-            self.hide_btn.setText("隐藏")
+            self.hide_btn.setText("<<")
         else:
             self.tick_table.hide()
-            self.hide_btn.setText("显示")
+            self.hide_btn.setText(">>")
 
     @Slot(dict)
     def set_tick_slot(self, tick: dict):

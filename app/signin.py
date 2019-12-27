@@ -2,8 +2,8 @@ import json
 import os
 from copy import deepcopy
 
-from PySide2 import QtGui
-from PySide2.QtCore import QRegExp, Slot, QTimer, Qt
+from PySide2 import QtGui, QtCore
+from PySide2.QtCore import QRegExp, Slot, QTimer, Qt, QEvent, QObject
 from PySide2.QtGui import QRegExpValidator, QMovie, QCloseEvent, QBitmap, QPainter, QKeySequence
 from PySide2.QtWidgets import QWidget, QMessageBox, QLineEdit
 
@@ -74,6 +74,8 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.setTabOrder(self.md_address, self.interface_)
         self.setTabOrder(self.interface_, self.remember_me)
         self.setTabOrder(self.remember_me, self.sign_in_btn)
+        self.icon.installEventFilter(self)
+        self.icon.setText('快速登录')
         #
         self.sign_in_btn.clicked.connect(self.sign_in_slot)
         self.sign_in_btn.setDisabled(True)
@@ -279,6 +281,18 @@ class SignInWidget(QWidget, Ui_SignIn):
             except Exception:
                 pass
         event.accept()
+
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:
+        if watched == self.icon:
+            if event.type() == QEvent.MouseButtonPress:
+                if self.login_tab.currentIndex() == 0:
+                    self.login_tab.setCurrentIndex(1)
+                    self.icon.setText('详细登录')
+                else:
+                    self.login_tab.setCurrentIndex(0)
+                    self.icon.setText('快速登录')
+
+        return super().eventFilter(watched, event)
 
     # def mousePressEvent(self, event):
     #     if event.button() == Qt.LeftButton:

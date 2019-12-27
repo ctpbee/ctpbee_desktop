@@ -26,12 +26,20 @@
         <property name="text">
          <string>首页</string>
         </property>
+        <property name="icon">
+         <iconset resource="../resource/mainwindow.qrc">
+          <normaloff>:/menu/icon/home.png</normaloff>:/menu/icon/home.png</iconset>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="market_btn">
         <property name="text">
          <string>行情</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../resource/mainwindow.qrc">
+          <normaloff>:/menu/icon/trending-3 行情.png</normaloff>:/menu/icon/trending-3 行情.png</iconset>
         </property>
        </widget>
       </item>
@@ -40,12 +48,20 @@
         <property name="text">
          <string>K线</string>
         </property>
+        <property name="icon">
+         <iconset resource="../resource/mainwindow.qrc">
+          <normaloff>:/menu/icon/contorl.png</normaloff>:/menu/icon/contorl.png</iconset>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="strategy_btn">
         <property name="text">
          <string>策略</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../resource/mainwindow.qrc">
+          <normaloff>:/menu/icon/策略.png</normaloff>:/menu/icon/策略.png</iconset>
         </property>
        </widget>
       </item>
@@ -54,12 +70,20 @@
         <property name="text">
          <string>回测</string>
         </property>
+        <property name="icon">
+         <iconset resource="../resource/mainwindow.qrc">
+          <normaloff>:/menu/icon/生成支付单.png</normaloff>:/menu/icon/生成支付单.png</iconset>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="order_btn">
         <property name="text">
          <string>下单</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../resource/mainwindow.qrc">
+          <normaloff>:/menu/icon/下单中心.png</normaloff>:/menu/icon/下单中心.png</iconset>
         </property>
        </widget>
       </item>
@@ -68,12 +92,20 @@
         <property name="text">
          <string>设置</string>
         </property>
+        <property name="icon">
+         <iconset resource="../resource/mainwindow.qrc">
+          <normaloff>:/menu/icon/配置.png</normaloff>:/menu/icon/配置.png</iconset>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="log_btn">
         <property name="text">
          <string>日志</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../resource/mainwindow.qrc">
+          <normaloff>:/menu/icon/历史记录.png</normaloff>:/menu/icon/历史记录.png</iconset>
         </property>
        </widget>
       </item>
@@ -93,7 +125,11 @@
       <item>
        <widget class="QPushButton" name="pre_page_btn">
         <property name="text">
-         <string>←</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resource/mainwindow.qrc">
+          <normaloff>:/menu/icon/back.png</normaloff>:/menu/icon/back.png</iconset>
         </property>
        </widget>
       </item>

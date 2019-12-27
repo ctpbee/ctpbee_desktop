@@ -37,7 +37,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0">
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="icon">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -48,7 +48,8 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">image: url(:/menu/images/bee_temp_grey.png);</string>
+      <string notr="true">image: url(:/menu/images/bee_temp_grey.png);
+</string>
      </property>
      <property name="text">
       <string/>
@@ -56,7 +57,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTabWidget" name="login_tab">
+    <widget class="QStackedWidget" name="login_tab">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>100</horstretch>
@@ -74,19 +75,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <property name="documentMode">
-      <bool>false</bool>
-     </property>
-     <property name="movable">
-      <bool>true</bool>
-     </property>
-     <property name="tabBarAutoHide">
-      <bool>false</bool>
-     </property>
-     <widget class="QWidget" name="login_tabPage1_2">
-      <attribute name="title">
-       <string>快速登录</string>
-      </attribute>
+     <widget class="QWidget" name="login_tabPage1">
       <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0">
        <item row="5" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_4"/>
@@ -104,13 +93,19 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>235</width>
-            <height>157</height>
+            <width>262</width>
+            <height>171</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
            <item row="1" column="1">
             <widget class="QLineEdit" name="password_sim">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <pointsize>8</pointsize>
@@ -126,7 +121,7 @@
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>0</height>
+               <height>24</height>
               </size>
              </property>
              <property name="maximumSize">
@@ -185,6 +180,12 @@
            </item>
            <item row="3" column="1">
             <widget class="QComboBox" name="other">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
                <width>16777215</width>
@@ -227,6 +228,12 @@
            </item>
            <item row="0" column="1">
             <widget class="QComboBox" name="userid_sim">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <pointsize>8</pointsize>
@@ -280,10 +287,7 @@
       <zorder></zorder>
       <zorder>scrollArea_2</zorder>
      </widget>
-     <widget class="QWidget" name="login_tabPage2_2">
-      <attribute name="title">
-       <string>详细登录</string>
-      </attribute>
+     <widget class="QWidget" name="login_tabPage2">
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <widget class="QScrollArea" name="scrollArea">
@@ -297,9 +301,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
-            <width>244</width>
-            <height>280</height>
+            <y>-116</y>
+            <width>250</width>
+            <height>299</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,1">
@@ -307,6 +311,12 @@
             <widget class="QLineEdit" name="password">
              <property name="enabled">
               <bool>true</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
              </property>
              <property name="maximumSize">
               <size>
@@ -332,6 +342,12 @@
            </item>
            <item row="5" column="1">
             <widget class="QComboBox" name="td_address">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <pointsize>8</pointsize>
@@ -400,6 +416,12 @@
            </item>
            <item row="0" column="1">
             <widget class="QComboBox" name="userid">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <pointsize>8</pointsize>
@@ -455,6 +477,12 @@
            </item>
            <item row="4" column="1">
             <widget class="QComboBox" name="appid">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <pointsize>8</pointsize>
@@ -467,6 +495,12 @@
            </item>
            <item row="6" column="1">
             <widget class="QComboBox" name="md_address">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <pointsize>8</pointsize>
@@ -479,6 +513,12 @@
            </item>
            <item row="7" column="1">
             <widget class="QComboBox" name="interface_">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
                <width>16777215</width>
@@ -507,6 +547,12 @@
            </item>
            <item row="3" column="1">
             <widget class="QComboBox" name="auth_code">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <pointsize>8</pointsize>
@@ -519,6 +565,12 @@
            </item>
            <item row="2" column="1">
             <widget class="QComboBox" name="brokerid">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <pointsize>8</pointsize>

@@ -39,7 +39,8 @@ class MarketWidget(QWidget, Ui_Market):
         self.setupUi(self)
         self.setStyleSheet(qss)
         self.setWindowTitle("行情")
-        self.page_row = 20 + 1  # 每页tick数
+        self.page_row = 30 + 1  # 每页tick数
+        self.page_delay = 3
         self.page_start = 0  #
         self.page_end = self.page_start + self.page_row
         self.item_row = 0
@@ -48,6 +49,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.mainwindow = mainwindow
         self.load_status = self.mainwindow.status_msg
         #
+        self.tableWidget.setShowGrid(False)
         self.tableWidget.setEditTriggers(QTableWidget.NoEditTriggers)  # 单元格不可编辑
         # self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 所有列自适应表格宽度
         self.tableWidget.verticalHeader().setVisible(False)
@@ -150,7 +152,8 @@ class MarketWidget(QWidget, Ui_Market):
         self.fresh_()
 
     def reload(self):
-        self.fill_table()
+        self.page_down()
+        self.page_up()
 
     def my_star_slot(self):
         self.unsubscribe_all_slot()
@@ -219,7 +222,8 @@ class MarketWidget(QWidget, Ui_Market):
         self.cur_row_map.clear()
         self.cur_ticks = sorted(G.subscribes)[self.page_start:self.page_end]
         for local_symbol in self.cur_ticks:
-            self.set_item_slot(G.ticks.get(local_symbol, dict(local_symbol=local_symbol)))
+            self.set_item_slot(
+                G.ticks.get(local_symbol, dict(local_symbol=local_symbol, name=G.subscribes[local_symbol])))
 
     @Slot(dict)
     def set_item_slot(self, tick: dict):
@@ -257,13 +261,15 @@ class MarketWidget(QWidget, Ui_Market):
                         # item.setTextColor()
                     # elif col == "inc_now_interest": # 现增仓
                     #     item = ''
-                    # elif col == "limit": # 涨跌
-                    #     item = ''
-                    # elif col == "limit1": # 涨幅
-                    #     item = ''
+                    elif col == "limit":  # 涨跌
+                        data = tick['last_price'] - tick['pre_close']
+                        item = QTableWidgetItem(str(data))
+                    elif col == "limit1":  # 涨幅
+                        data = (tick['last_price'] - tick['pre_close'] / tick['pre_close']) * 0.01
+                        item = QTableWidgetItem(str(data))
                     else:
                         item = QTableWidgetItem(str(tick.get(col, "---")))
-                except ValueError as e:
+                except (ValueError, ZeroDivisionError)as e:
                     item = QTableWidgetItem(str(tick.get(col, "---")))
                 if item.text().isdigit():
                     item.setText("%0.2f" % float(item.text()))
@@ -272,29 +278,43 @@ class MarketWidget(QWidget, Ui_Market):
                 self.tableWidget.setItem(row, i, item)
 
     def page_up(self):
-        if self.page_end - self.page_row <= 0:  # 已经为首页
+        max_len = len(G.subscribes)
+        if self.page_start == 0:
+            return
+        if self.page_start - self.page_row < 0:  # 越界->至首页
             self.page_start = 0
-            self.page_end = self.page_start + self.page_row
-            TipDialog("到顶啦~")
+            if self.page_start + self.page_row > max_len:  #
+                self.page_end = max_len
+            else:
+                self.page_end = self.page_start + self.page_row
         else:
-            self.page_start -= self.page_row
-            self.page_end -= self.page_row
-            self.fill_table()
+            self.page_start -= self.page_row - self.page_delay
+            self.page_end -= self.page_row - self.page_delay
+        self.fill_table()
+        scroll = self.tableWidget.verticalScrollBar()
+        scroll.setValue(scroll.maximum())
 
     def page_down(self):
         max_len = len(G.subscribes)
-        if self.page_start + self.page_row >= max_len:  # 已经为末页
+        if self.page_end == max_len:
+            return
+        if self.page_end + self.page_row > max_len:
             self.page_end = max_len
-            self.page_start = max_len - self.page_row
-            TipDialog('到底啦~')
+            if self.page_end - self.page_row < 0:
+                self.page_start = 0
+            else:
+                self.page_start = self.page_end - self.page_row
         else:
-            self.page_start += self.page_row
-            self.page_end += self.page_row
-            self.fill_table()
+            self.page_start += self.page_row - self.page_delay
+            self.page_end += self.page_row - self.page_delay
+        self.fill_table()
+        scroll = self.tableWidget.verticalScrollBar()
+        scroll.setValue(scroll.minimum())
 
     def eventFilter(self, watched: QtCore.QObject, event: QtCore.QEvent) -> bool:
         if watched == self.tableWidget.verticalScrollBar():
             if event.type() == QEvent.Wheel:
+                x = self.tableWidget.verticalScrollBar()
                 if event.delta() > 0:  # 上滚
                     if self.tableWidget.verticalScrollBar().minimum() == self.tableWidget.verticalScrollBar().value():
                         self.page_up()

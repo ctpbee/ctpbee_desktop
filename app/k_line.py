@@ -1,12 +1,15 @@
 import os
 from datetime import datetime, timedelta
 
-from PySide2.QtCore import QUrl, Slot, QDateTime, QDate
+from PySide2.QtCore import QUrl, Slot, QDateTime, QDate, QThreadPool
 from PySide2.QtWebChannel import QWebChannel
 from PySide2.QtWebEngineWidgets import QWebEngineView
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QTableWidget, QMessageBox
 
 from app.lib.global_var import G
+from app.lib.helper import db_connect
+from app.lib.worker import Worker
+from app.tip import TipDialog
 from app.ui import qss
 from app.ui.ui_k_line import Ui_Form
 
@@ -33,6 +36,7 @@ class KlineWidget(QWidget, Ui_Form):
         self.setupUi(self)
         self.setStyleSheet(qss)
         self.mainwindow = mainwindow
+        self.k_thread = QThreadPool()
         # calendar
         self.start.setCalendarPopup(True)
         self.end.setCalendarPopup(True)
@@ -55,6 +59,7 @@ class KlineWidget(QWidget, Ui_Form):
         self.tick_table.horizontalHeader().setVisible(False)  # 水平表头不可见
         self.tick_table.verticalHeader().setVisible(False)  # 垂直表头不可见
         # btn
+        self.source_btn.clicked.connect(self.source_btn_slot)
         self.hide_btn.clicked.connect(self.hide_btn_slot)
         self.reload_btn.clicked.connect(self.k_line_reload)
         self.hide_btn_slot()  # 默认隐藏
@@ -66,17 +71,23 @@ class KlineWidget(QWidget, Ui_Form):
         self.symbol_list.setFocus()
         self.k_line_init()
         if not G.config.LOCAL_SOURCE:
-            from app.lib.helper import create_db_conn
             info = G.config.DB_INFO.get(G.config.WHICH_DB)
             if info:
-                create_db_conn(**info)
+                G.temp_var = info
+                self.k_thread.start(Worker(db_connect, **info, callback=self.db_callback))
             else:
-                replay = QMessageBox.information(self, '提示', '你选择了外部数据源但未指定.是否切换本地数据源',
+                replay = QMessageBox.information(self, '提示', '你选择了外部数据源但未指定数据库.是否切换本地数据源',
                                                  QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
                 if replay == QMessageBox.Yes:
                     G.config.LOCAL_SOURCE = True
                     G.config.to_file()
-                    self.k_line_reload()
+
+    def db_callback(self, res):
+        if res:
+            TipDialog("数据库连接出错,请在数据源中查看")
+        else:
+            from app.lib.helper import create_db_conn
+            create_db_conn(**G.temp_var)
 
     def k_line_init(self):
         self.browser = QWebEngineView(self)
@@ -94,7 +105,6 @@ class KlineWidget(QWidget, Ui_Form):
         self.kline_layout.addWidget(self.browser)
 
     def k_line_reload(self):
-        # self.browser.reload()
         G.choice_local_symbol = self.symbol_list.currentText().split(contract_space)[0]
         G.frq = self.frq.currentText()
         G.start = self.start.text()
@@ -125,6 +135,10 @@ class KlineWidget(QWidget, Ui_Form):
         else:
             self.tick_table.hide()
             self.hide_btn.setText(">>")
+
+    def source_btn_slot(self):
+        self.mainwindow.config_handle()
+        self.mainwindow.cfg_dialog.tabWidget.setCurrentIndex(2)
 
     @Slot(dict)
     def set_tick_slot(self, tick: dict):

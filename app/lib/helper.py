@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import json
 import os
 from PySide2.QtCore import QObject, Signal, Slot
+from pymongo import MongoClient
 
 from app.lib.get_path import tick_path, join_path
 from app.lib.global_var import G
@@ -47,6 +48,22 @@ def get_local():
         print("get_local", e)
         data = json.dumps({G.choice_local_symbol: list()})
     return data
+
+
+def db_connect(**kwargs):
+    """
+    连接成功返回为空，失败返回错误
+    :param kwargs:
+    :return: if true return None else return error message
+    """
+    try:
+        client = MongoClient(kwargs['url'], serverSelectionTimeoutMS=3000,
+                             socketTimeoutMS=3000)
+        print(client.list_database_names())
+        db = client[kwargs['database']]
+        print(db.list_collection_names())
+    except Exception as e:
+        return str(e)
 
 
 def create_db_conn(**kwargs):

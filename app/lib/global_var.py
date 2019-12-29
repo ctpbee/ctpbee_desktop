@@ -8,14 +8,14 @@ from cryptography.fernet import Fernet
 key = lambda: Fernet.generate_key()
 
 default_shortcut = {
-    "home": "Ctrl+H",
-    "market": "Ctrl+Q",
-    "order": "Ctrl+X",
-    "kline": "Ctrl+K",
-    "strategy": "Ctrl+S",
-    "backtrack": "Ctrl+B",
-    "log": "Ctrl+L",
-    "config": "Ctrl+C",
+    "home": "Ctrl+Shift+H",
+    "market": "Ctrl+Shift+Q",
+    "order": "Ctrl+Shift+X",
+    "kline": "Ctrl+Shift+K",
+    "strategy": "Ctrl+Shift+S",
+    "backtrack": "Ctrl+Shift+B",
+    "log": "Ctrl+Shift+L",
+    "config": "Ctrl+Shift+C",
 }
 
 
@@ -90,6 +90,8 @@ class G(dict):
     pool_done = False  # 对线程发送停止信号
     #
     db = None
+    #
+    temp_var = {}
 
     @staticmethod
     def signin_success(uid):

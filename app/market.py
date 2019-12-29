@@ -44,7 +44,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.page_start = 0  #
         self.page_end = self.page_start + self.page_row
         self.item_row = 0
-        self.cur_ticks = []  # 用于过滤非此页的tick2，更新
+        self.cur_ticks = []  # 用于过滤非此页的tick
         self.cur_row_map = []  # 当前页tick对应row，用于更新
         self.mainwindow = mainwindow
         self.load_status = self.mainwindow.status_msg

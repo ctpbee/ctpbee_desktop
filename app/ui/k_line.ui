@@ -13,28 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0,0,0,0,0,0,0,0">
-   <item row="1" column="3">
-    <widget class="QDateTimeEdit" name="start"/>
-   </item>
-   <item row="1" column="8">
-    <widget class="QPushButton" name="hide_btn">
-     <property name="text">
-      <string>隐藏</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="4">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>至</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" rowspan="3" colspan="10">
+  <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0,0,0,0,0,0,0,0,0,0">
+   <item row="2" column="0" rowspan="3" colspan="12">
     <layout class="QVBoxLayout" name="kline_layout"/>
    </item>
-   <item row="1" column="10" rowspan="4">
+   <item row="1" column="12" rowspan="4">
     <widget class="QTableWidget" name="tick_table">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -69,27 +52,30 @@
      </column>
     </widget>
    </item>
-   <item row="1" column="2">
+   <item row="1" column="6">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>至</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="7">
+    <widget class="QDateTimeEdit" name="end"/>
+   </item>
+   <item row="1" column="5">
+    <widget class="QDateTimeEdit" name="start"/>
+   </item>
+   <item row="1" column="4">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>起始</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="5">
-    <widget class="QDateTimeEdit" name="end"/>
-   </item>
-   <item row="1" column="1">
+   <item row="1" column="3">
     <widget class="QComboBox" name="frq"/>
    </item>
-   <item row="1" column="0">
-    <widget class="QComboBox" name="symbol_list">
-     <property name="editable">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="7">
+   <item row="1" column="9">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -102,10 +88,31 @@
      </property>
     </spacer>
    </item>
-   <item row="1" column="6">
-    <widget class="QPushButton" name="reload_btn">
+   <item row="1" column="2">
+    <widget class="QComboBox" name="symbol_list">
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QToolButton" name="source_btn">
      <property name="text">
-      <string>确定</string>
+      <string>数据源</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="8">
+    <widget class="QToolButton" name="reload_btn">
+     <property name="text">
+      <string>reload</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="10">
+    <widget class="QToolButton" name="hide_btn">
+     <property name="text">
+      <string>隐藏</string>
      </property>
     </widget>
    </item>

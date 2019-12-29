@@ -49,7 +49,7 @@ class KlineWidget(QWidget, Ui_Form):
         for local_symbol in sorted(G.all_contracts):
             self.symbol_list.addItem(local_symbol + contract_space + G.all_contracts[local_symbol])  # 添加下拉框
         self.symbol_list.currentIndexChanged.connect(self.symbol_change_slot)
-        self.frq.addItems(['1min', '2min', '5min'])
+        self.frq.addItems(['1min', '3min', '15min', '30min', '60min'])
         # table
         self.tick_table.setRowCount(0)
         self.tick_row = len(G.order_tick_row_map)

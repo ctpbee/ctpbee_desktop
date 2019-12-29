@@ -71,10 +71,10 @@ def create_db_conn(**kwargs):
     G.db = QADataSupport(host=kwargs['host'])
 
 
-def get_external(frq=G.frq, start=G.start, end=G.end):
+def get_external():
     try:
         info = []
-        data = G.db.get_future_min(G.choice_local_symbol, frq=frq, start=start, end=end)
+        data = G.db.get_future_min(G.choice_local_symbol, frq=G.frq, start=G.start, end=G.end)
         if data:
             for item in data:
                 timestamp = item['datetime']

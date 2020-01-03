@@ -1,14 +1,21 @@
 import sys
 
-from PySide2.QtCore import Qt
+from PySide2.QtCore import Qt, QThreadPool, QObject, Signal, Slot
 from PySide2.QtWidgets import QMessageBox, QWidget, QDialog, QApplication, QRadioButton, QButtonGroup, QMenu, \
     QTableWidgetItem
-from pymongo import MongoClient
-from app.lib.helper import create_db_conn
+from app.lib.helper import create_db_conn, db_connect
 from app.lib.global_var import G
+from app.lib.worker import Worker
 from app.tip import TipDialog
 from app.ui import qss
 from app.ui.ui_db import Ui_DataBase
+
+
+class DBObject(QObject):
+    dbsig = Signal(str)
+
+    def __init__(self):
+        super(self.__class__, self).__init__()
 
 
 class DBWidget(QDialog, Ui_DataBase):
@@ -22,7 +29,6 @@ class DBWidget(QDialog, Ui_DataBase):
         #
         self.res.setWordWrap(True)
         self.user.setFocus()
-        self.name.textChanged.connect(self.name_slot)
         self.host.textChanged.connect(self.host_slot)
         self.port.textChanged.connect(self.textChanged_slot)
         self.user.textChanged.connect(self.textChanged_slot)
@@ -38,6 +44,10 @@ class DBWidget(QDialog, Ui_DataBase):
         self.host.setText('localhost')
         self.port.setText('27017')
         self.url.setPlaceholderText("mongodb://[user:password@]host:port/database")
+        #
+        self.thread_pool = QThreadPool()
+        self.sig = DBObject()
+        self.sig.dbsig.connect(self.db_connect_result)
 
     def load_available(self):
         self.ava_table.setRowCount(0)
@@ -56,16 +66,17 @@ class DBWidget(QDialog, Ui_DataBase):
         row = self.ava_table.currentRow()
         name = self.ava_table.item(row, 0).text()
         info = G.config.DB_INFO[name]
-        TipDialog("connecting... / <=3s")
-        res = self.db_connect(**info)
+        self.thread_pool.start(Worker(db_connect, **info, callback=self.radio_slot_callback))
+        G.temp_var = dict(WHICH_DB=name, info=info)
+
+    def radio_slot_callback(self, res):
         if not res:
-            G.config.WHICH_DB = name
-            G.config.LOCAL_SOURCE = False
+            G.config.update(G.temp_var)
+            create_db_conn(**G.temp_var['info'])  # 创建数据库连接
             G.config.to_file()
-            create_db_conn(**info)  # 创建数据库连接
             TipDialog("修改成功")
         else:
-            QMessageBox.information(self, '修改失败', res)
+            TipDialog(f"修改失败{res}")
 
     def generate_menu(self, pos):
         row_num = -1
@@ -95,11 +106,6 @@ class DBWidget(QDialog, Ui_DataBase):
             else:
                 w.setText(v)
 
-    def name_slot(self):
-        name = self.name.text()
-        if name in G.config.DB_INFO:
-            self.name.setText(f'{name}(1)')
-
     def host_slot(self):
         self.name.setText(self.host.text())
         self.textChanged_slot()
@@ -121,7 +127,15 @@ class DBWidget(QDialog, Ui_DataBase):
         password = self.password.text()
         url = self.url.text().replace("*" * len(password), password)
         database = self.database.text()
-        res = self.db_connect(url=url, database=database)
+        self.thread_pool.start(
+            Worker(db_connect, url=url, database=database, callback=self.db_connect_callback))
+
+    def db_connect_callback(self, res):
+        res = res if res else ""
+        self.sig.dbsig.emit(res)
+
+    @Slot(str)
+    def db_connect_result(self, res):
         if res:
             self.check_res = False
             self.res.setText(res)
@@ -132,26 +146,10 @@ class DBWidget(QDialog, Ui_DataBase):
             self.res.setStyleSheet("""color:green""")
         self.test_btn.setText('Test Connect')
 
-    def db_connect(self, **kwargs):
-        """
-        连接成功返回为空，失败返回错误
-        :param kwargs:
-        :return: if true return None else return error message
-        """
-        try:
-            client = MongoClient(kwargs['url'], serverSelectionTimeoutMS=3000,
-                                 socketTimeoutMS=3000)
-            print(client.list_database_names())
-            db = client[kwargs['database']]
-            print(db.list_collection_names())
-        except Exception as e:
-            return str(e)
-
     def ok_btn_slot(self):
         if self.check_res is None:
             self.test_btn_slot()
         if self.check_res is True:
-            G.config.LOCAL_SOURCE = False
             G.config.DB_INFO[self.name.text()] = dict(host=self.host.text(), user=self.user.text(),
                                                       password=self.password.text() if self.savebox.currentText() == '总是' else "",
                                                       database=self.database.text(), port=self.port.text(),

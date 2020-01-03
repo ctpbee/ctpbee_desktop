@@ -135,6 +135,12 @@ QTableWidget:disabled{
     background:gray;
 }
 
+QTableWidget::item:selected {
+    border-top:1px solid red;
+    border-bottom:1px solid red;
+    background:rgba(255,255,255,0)
+}
+
 #QTableCornerButton::section,QHeaderView::section{
 color:#00c1c1;
 background:#2B2B2B;

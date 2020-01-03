@@ -165,7 +165,7 @@ Password</string>
        <item row="7" column="3">
         <widget class="QPushButton" name="ok_btn">
          <property name="text">
-          <string>新增</string>
+          <string>新增/修改</string>
          </property>
         </widget>
        </item>

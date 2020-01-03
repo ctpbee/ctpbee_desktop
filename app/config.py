@@ -57,6 +57,7 @@ class ConfigDialog(QDialog, Ui_Config):
 
     def exter_btn_slot(self):
         self.db_widget.show()
+        G.config.LOCAL_SOURCE = False
         self.db_widget.load_available()
 
     def init_config(self):
@@ -88,6 +89,7 @@ class ConfigDialog(QDialog, Ui_Config):
         else:
             self.exter_btn.setChecked(True)
             self.db_widget.show()
+            self.db_widget.load_available()
 
     def default_sc_slot(self):
         G.config.back_default()

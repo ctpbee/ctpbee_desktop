@@ -44,7 +44,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.page_start = 0  #
         self.page_end = self.page_start + self.page_row
         self.item_row = 0
-        self.cur_ticks = []  # 用于过滤非此页的tick2，更新
+        self.cur_ticks = []  # 用于过滤非此页的tick
         self.cur_row_map = []  # 当前页tick对应row，用于更新
         self.mainwindow = mainwindow
         self.load_status = self.mainwindow.status_msg
@@ -56,6 +56,7 @@ class MarketWidget(QWidget, Ui_Market):
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.cellDoubleClicked.connect(self.cellDoubleClicked_slot)
         self.tableWidget.verticalScrollBar().installEventFilter(self)
+        self.tableWidget.verticalScrollBar().setSingleStep(1)
         # 渲染table
         self.obj = self.mainwindow.job
         self.obj.market_signal.connect(self.set_item_slot)
@@ -165,9 +166,9 @@ class MarketWidget(QWidget, Ui_Market):
 
     @Slot()
     def subscribe_slot(self):
-        text = self.symbol_list.currentText()
-        local_symbol = text.split(contract_space)[0]
-        name = text.split(contract_space)[1]
+        text = self.symbol_list.currentText().split(contract_space)
+        local_symbol = text[0]
+        name = text[1]
         if local_symbol not in G.all_contracts:
             TipDialog("未知合约")
             return

@@ -1,11 +1,9 @@
-0
-1
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'db.ui',
 # licensing of 'db.ui' applies.
 #
-# Created: Thu Dec 26 20:09:42 2019
+# Created: Sun Dec 29 15:30:31 2019
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -135,6 +133,6 @@ class Ui_DataBase(object):
 "Database", None, -1))
         self.label_3.setText(QtWidgets.QApplication.translate("DataBase", "密码\n"
 "Password", None, -1))
-        self.ok_btn.setText(QtWidgets.QApplication.translate("DataBase", "新增", None, -1))
+        self.ok_btn.setText(QtWidgets.QApplication.translate("DataBase", "新增/修改", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtWidgets.QApplication.translate("DataBase", "数据库配置", None, -1))
 

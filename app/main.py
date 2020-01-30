@@ -17,7 +17,6 @@ from app.order import OrderWidget
 from app.strategy import StrategyWidget
 from app.config import ConfigDialog
 from ctpbee.constant import *
-from ctpbee.event_engine.engine import EVENT_TIMER
 from ctpbee import current_app
 from app.log import LogDialog
 from app.home import HomeWidget

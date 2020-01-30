@@ -37,3 +37,10 @@ cd dist/ctpbee_desktop
 ```
 pip install pypiwin32
 ```
+如k线图不显示（QWebEngineView）
+
+[解决方法](https://blog.csdn.net/weixin_42591308/article/details/100728021)
+
+[64bit](http://download.microsoft.com/download/9/E/1/9E1FA77A-9E95-4F3D-8BE1-4D2D0C947BA2/enu_INREL/vcredistd14x64/vc_redist.x64.exe)
+
+[32bit](http://download.microsoft.com/download/9/E/1/9E1FA77A-9E95-4F3D-8BE1-4D2D0C947BA2/enu_INREL/vcredistd14x86/vc_redist.x86.exe)

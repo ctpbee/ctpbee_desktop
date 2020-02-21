@@ -40,9 +40,11 @@ headers = ['timestamp', 'open_price', 'close_price', 'low_price',
 
 def get_local():
     try:
-        file_path = join_path(tick_path, f"{str(G.choice_local_symbol)}.csv")
+        file_path = join_path(tick_path, f"{G.choice_local_symbol}.csv")
         f_csv = pd.read_csv(file_path)
-        info = map(lambda x: [x[i] for i in headers], f_csv.to_dict(orient='index').values())
+        f_csv.index = pd.to_datetime(f_csv.loc[:,'timestamp'])
+        f_csv = f_csv[G.start:G.end]
+        info = map(lambda x: [x[i] for i in headers], f_csv.drop_duplicates([headers[0]]).to_dict(orient='index').values())
         data = json.dumps({G.choice_local_symbol: list(info)})
     except Exception as e:
         print("get_local", e)
@@ -88,7 +90,7 @@ def get_external():
 
 class KInterfaceObject(QObject):
     qt_to_js = Signal(str)  # channel only str  在js中connect
-    qt_to_js_reload = Signal()  # channel only str  在js中connect
+    qt_to_js_reload = Signal()  # 发送此信号，js中重新请求数据
     js_to_qt = Signal(str)
 
     def __init__(self):

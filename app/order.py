@@ -63,6 +63,9 @@ class OrderWidget(QWidget, Ui_Order):
         if G.choice_local_symbol is None:
             self.buy_btn.setDisabled(True)
             self.short_btn.setDisabled(True)
+        else:
+            if G.ticks.get(G.choice_local_symbol):
+                self.price.setValue(G.ticks[G.choice_local_symbol].get('last_price', 0))
         # 买多/卖空
         self.buy_btn.clicked.connect(self.buy_slot)
         self.short_btn.clicked.connect(self.short_slot)
@@ -97,8 +100,8 @@ class OrderWidget(QWidget, Ui_Order):
         if G.choice_local_symbol != symbol:
             G.choice_local_symbol = symbol
             self.local_symbol_zn.setText(G.subscribes.get(G.choice_local_symbol))
-            if G.market_tick.get(symbol):
-                self.price.setValue(G.market_tick[symbol].get('last_price', 0))
+        if G.ticks.get(symbol):
+            self.price.setValue(G.ticks[symbol].get('last_price', 0))
 
     def fill_other(self):
         ##acount

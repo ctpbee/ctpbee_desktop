@@ -43,7 +43,7 @@ def get_local():
         file_path = join_path(tick_path, f"{G.choice_local_symbol}.csv")
         f_csv = pd.read_csv(file_path)
         f_csv.index = pd.to_datetime(f_csv.loc[:,'timestamp'])
-        f_csv = f_csv[G.start:G.end]
+        f_csv = f_csv[G.start:G.end].sort_index()
         info = map(lambda x: [x[i] for i in headers], f_csv.drop_duplicates([headers[0]]).to_dict(orient='index').values())
         data = json.dumps({G.choice_local_symbol: list(info)})
     except Exception as e:

@@ -44,3 +44,10 @@ pip install pypiwin32
 [64bit](http://download.microsoft.com/download/9/E/1/9E1FA77A-9E95-4F3D-8BE1-4D2D0C947BA2/enu_INREL/vcredistd14x64/vc_redist.x64.exe)
 
 [32bit](http://download.microsoft.com/download/9/E/1/9E1FA77A-9E95-4F3D-8BE1-4D2D0C947BA2/enu_INREL/vcredistd14x86/vc_redist.x86.exe)
+
+
+** 如果出现不存在dll载入失败 **
+```
+pip uninstall pyside2 
+pip install pyside2
+```

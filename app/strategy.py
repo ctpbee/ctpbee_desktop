@@ -72,7 +72,7 @@ class StrategyWidget(QWidget, Ui_Strategy):
     def fill_table(self):
         self.strategy_table.setRowCount(0)
         self.row = 0
-        for k, v in bee_current_app.extensions.items():
+        for k, v in bee_current_app._extensions.items():
             if v.frozen:
                 status = "停止"
                 s_btn = QPushButton("开启")

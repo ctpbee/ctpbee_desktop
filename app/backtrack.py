@@ -13,7 +13,7 @@ from app.tip import TipDialog
 from app.ui import qss
 from app.ui.ui_backtrack import Ui_Form
 from app.lib.global_var import G
-from ctpbee import Vessel, LooperApi
+from ctpbee.looper import Vessel, LooperApi
 from ctpbee import dynamic_loading_api
 
 

@@ -8,7 +8,7 @@ from PySide2.QtWebChannel import QWebChannel
 from PySide2.QtWebEngineWidgets import QWebEngineView
 from PySide2.QtWidgets import QWidget, QTableWidgetItem, QPushButton, QMessageBox, QTableWidget, QHeaderView
 from ctpbee import helper
-from ctpbee.constant import Exchange, TickData
+from ctpbee.constant import Exchange, TickData, OrderType
 from ctpbee import current_app as bee_current_app
 
 from app.lib.global_var import G
@@ -132,26 +132,22 @@ class OrderWidget(QWidget, Ui_Order):
     def close_position(self):
         """平仓"""
         row = self.position_table.currentRow()
-        symbol = self.position_table.item(row, position_table_column.index('symbol')).text()
-        direction = self.position_table.item(row, position_table_column.index('direction')).text()
+        symbol = self.position_table.item(row, position_table_column.index('symbol')).text().split(".")[0]
         exchange = self.position_table.item(row, position_table_column.index('exchange')).text()
-        volume = self.position_table.item(row, position_table_column.index('volume')).text()
-        local_symbol = symbol + '.' + exchange
+        direction = self.position_table.item(row, position_table_column.index('direction')).text()
+        price_type = OrderType.LIMIT if self.price_type.currentText() == "限价" else OrderType.MARKET
+        price = eval(self.price.text())
+        volume = self.volume.text()
         tick = TickData(symbol=symbol, exchange=exchange_map[exchange])
         try:
-            price = self.bee_ext.app.recorder.get_tick(local_symbol).last_price
-        except AttributeError:
-            TipDialog("未订阅此合约行情")
-        else:
-            try:
-                if direction == "long":
-                    self.bee_ext.app.action.cover(price=float(price), volume=float(volume), origin=tick)
-                if direction == "short":
-                    self.bee_ext.app.action.sell(price=float(price), volume=float(volume), origin=tick)
-                TipDialog("平仓请求发送成功")
-            except Exception as e:
-                print(e)
-                QMessageBox().warning(self, "提示", "平仓请求发送失败" + str(e), QMessageBox.Ok, QMessageBox.Ok)
+            if direction == "long":
+                self.bee_ext.app.action.cover(price=float(price), volume=float(volume), origin=tick,
+                                              price_type=price_type)
+            elif direction == "short":
+                self.bee_ext.app.action.sell(price=float(price), volume=float(volume), origin=tick,
+                                             price_type=price_type)
+        except Exception as e:
+            QMessageBox().warning(self, "提示", "平仓请求发送失败" + str(e), QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     def cancel_order(self):

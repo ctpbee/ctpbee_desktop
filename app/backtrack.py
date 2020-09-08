@@ -13,8 +13,7 @@ from app.tip import TipDialog
 from app.ui import qss
 from app.ui.ui_backtrack import Ui_Form
 from app.lib.global_var import G
-from ctpbee.looper import Vessel, LooperApi
-from ctpbee import dynamic_loading_api
+from ctpbee import dynamic_loading_api, CtpbeeApi, CtpBee, del_app
 
 
 class BacktrackrWorker(QRunnable):
@@ -28,16 +27,19 @@ class BacktrackrWorker(QRunnable):
 
     def run(self):
         # try:
-        vessel = Vessel()
-        for i in self.data:
-            vessel.add_data(i)
+        vessel = CtpBee("looper", __name__)
+
+        vessel.add_data(*self.data)
         for i in self.strategy:
-            vessel.add_strategy(i)
-        vessel.set_params({"looper": self.params,
-                           "strategy": {}
-                           })
-        vessel.run()
+            vessel.add_extension(i)
+        config = {"PATTERN": "LOOPER"}
+        config.update(self.params)
+        vessel.config.from_mapping(
+            config
+        )
+        vessel.start()
         result = vessel.get_result(report=True)
+        del_app(vessel.name)
         error = ""
         # except Exception as e:
         #     result = ""
@@ -172,7 +174,7 @@ class BacktrackWidget(QWidget, Ui_Form):
             path = self.backtrack_list.item(row).text()
             with open(path, 'r') as fp:
                 ext_ = dynamic_loading_api(fp)
-                if not isinstance(ext_, LooperApi):
+                if not isinstance(ext_, CtpbeeApi):
                     raise TypeError(f"你的回测API类型出错,期望LooperApi,你的{type(ext_)}\n{path}")
                 ext.append(ext_)
         return ext

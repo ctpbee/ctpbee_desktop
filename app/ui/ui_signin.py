@@ -10,6 +10,7 @@
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
+
 class Ui_SignIn(object):
     def setupUi(self, SignIn):
         SignIn.setObjectName("SignIn")
@@ -27,7 +28,7 @@ class Ui_SignIn(object):
         self.icon.setMinimumSize(QtCore.QSize(0, 100))
         self.icon.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.icon.setStyleSheet("image: url(:/menu/images/bee_temp_grey.png);\n"
-"")
+                                "")
         self.icon.setText("")
         self.icon.setObjectName("icon")
         self.verticalLayout_3.addWidget(self.icon)
@@ -352,7 +353,7 @@ class Ui_SignIn(object):
         self.label_9.setText(QtWidgets.QApplication.translate("SignIn", "认证码", None, -1))
         self.label_13.setText(QtWidgets.QApplication.translate("SignIn", "接口", None, -1))
         self.label_8.setText(QtWidgets.QApplication.translate("SignIn", "期货公司\n"
-"编码", None, -1))
+                                                                        "编码", None, -1))
         self.label_12.setText(QtWidgets.QApplication.translate("SignIn", "行情前置", None, -1))
         self.label_7.setText(QtWidgets.QApplication.translate("SignIn", "密码", None, -1))
         self.interface_.setItemText(0, QtWidgets.QApplication.translate("SignIn", "ctp", None, -1))
@@ -360,5 +361,6 @@ class Ui_SignIn(object):
         self.label_11.setText(QtWidgets.QApplication.translate("SignIn", "交易前置", None, -1))
         self.remember_me.setText(QtWidgets.QApplication.translate("SignIn", "记住我", None, -1))
         self.sign_in_btn.setText(QtWidgets.QApplication.translate("SignIn", "登    录", None, -1))
+
 
 import app.resource.mainwindow_rc

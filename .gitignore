@@ -4,3 +4,5 @@ dist
 __pycache__
 .idea
 *.pyc
+.vscode
+*.txt

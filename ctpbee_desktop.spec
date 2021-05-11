@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['ctpbee_desktop.py'],
+a = Analysis(['sht.py'],
              pathex=['venv\\Lib\\site-packages\\shiboken2'],
              binaries=[],
              datas=[("app/static","static"),
@@ -24,7 +24,7 @@ exe = EXE(pyz,
           a.scripts,
           [],
           exclude_binaries=True,
-          name='ctpbee_desktop',
+          name='sht',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
@@ -38,4 +38,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='ctpbee_desktop')
+               name='sht')

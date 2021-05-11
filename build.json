@@ -1,4 +1,4 @@
 {
-  "entry": "ctpbee_desktop.py",
+  "entry": "sht.py",
   "requirement": "requirement.txt"
 }

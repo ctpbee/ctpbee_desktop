@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['ctpbee_desktop.py'],
+a = Analysis(['sht.py'],
              pathex=['D:\\GIT\\ctpbee_desktop\\venv\\Lib\\site-packages\\shiboken2',
              'D:\\GIT\\ctpbee_desktop'],
              binaries=[],

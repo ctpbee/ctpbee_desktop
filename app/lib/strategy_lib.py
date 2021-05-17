@@ -164,23 +164,25 @@ def check_code(filename):
 
 
 strategy_template = """from ctpbee import CtpbeeApi
-from ctpbee.constant import LogData, AccountData, PositionData
+from ctpbee.constant import LogData, AccountData, PositionData, TradeData, OrderData
 
 
 class StrategyClass(CtpbeeApi):
     def __init__(self, name, app=None):
         super().__init__(name, app)
 
-    def on_trade(self, trade):
+    def on_trade(self, trade:TradeData):
+        # trade callback 
         pass
 
     def on_realtime(self):
+        # time callback ->  one second interval 
         self.info("this is test message")
 
     def on_contract(self, contract):
         pass
 
-    def on_order(self, order):
+    def on_order(self, order:OrderData):
         pass
 
     def on_position(self, position: PositionData) -> None:

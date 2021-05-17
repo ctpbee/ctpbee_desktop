@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>315</width>
-    <height>368</height>
+    <width>428</width>
+    <height>544</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -93,8 +93,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>262</width>
-            <height>171</height>
+            <width>384</width>
+            <height>362</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
@@ -141,6 +141,11 @@
              <item>
               <property name="text">
                <string>ctp</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ctp_mini</string>
               </property>
              </item>
              <item>
@@ -301,9 +306,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-116</y>
-            <width>250</width>
-            <height>299</height>
+            <y>0</y>
+            <width>392</width>
+            <height>370</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,1">
@@ -541,6 +546,11 @@
              <item>
               <property name="text">
                <string>ctp_se</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ctp_mini</string>
               </property>
              </item>
             </widget>

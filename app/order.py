@@ -169,15 +169,17 @@ class OrderWidget(QWidget, Ui_Order):
         """下单"""
         local_symbol = G.choice_local_symbol
         exchange = local_symbol.split(".")[1]
-        type = "LIMIT" if self.price_type.currentText() == "限价" else "MARKET"
+        # todo: 根据期货交易所的不同 发出的市价类型 伴随的价格也应该不同
+        type_ = "LIMIT" if self.price_type.currentText() == "限价" else "MARKET"
         price = self.price.text()
         volume = self.volume.text()
         offset = "open"
+
         req = helper.generate_order_req_by_str(symbol=local_symbol,
                                                exchange=exchange,
                                                direction=direction, offset=offset, volume=int(volume),
                                                price=float(price),
-                                               type=type)
+                                               type=type_)
         try:
             req_id = self.bee_ext.app.send_order(req)
             sleep(0.2)

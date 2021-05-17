@@ -1,7 +1,3 @@
-0
-1
-2
-3
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'strategy.ui',
@@ -13,6 +9,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PySide2 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Strategy(object):
     def setupUi(self, Strategy):
@@ -56,10 +53,13 @@ class Ui_Strategy(object):
 
     def retranslateUi(self, Strategy):
         Strategy.setWindowTitle(QtWidgets.QApplication.translate("Strategy", "Form", None, -1))
-        self.strategy_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("Strategy", "名称", None, -1))
-        self.strategy_table.horizontalHeaderItem(1).setText(QtWidgets.QApplication.translate("Strategy", "状态", None, -1))
-        self.strategy_table.horizontalHeaderItem(2).setText(QtWidgets.QApplication.translate("Strategy", "操作", None, -1))
-        self.strategy_table.horizontalHeaderItem(3).setText(QtWidgets.QApplication.translate("Strategy", "操作", None, -1))
+        self.strategy_table.horizontalHeaderItem(0).setText(
+            QtWidgets.QApplication.translate("Strategy", "名称", None, -1))
+        self.strategy_table.horizontalHeaderItem(1).setText(
+            QtWidgets.QApplication.translate("Strategy", "状态", None, -1))
+        self.strategy_table.horizontalHeaderItem(2).setText(
+            QtWidgets.QApplication.translate("Strategy", "操作", None, -1))
+        self.strategy_table.horizontalHeaderItem(3).setText(
+            QtWidgets.QApplication.translate("Strategy", "操作", None, -1))
         self.add_strategy_btn.setText(QtWidgets.QApplication.translate("Strategy", "添加策略", None, -1))
         self.gen_strategy.setText(QtWidgets.QApplication.translate("Strategy", "生成策略模板", None, -1))
-

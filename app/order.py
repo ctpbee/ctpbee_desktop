@@ -169,6 +169,7 @@ class OrderWidget(QWidget, Ui_Order):
         """下单"""
         local_symbol = G.choice_local_symbol
         exchange = local_symbol.split(".")[1]
+        print(local_symbol)
         # todo: 根据期货交易所的不同 发出的市价类型 伴随的价格也应该不同
         type_ = "LIMIT" if self.price_type.currentText() == "限价" else "MARKET"
         price = self.price.text()

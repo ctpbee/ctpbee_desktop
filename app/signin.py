@@ -2,33 +2,33 @@ import json
 import os
 from copy import deepcopy
 
-from PySide2 import QtGui, QtCore
-from PySide2.QtCore import QRegExp, Slot, QTimer, Qt, QEvent, QObject
-from PySide2.QtGui import QRegExpValidator, QMovie, QCloseEvent, QBitmap, QPainter, QKeySequence
+from PySide2.QtCore import Slot, QTimer, Qt, QEvent, QObject
+from PySide2.QtGui import QCloseEvent, QBitmap, QPainter
 from PySide2.QtWidgets import QWidget, QMessageBox, QLineEdit
+from ctpbee import CtpBee, current_app
+from ctpbee import VLogger
 
+from app.lib.get_path import desktop_path, join_path
 from app.lib.global_var import G
-from app.ui.ui_signin import Ui_SignIn
-from ctpbee import CtpBee, VLogger, current_app
-from app.lib.get_path import get_user_path, desktop_path, join_path, config_path
 from app.loading import LoadingDialog
 from app.main import MainWindow
 from app.ui import qss
+from app.ui.ui_signin import Ui_SignIn
 
 
-class Vlog(VLogger):
-    def handler_record(self, record):
-        msg = f"{record['created'].split(' ')[1]}   {record['name']} " \
-              f"  {record['levelname']}   {record['owner']}   {record['message']}"
-        G.log_history.append(msg)
-        if G.mainwindow:
-            G.mainwindow.job.log_signal.emit(msg)
-        if G.loading:
-            try:
-                msg1 = json.loads(record['message'].replace("\'", "\""))
-                G.loading.msg.setText(msg1['ErrorMsg'])
-            except Exception as e:
-                G.loading.msg.setText(record['message'])
+@VLogger()
+def handler_record(self, record):
+    msg = f"{record['created'].split(' ')[1]}   {record['name']} " \
+          f"  {record['levelname']}   {record['owner']}   {record['message']}"
+    G.log_history.append(msg)
+    if G.mainwindow:
+        G.mainwindow.job.log_signal.emit(msg)
+    if G.loading:
+        try:
+            msg1 = json.loads(record['message'].replace("\'", "\""))
+            G.loading.msg.setText(msg1['ErrorMsg'])
+        except Exception as e:
+            G.loading.msg.setText(record['message'])
 
 
 simnow_yd = dict(
@@ -193,7 +193,7 @@ class SignInWidget(QWidget, Ui_SignIn):
         self.timer.stop()
 
     def sign_in(self, info):
-        bee_app = CtpBee(name=info.get("username"), import_name=__name__, refresh=True, logger_class=Vlog)
+        bee_app = CtpBee(name=info.get("username"), import_name=__name__, refresh=True)
         login_info = {
             "CONNECT_INFO": info,
             "INTERFACE": info.get('interface'),
